@@ -1,0 +1,1602 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Fri Oct 30 17:46:47 2020
+# Process ID: 4360
+# Current directory: /home/march/tfm/grlib/designs/leon3-xilinx-ac701
+# Command line: vivado -mode gui -source ./vivado/leon3mp_vivado.tcl
+# Log file: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado.log
+# Journal file: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado.jou
+#-----------------------------------------------------------
+start_gui
+source ./vivado/leon3mp_vivado.tcl
+# create_project leon3-xilinx-ac701 ./vivado/leon3-xilinx-ac701 -part xc7a200tfbg676-2 -force
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/march/opt/Xilinx/Vitis/Vivado/2020.1/data/ip'.
+create_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:06 . Memory (MB): peak = 6966.801 ; gain = 55.637 ; free physical = 12381 ; free virtual = 14211
+# set_property top testbench [get_filesets sim_1]
+# set_property target_language verilog [current_project]
+# set_property strategy {Flow_PerfOptimized_high} [get_runs synth_1]
+# set_property strategy {Performance_ExtraTimingOpt} [get_runs impl_1]
+# read_vhdl -library grlib ../../lib/grlib/stdlib/version.vhd
+# read_vhdl -library grlib ../../lib/grlib/stdlib/config_types.vhd
+# read_vhdl -library grlib ../../lib/grlib/stdlib/config.vhd
+# read_vhdl -library grlib ../../lib/grlib/stdlib/stdlib.vhd
+# read_vhdl -library grlib ../../lib/grlib/stdlib/stdio.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/stdlib/stdio.vhd]
+# read_vhdl -library grlib ../../lib/grlib/stdlib/testlib.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/stdlib/testlib.vhd]
+# read_vhdl -library grlib ../../lib/grlib/util/util.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/util/util.vhd]
+# read_vhdl -library grlib ../../lib/grlib/sparc/sparc.vhd
+# read_vhdl -library grlib ../../lib/grlib/sparc/sparc_disas.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/sparc/sparc_disas.vhd]
+# read_vhdl -library grlib ../../lib/grlib/sparc/cpu_disas.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/sparc/cpu_disas.vhd]
+# read_vhdl -library grlib ../../lib/grlib/riscv/riscv.vhd
+# read_vhdl -library grlib ../../lib/grlib/riscv/riscv_disas.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/riscv/riscv_disas.vhd]
+# read_vhdl -library grlib ../../lib/grlib/riscv/cpu_disas.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/riscv/cpu_disas.vhd]
+# read_vhdl -library grlib ../../lib/grlib/modgen/multlib.vhd
+# read_vhdl -library grlib ../../lib/grlib/modgen/leaves.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/amba.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/devices.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/defmst.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/apbctrl.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/apbctrlx.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/apbctrldp.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/apbctrlsp.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/ahbctrl.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/dma2ahb_pkg.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/dma2ahb.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/ahbmst.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/ahblitm2ahbm.vhd
+# read_vhdl -library grlib ../../lib/grlib/amba/dma2ahb_tp.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/amba/dma2ahb_tp.vhd]
+# read_vhdl -library grlib ../../lib/grlib/amba/amba_tp.vhd
+# set_property used_in_synthesis false [get_files ../../lib/grlib/amba/amba_tp.vhd]
+# read_vhdl -library grlib ../../lib/grlib/dftlib/dftlib.vhd
+# read_vhdl -library grlib ../../lib/grlib/dftlib/synciotest.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/generic_bm_pkg.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/ahb_be.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/axi4_be.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/bmahbmst.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/bm_fre.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/bm_me_rc.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/bm_me_wc.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/fifo_control_rc.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/fifo_control_wc.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/generic_bm_ahb.vhd
+# read_vhdl -library grlib ../../lib/grlib/generic_bm/generic_bm_axi.vhd
+# read_vhdl -library techmap ../../lib/techmap/gencomp/gencomp.vhd
+# read_vhdl -library techmap ../../lib/techmap/gencomp/netcomp.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/memory_inferred.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/ddr_inferred.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/mul_inferred.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/ddr_phy_inferred.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/ddrphy_datapath.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/fifo_inferred.vhd
+# read_vhdl -library techmap ../../lib/techmap/inferred/sim_pll.vhd
+# set_property used_in_synthesis false [get_files ../../lib/techmap/inferred/sim_pll.vhd]
+# read_vhdl -library techmap ../../lib/techmap/inferred/lpddr2_phy_inferred.vhd
+# set_property used_in_synthesis false [get_files ../../lib/techmap/inferred/lpddr2_phy_inferred.vhd]
+# read_vhdl -library techmap ../../lib/techmap/unisim/memory_kintex7.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/memory_ultrascale.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/memory_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/buffer_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/pads_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/clkgen_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/tap_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/ddr_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/ddr_phy_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/sysmon_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/mul_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/unisim/spictrl_unisim.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/allclkgen.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/techbuf.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/allddr.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/allmem.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/allmul.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/allpads.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/alltap.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkgen.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkmux.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkinv.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkand.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/grgates.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/ddr_ireg.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/ddr_oreg.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/clkpad_ds.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/inpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/inpad_ds.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/iodpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/iopad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/iopad_ds.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/lvds_combo.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/odpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/outpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/outpad_ds.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/toutpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/toutpad_ds.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/skew_outpad.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/ddrphy.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram64.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram_2p.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram_dp.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncfifo_2p.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/regfile_3p.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/tap.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/nandtree.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/grlfpw_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/grfpw_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/leon3_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/leon4_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/mul_61x61.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/cpu_disas_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/ringosc.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/grpci2_phy_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/system_monitor.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/inpad_ddr.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/outpad_ddr.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/iopad_ddr.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram128bw.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram256bw.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram128.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram156bw.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/techmult.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/spictrl_net.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/scanreg.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncrambw.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncram_2pbw.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/sdram_phy.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/syncreg.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/serdes.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/iopad_tm.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/toutpad_tm.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/memrwcol.vhd
+# read_vhdl -library techmap ../../lib/techmap/maps/cdcbus.vhd
+# read_vhdl -library eth ../../lib/eth/comp/ethcomp.vhd
+# read_vhdl -library eth ../../lib/eth/core/greth_pkg.vhd
+# read_vhdl -library eth ../../lib/eth/core/eth_rstgen.vhd
+# read_vhdl -library eth ../../lib/eth/core/eth_edcl_ahb_mst.vhd
+# read_vhdl -library eth ../../lib/eth/core/eth_ahb_mst.vhd
+# read_vhdl -library eth ../../lib/eth/core/greth_tx.vhd
+# read_vhdl -library eth ../../lib/eth/core/greth_rx.vhd
+# read_vhdl -library eth ../../lib/eth/core/grethc.vhd
+# read_vhdl -library eth ../../lib/eth/wrapper/greth_gen.vhd
+# read_vhdl -library opencores ../../lib/opencores/can/cancomp.vhd
+# read_vhdl -library opencores ../../lib/opencores/can/can_top.vhd
+# read_vhdl -library opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
+# read_vhdl -library opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
+# read_vhdl -library opencores ../../lib/opencores/i2c/i2coc.vhd
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/clean_rst.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/clean_rst.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/decoder_8b10b.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/decoder_8b10b.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/encoder_8b10b.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/encoder_8b10b.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_constants.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_constants.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_regs.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_regs.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_test.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_test.v:]
+# read_verilog -library opencores ../../lib/opencores/ge_1000baseX/timescale.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/timescale.v:]
+# read_vhdl -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_comp.vhd
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX.v:]
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_an.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_an.v:]
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_mdio.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_mdio.v:]
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_rx.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_rx.v:]
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_sync.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_sync.v:]
+# read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_tx.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/opencores/ge_1000baseX/ge_1000baseX_tx.v:]
+# read_vhdl -library gaisler ../../lib/gaisler/arith/arith.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/arith/mul32.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/arith/div32.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/memctrl/memctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/memctrl/sdctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/memctrl/sdctrl64.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/memctrl/sdmctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/memctrl/srctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmuconfig.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmuiface.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/libmmu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmutlbcam.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmulrue.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmulru.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmutlb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmutw.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/srmmu/mmu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3/leon3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3/grfpushwx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/tbufmem.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/tbufmem_2p.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/dsu3x.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/dsu3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/dsu3_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/libfpu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/libiu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/libcache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/libleon3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/regfile_3p_l3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/mmu_acache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/mmu_icache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/mmu_dcache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/cachemem.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/mmu_cache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/grfpwx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/grlfpwx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/iu3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/proc3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/grfpwxsh.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/leon3x.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/leon3cg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/leon3s.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/leon3sh.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/l3stat.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon3v3/cmvalidbits.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon4/leon4.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqmp.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqamp.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/can.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/can_mod.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/can_oc.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/can_mc.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/canmux.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/can/can_rd.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/axi.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahbm2axi4.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/axinullslv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahb2axib.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahb2axi3b.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/axi/ahb2axi4b.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/misc.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/rstgen.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/gptimer.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbram.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbdpram.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbtrace_mmb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbtrace_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbtrace.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grgpio.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbstat.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/logan.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/apbps2.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/charrom_package.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/charrom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/apbvga.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/svgactrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grsysmon.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/gracectrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grgpreg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahb_mst_iface.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grgprbank.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grversion.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/apb3cdc.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbsmux.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/ahbmmux.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/misc/grtachom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/net/net.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/uart.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/libdcom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/apbuart.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/dcom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/dcom_uart.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/uart/ahbuart.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/sim/sim.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/sim.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/sram.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/sram.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/sram16.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/sram16.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/phy.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/phy.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ser_phy.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ser_phy.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ahbrep.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ahbrep.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/delay_wire.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/delay_wire.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/pwm_check.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/pwm_check.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/slavecheck_slv.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/slavecheck_slv.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ddrram.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ddrram.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ddr2ram.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ddr2ram.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ddr3ram.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ddr3ram.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/sdrtestmod.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/sdrtestmod.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/ahbram_sim.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/ahbram_sim.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/aximem.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/aximem.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/axirep.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/axirep.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/axixmem.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/axixmem.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/sramtestmod.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/sramtestmod.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/sim/uartprint.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/sim/uartprint.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtag.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/libjtagcom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtagcom.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/bscanregs.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/bscanregsbd.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtagcom2.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/ahbjtag.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/ahbjtag_bsd.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtagcomrv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/ahbjtagrv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtagtst.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/jtag/jtagtst.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/jtag/jtag_rv.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/jtag/jtag_rv.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/greth/ethernet_mac.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greth.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greth_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greth_gbit.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greths.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greth_gbit_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/greths_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/grethm.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/grethm_mb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/rgmii.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/rgmii_kc705.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/rgmii_series7.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/rgmii_series6.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/comma_detect.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/usb/grusb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrphy_wrap.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr2spax_ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr2spax_ddr.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr2buf.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr2spax.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr2spa.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr1spax.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddr1spax_ddr.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrspa.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2mig_7series_pkg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2mig_7series.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2mig_7series_ddr2_dq16_ad13_ba3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2mig_7series_ddr3_dq16_ad15_ba3.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2mig_7series_cpci_xc7k.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2axi_mig_7series.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/axi_mig_7series.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2avl_async.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/ddr/ahb2avl_async_be.vhd
+# read_verilog -library gaisler ../../lib/gaisler/ddr/mig_interface_model.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/gaisler/ddr/mig_interface_model.v:]
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/ddr/mig_interface_model.v]
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2cmst.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2cmst_gen.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2cslv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c2ahbx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c2ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c2ahb_apb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c2ahb_gen.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/i2c/i2c2ahb_apb_gen.vhd
+# read_verilog -library gaisler ../../lib/gaisler/i2c/i2c_slave_model.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/gaisler/i2c/i2c_slave_model.v:]
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/i2c/i2c_slave_model.v]
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spi.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spimctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spictrlx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spictrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spi2ahbx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spi2ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spi2ahb_apb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/spi/spi_flash.vhd
+# set_property used_in_synthesis false [get_files ../../lib/gaisler/spi/spi_flash.vhd]
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/grdmac_pkg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/apbmem.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/grdmac_ahbmst.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/grdmac_alignram.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/grdmac.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac/grdmac_1p.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/grdmac2_pkg.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/grdmac2_apb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/mem2buf.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/buf2mem.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/grdmac2_ctrl.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/grdmac2.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/grdmac2/grdmac2_ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/subsys/subsys.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/subsys/leon_dsu_stat_base.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/pkg/noelv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/pkg/util.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/mmuconfig.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/noelvint.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/bhtnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/btbnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/rasnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/tbufmemnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/cachememnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/mul64.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/div64.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/regfile64nv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/progbuf.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/iunv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/cpucorenv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/rvdmx.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/rvdm.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/cctrlnv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/noelvcpu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/fakefpunv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/core/nanofpunv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/riscv/riscv.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/riscv/clint.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/riscv/clint_ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/plic.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/grplic.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/plic_encoder.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/plic_gateway.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/plic_target.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/plic/grplic_ahb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/noelv/subsys/noelvsys.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5/leon5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/leon5int.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/itbufmem5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/bht_pap.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/btb.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/inst_text.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/iu5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/cctrl5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/cachemem5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/regfile5_ram.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/regfile5_dff.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/nanofpu.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/cpucore5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
+# read_vhdl -library gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+# read_vhdl -library esa ../../lib/esa/memoryctrl/memoryctrl.vhd
+# read_vhdl -library esa ../../lib/esa/memoryctrl/mctrl.vhd
+# read_vhdl -library fmf ../../lib/fmf/utilities/conversions.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/utilities/conversions.vhd]
+# read_vhdl -library fmf ../../lib/fmf/utilities/gen_utils.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/utilities/gen_utils.vhd]
+# read_vhdl -library fmf ../../lib/fmf/flash/flash.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/flash/flash.vhd]
+# read_vhdl -library fmf ../../lib/fmf/flash/s25fl064a.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/flash/s25fl064a.vhd]
+# read_vhdl -library fmf ../../lib/fmf/flash/m25p80.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/flash/m25p80.vhd]
+# read_vhdl -library fmf ../../lib/fmf/fifo/idt7202.vhd
+# set_property used_in_synthesis false [get_files ../../lib/fmf/fifo/idt7202.vhd]
+# read_verilog -library micron ../../lib/micron/sdram/mobile_sdr.v
+WARNING: [filemgmt 56-99] Vivado Synthesis ignores library specification for Verilog or SystemVerilog files. [/home/march/tfm/grlib/lib/micron/sdram/mobile_sdr.v:]
+# set_property used_in_synthesis false [get_files ../../lib/micron/sdram/mobile_sdr.v]
+# read_vhdl -library work ../../lib/work/debug/debug.vhd
+# set_property used_in_synthesis false [get_files ../../lib/work/debug/debug.vhd]
+# read_vhdl -library work ../../lib/work/debug/grtestmod.vhd
+# set_property used_in_synthesis false [get_files ../../lib/work/debug/grtestmod.vhd]
+# read_vhdl -library work ../../lib/work/debug/cpu_disas.vhd
+# set_property used_in_synthesis false [get_files ../../lib/work/debug/cpu_disas.vhd]
+# read_vhdl -library work config.vhd
+# read_vhdl -library work ahbrom.vhd
+# read_vhdl -library work leon3mp.vhd
+# read_vhdl -library work ddr_dummy.vhd
+# read_vhdl -library work testbench.vhd
+# set_property used_in_synthesis false [get_files testbench.vhd]
+# add_files -fileset sim_1 prom.srec ram.srec
+# read_xdc ../../boards/xilinx-ac701-xc7a200t/xilinx-ac701-xc7a200t.xdc
+# set_property used_in_synthesis true [get_files ../../boards/xilinx-ac701-xc7a200t/xilinx-ac701-xc7a200t.xdc]
+# set_property used_in_implementation true [get_files ../../boards/xilinx-ac701-xc7a200t/xilinx-ac701-xc7a200t.xdc]
+# set_property target_simulator XSim [current_project]
+# set_property top_lib work [current_fileset]
+# set_property top_arch rtl [current_fileset]
+# set_property top leon3mp [current_fileset]
+# if {[regexp -nocase {.*board_part.*} [list_property [current_project]]]} {
+#   set_property board_part xilinx.com:ac701:part0:1.0 [current_project]
+# } else {
+#   set_property board xilinx.com:ac701:part0:1.0 [current_project]
+# }
+# set_property target_language verilog [current_project]
+# import_ip -files vivado/mig.xci -name mig
+WARNING: [IP_Flow 19-2162] IP 'mig' is locked:
+* IP definition 'Memory Interface Generator (MIG 7 Series) (4.0)' for IP 'mig' (customized with software release 2017.3) has a newer minor version in the IP Catalog.
+# generate_target  all [get_files ./vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xci] -force 
+CRITICAL WARNING: [filemgmt 20-1365] Unable to generate target(s) for the following file is locked: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xci
+Locked reason: 
+* IP definition 'Memory Interface Generator (MIG 7 Series) (4.0)' for IP 'mig' (customized with software release 2017.3) has a newer minor version in the IP Catalog.
+WARNING: [IP_Flow 19-3899] Cannot get the environment domain name variable for the component vendor name. Setting the vendor name to 'user.org'.
+update_compile_order -fileset sources_1
+launch_simulation
+Command: launch_simulation 
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/march/opt/Xilinx/Vitis/Vivado/2020.1/data/xsim/xsim.ini' copied to run dir:'/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'testbench' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/prom.srec'
+INFO: [SIM-utils-43] Exported '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/ram.srec'
+WARNING: [SIM-utils-65] Failed to find the IP component XML file for 'mig' from IP_OUTPUT_DIR property! (file does not exist:'/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xml')
+WARNING: [SIM-utils-52] IP component XML file does not exist: '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xml'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj testbench_vlog.prj
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/march/tfm/grlib/lib/gaisler/ddr/mig_interface_model.v" into library gaisler
+INFO: [VRFC 10-311] analyzing module mig_interface_model
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/glbl.v" into library work
+INFO: [VRFC 10-311] analyzing module glbl
+xvhdl --incr --relax -prj testbench_vhdl.prj
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/config_types.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/config.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/version.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/stdlib.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/amba.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/devices.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/gencomp/gencomp.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/misc.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/ddr/ahb2mig_7series_pkg.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/ddr/ahb2mig_7series.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahb2mig_7series'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/stdio.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/stdlib/testlib.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/ahbctrl.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'ahbctrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/jtag/libjtagcom.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/jtag/jtag.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/jtag/ahbjtag.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbjtag'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/ahbmst.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'ahbmst'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/ahbram.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbram'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/sim/ahbram_sim.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbram_sim'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/sim/sim.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/sim/ahbrep.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbrep'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/ahbrom.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'ahbrom'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/ahbstat.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbstat'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/uart.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/libdcom.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/ahbuart.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ahbuart'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/allclkgen.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/allddr.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/allmem.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/allmul.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/allpads.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/alltap.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/apbctrl.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'apbctrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/amba/apbctrlx.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'apbctrlx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/apbuart.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'apbuart'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/arith/arith.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3/leon3.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/buffer_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkbuf_xilinx'
+INFO: [VRFC 10-3107] analyzing entity 'clkmux_xilinx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/libfpu.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmuconfig.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/libiu.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmuiface.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/libcache.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/cachemem.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'cachemem'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/sparc/sparc.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/clkand.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkand'
+INFO: [VRFC 10-3107] analyzing entity 'clkrand'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/clkgen.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkgen'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/clkgen_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkgen_virtex5'
+INFO: [VRFC 10-3107] analyzing entity 'clkgen_virtex7'
+INFO: [VRFC 10-3107] analyzing entity 'clkgen_kintexu'
+INFO: [VRFC 10-3107] analyzing entity 'clkand_unisim'
+INFO: [VRFC 10-3107] analyzing entity 'clkmux_unisim'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/clkmux.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkmux'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/clkpad_ds.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'clkpad_ds'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/cmvalidbits.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'cmvalidbits'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/config.vhd" into library work
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/sparc/sparc_disas.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/gencomp/netcomp.vhd" into library techmap
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/dcom.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'dcom'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/uart/dcom_uart.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'dcom_uart'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/sim/ddr3ram.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'ddr3ram'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/ddr_dummy.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'ddr_dummy'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/inferred/ddr_inferred.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'gen_iddr_reg'
+INFO: [VRFC 10-3107] analyzing entity 'gen_oddr_reg'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/ddr_oreg.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'ddr_oreg'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/ddr_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'unisim_iddr_reg'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_iddre1_reg'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_oddr_reg'
+INFO: [VRFC 10-3107] analyzing entity 'oddrv2'
+INFO: [VRFC 10-3107] analyzing entity 'oddrc3e'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/work/debug/debug.vhd" into library work
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/arith/div32.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'div32'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/dsu3x.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'dsu3x'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/greth_pkg.vhd" into library eth
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/eth_ahb_mst.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'eth_ahb_mst'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/eth_edcl_ahb_mst.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'eth_edcl_ahb_mst'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/eth_rstgen.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'eth_rstgen'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/comp/ethcomp.vhd" into library eth
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/net/net.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/greth/ethernet_mac.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/gptimer.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'gptimer'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/greth/greth.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'greth'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/greth/greth_gbit.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'greth_gbit'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/greth_rx.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'greth_rx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/greth_tx.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'greth_tx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/eth/core/grethc.vhd" into library eth
+INFO: [VRFC 10-3107] analyzing entity 'grethc'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/greth/grethm.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grethm'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3/grfpushwx.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grfpushwx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/grfpw_net.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'grfpw_net'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/libleon3.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/grfpwx.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grfpwx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/grfpwxsh.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grfpwxsh'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/grgates.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'grmux2'
+INFO: [VRFC 10-3107] analyzing entity 'grmux2v'
+INFO: [VRFC 10-3107] analyzing entity 'grdff'
+INFO: [VRFC 10-3107] analyzing entity 'gror2'
+INFO: [VRFC 10-3107] analyzing entity 'grand12'
+INFO: [VRFC 10-3107] analyzing entity 'grnand2'
+INFO: [VRFC 10-3107] analyzing entity 'grand2'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/grgpio.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grgpio'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/grlfpw_net.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'grlfpw_net'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/grlfpwx.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'grlfpwx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/i2c/i2c.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/opencores/i2c/i2c_master_bit_ctrl.vhd" into library opencores
+INFO: [VRFC 10-3107] analyzing entity 'i2c_master_bit_ctrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/opencores/i2c/i2c_master_byte_ctrl.vhd" into library opencores
+INFO: [VRFC 10-3107] analyzing entity 'i2c_master_byte_ctrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/opencores/i2c/i2coc.vhd" into library opencores
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/i2c/i2cmst.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'i2cmst'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/inpad.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'inpad'
+INFO: [VRFC 10-3107] analyzing entity 'inpadv'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/iopad.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'iopad'
+INFO: [VRFC 10-3107] analyzing entity 'iopadv'
+INFO: [VRFC 10-3107] analyzing entity 'iopadvv'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/irqmp/irqmp.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'irqmp'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/iu3.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'iu3'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/jtag/jtagcom.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'jtagcom'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/jtag/jtagcom2.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'jtagcom2'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/l2cache/pkg/l2cache.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/l3stat.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'l3stat'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/modgen/leaves.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'FLIPFLOP'
+INFO: [VRFC 10-3107] analyzing entity 'PP_LOW'
+INFO: [VRFC 10-3107] analyzing entity 'PP_MIDDLE'
+INFO: [VRFC 10-3107] analyzing entity 'PP_HIGH'
+INFO: [VRFC 10-3107] analyzing entity 'R_GATE'
+INFO: [VRFC 10-3107] analyzing entity 'DECODER'
+INFO: [VRFC 10-3107] analyzing entity 'FULL_ADDER'
+INFO: [VRFC 10-3107] analyzing entity 'HALF_ADDER'
+INFO: [VRFC 10-3107] analyzing entity 'INVBLOCK'
+INFO: [VRFC 10-3107] analyzing entity 'XXOR1'
+INFO: [VRFC 10-3107] analyzing entity 'BLOCK0'
+INFO: [VRFC 10-3107] analyzing entity 'BLOCK1'
+INFO: [VRFC 10-3107] analyzing entity 'BLOCK2'
+INFO: [VRFC 10-3107] analyzing entity 'BLOCK1A'
+INFO: [VRFC 10-3107] analyzing entity 'BLOCK2A'
+INFO: [VRFC 10-3107] analyzing entity 'PRESTAGE_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_0_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_1_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_2_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_3_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_4_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_5_64'
+INFO: [VRFC 10-3107] analyzing entity 'XORSTAGE_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCTREE_64'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCADDER_64_64'
+INFO: [VRFC 10-3107] analyzing entity 'XXOR2'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_0_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_1_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_2_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_3_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_4_32'
+INFO: [VRFC 10-3107] analyzing entity 'XORSTAGE_32'
+INFO: [VRFC 10-3107] analyzing entity 'PRESTAGE_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCTREE_32'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCADDER_32_32'
+INFO: [VRFC 10-3107] analyzing entity 'PRESTAGE_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_0_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_1_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_2_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_3_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_4_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_5_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLC_6_128'
+INFO: [VRFC 10-3107] analyzing entity 'XORSTAGE_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCTREE_128'
+INFO: [VRFC 10-3107] analyzing entity 'DBLCADDER_128_128'
+INFO: [VRFC 10-3107] analyzing entity 'BOOTHCODER_18_18'
+INFO: [VRFC 10-3107] analyzing entity 'WALLACE_18_18'
+INFO: [VRFC 10-3107] analyzing entity 'MULTIPLIER_18_18'
+INFO: [VRFC 10-3107] analyzing entity 'BOOTHCODER_34_10'
+INFO: [VRFC 10-3107] analyzing entity 'WALLACE_34_10'
+INFO: [VRFC 10-3107] analyzing entity 'MULTIPLIER_34_10'
+INFO: [VRFC 10-3107] analyzing entity 'MUL_33_9'
+INFO: [VRFC 10-3107] analyzing entity 'BOOTHCODER_34_18'
+INFO: [VRFC 10-3107] analyzing entity 'WALLACE_34_18'
+INFO: [VRFC 10-3107] analyzing entity 'MULTIPLIER_34_18'
+INFO: [VRFC 10-3107] analyzing entity 'MUL_33_17'
+INFO: [VRFC 10-3107] analyzing entity 'BOOTHCODER_34_34'
+INFO: [VRFC 10-3107] analyzing entity 'WALLACE_34_34'
+INFO: [VRFC 10-3107] analyzing entity 'MULTIPLIER_34_34'
+INFO: [VRFC 10-3107] analyzing entity 'MUL_33_33'
+INFO: [VRFC 10-3107] analyzing entity 'ADD32'
+INFO: [VRFC 10-3107] analyzing entity 'MUL_17_17'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/leon3_net.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'leon3_net'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/memctrl/memctrl.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/spi/spi.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/subsys/subsys.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/esa/memoryctrl/memoryctrl.vhd" into library esa
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/leon3mp.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'leon3mp'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/leon3x.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'leon3x'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon4/leon4.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/subsys/leon_dsu_stat_base.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'leon_dsu_stat_base'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/libmmu.vhd" into library gaisler
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/logan.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'logan'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/inferred/memory_inferred.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'generic_syncram'
+INFO: [VRFC 10-3107] analyzing entity 'generic_syncram_reg'
+INFO: [VRFC 10-3107] analyzing entity 'generic_syncram_2p'
+INFO: [VRFC 10-3107] analyzing entity 'generic_syncram_2p_reg'
+INFO: [VRFC 10-3107] analyzing entity 'generic_regfile_3p'
+INFO: [VRFC 10-3107] analyzing entity 'generic_regfile_4p'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/memory_kintex7.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'kintex7_syncram_dp'
+INFO: [VRFC 10-3107] analyzing entity 'kintex7_syncram_2p'
+INFO: [VRFC 10-3107] analyzing entity 'kintex7_syncram'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/memory_ultrascale.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram'
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram_dp'
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram_2p'
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram64'
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram128'
+INFO: [VRFC 10-3107] analyzing entity 'ultrascale_syncram128bw'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/memory_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram_dp'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram_2p'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram64'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram128'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram128bw'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_syncram_be'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/memrwcol.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'memrwcol'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmu.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmu'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/mmu_acache.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmu_acache'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/mmu_cache.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmu_cache'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/mmu_dcache.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmu_dcache'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/mmu_icache.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmu_icache'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmulru.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmulru'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmulrue.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmulrue'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmutlb.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmutlb'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmutlbcam.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmutlbcam'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/srmmu/mmutw.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mmutw'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/modgen/multlib.vhd" into library grlib
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/arith/mul32.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'mul32'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/inferred/mul_inferred.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'gen_mul_61x61'
+INFO: [VRFC 10-3107] analyzing entity 'gen_mult_pipe'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/odpad.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'odpad'
+INFO: [VRFC 10-3107] analyzing entity 'odpadv'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/outpad.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'outpad'
+INFO: [VRFC 10-3107] analyzing entity 'outpadv'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/pads_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'unisim_inpad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_iopad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_outpad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_toutpad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_skew_outpad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_clkpad'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_inpad_ds'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_clkpad_ds'
+INFO: [VRFC 10-3107] analyzing entity 'virtex4_inpad_ds'
+INFO: [VRFC 10-3107] analyzing entity 'virtex4_clkpad_ds'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_iopad_ds'
+INFO: [VRFC 10-3107] analyzing entity 'unisim_outpad_ds'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/sim/phy.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'phy'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/proc3.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'proc3'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/regfile_3p.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'regfile_3p'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/regfile_3p_l3.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'regfile_3p_l3'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/greth/adapters/rgmii_series7.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'rgmii_series7'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/misc/rstgen.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'rstgen'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/spi/spi_flash.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'spi_flash'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/spi/spictrl.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'spictrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/spictrl_net.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'spictrl_net'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/spictrl_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'spictrl_unisim'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/spi/spictrlx.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'spictrlx'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/spi/spimctrl.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'spimctrl'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncram.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncram'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncram64.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncram64'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncram_2p.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncram_2p'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncram_dp.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncram_dp'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncrambw.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncrambw'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/syncreg.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'syncreg'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/tap.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'tap'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/unisim/tap_unisim.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'virtex_tap'
+INFO: [VRFC 10-3107] analyzing entity 'virtex2_tap'
+INFO: [VRFC 10-3107] analyzing entity 'spartan3_tap'
+INFO: [VRFC 10-3107] analyzing entity 'virtex4_tap'
+INFO: [VRFC 10-3107] analyzing entity 'virtex5_tap'
+INFO: [VRFC 10-3107] analyzing entity 'virtex6_tap'
+INFO: [VRFC 10-3107] analyzing entity 'spartan6_tap'
+INFO: [VRFC 10-3107] analyzing entity 'virtex7_tap'
+INFO: [VRFC 10-3107] analyzing entity 'kintex7_tap'
+INFO: [VRFC 10-3107] analyzing entity 'kintexu_tap'
+INFO: [VRFC 10-3107] analyzing entity 'artix7_tap'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/tbufmem.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'tbufmem'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/gaisler/leon3v3/tbufmem_2p.vhd" into library gaisler
+INFO: [VRFC 10-3107] analyzing entity 'tbufmem_2p'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/techbuf.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'techbuf'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/techmap/maps/techmult.vhd" into library techmap
+INFO: [VRFC 10-3107] analyzing entity 'techmult'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/lib/grlib/util/util.vhd" into library grlib
+INFO: [VRFC 10-3107] analyzing entity 'report_version'
+INFO: [VRFC 10-3107] analyzing entity 'report_design'
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'testbench'
+run_program: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 7365.984 ; gain = 0.000 ; free physical = 12052 ; free virtual = 14043
+INFO: [USF-XSim-69] 'compile' step finished in '6' seconds
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+xelab -wto b8ec0d1a165f40389b98441dbc3ab377 --incr --debug typical --relax --mt 8 -L gaisler -L grlib -L techmap -L work -L eth -L opencores -L esa -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav work.testbench work.glbl -log elaborate.log
+Vivado Simulator 2020.1
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/bin/unwrapped/lnx64.o/xelab -wto b8ec0d1a165f40389b98441dbc3ab377 --incr --debug typical --relax --mt 8 -L gaisler -L grlib -L techmap -L work -L eth -L opencores -L esa -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav work.testbench work.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-4940] 'mig' remains a black box since it has no binding entity [/home/march/tfm/grlib/lib/gaisler/ddr/ahb2mig_7series.vhd:692]
+WARNING: [VRFC 10-4940] 'greth_gbitc' remains a black box since it has no binding entity [/home/march/tfm/grlib/lib/gaisler/greth/greth_gbit.vhd:152]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package grlib.config_types
+Compiling package grlib.config
+Compiling package grlib.version
+Compiling package grlib.stdlib
+Compiling package grlib.amba
+Compiling package gaisler.uart
+Compiling package grlib.devices
+Compiling package techmap.gencomp
+Compiling package gaisler.misc
+Compiling package gaisler.libdcom
+Compiling package grlib.stdio
+Compiling package gaisler.sim
+Compiling package work.debug
+Compiling package work.config
+Compiling package techmap.allclkgen
+Compiling package gaisler.memctrl
+Compiling package gaisler.leon3
+Compiling package gaisler.spi
+Compiling package gaisler.i2c
+Compiling package gaisler.net
+Compiling package gaisler.jtag
+Compiling package gaisler.l2cache
+Compiling package gaisler.subsys
+Compiling package esa.memoryctrl
+Compiling package techmap.allpads
+Compiling package ieee.math_real
+Compiling package grlib.testlib
+Compiling package gaisler.leon4
+Compiling package techmap.netcomp
+Compiling package gaisler.libfpu
+Compiling package gaisler.arith
+Compiling package gaisler.mmuconfig
+Compiling package gaisler.libiu
+Compiling package gaisler.mmuiface
+Compiling package gaisler.libcache
+Compiling package gaisler.libleon3
+Compiling package grlib.sparc
+Compiling package grlib.sparc_disas
+Compiling package grlib.multlib
+Compiling package techmap.allmul
+Compiling package ieee.std_logic_arith
+Compiling package gaisler.libmmu
+Compiling package techmap.allmem
+Compiling package ieee.std_logic_signed
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_textio
+Compiling package gaisler.libjtagcom
+Compiling package techmap.alltap
+Compiling package gaisler.ahb2mig_7series_pkg
+Compiling package gaisler.ethernet_mac
+Compiling package eth.ethcomp
+Compiling package eth.grethpkg
+Compiling package techmap.allddr
+Compiling package ieee.std_logic_unsigned
+Compiling package opencores.i2coc
+Compiling package vl.vl_types
+Compiling module work.glbl
+Compiling architecture sim of entity gaisler.ddr3ram [\ddr3ram(width=64,abits=14,rowbi...]
+Compiling architecture behavioral of entity gaisler.phy [\phy(address=7,base100_t4=1,base...]
+Compiling architecture bufg_v of entity unisim.BUFG [bufg_default]
+Compiling architecture rtl of entity techmap.clkbuf_xilinx [\clkbuf_xilinx(buftype=2)\]
+Compiling architecture rtl of entity techmap.techbuf [\techbuf(buftype=2,tech=50)\]
+Compiling architecture rtl of entity techmap.grnand2 [\grnand2(tech=50)\]
+Compiling architecture rtl of entity gaisler.jtagcom2 [\jtagcom2(gatetech=50,isel=1)\]
+Compiling architecture rtl of entity grlib.ahbmst [\ahbmst(hindex=1,venid=1,devid=2...]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(1,5)\]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(jtag_chain=2)(1,5)\]
+Compiling architecture rtl of entity techmap.artix7_tap [artix7_tap_default]
+Compiling architecture rtl of entity techmap.tap [\tap(tech=50,irlen=6)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbjtag_AH...]
+Compiling architecture struct of entity gaisler.ahbjtag [\ahbjtag(tech=50,hindex=1)\]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVTTL")(1,9)(1...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,voltage=3)\]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVTTL")(1,9)(1...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,voltage=3)\]
+Compiling architecture obuft_v of entity unisim.OBUFT [\OBUFT(iostandard="LVTTL")(1,9)(...]
+Compiling architecture rtl of entity techmap.unisim_toutpad [\unisim_toutpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.odpad [\odpad(tech=50,voltage=3)\]
+Compiling architecture rtl of entity gaisler.ahb2mig_7series [\ahb2mig_7series(hindex=4,haddr=...]
+Compiling architecture plle2_adv_v of entity unisim.PLLE2_ADV [\PLLE2_ADV(clkfbout_mult=16,clki...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="clkgen_vir...]
+Compiling architecture struct of entity techmap.clkgen_virtex7 [\clkgen_virtex7(clk_mul=16,clk_d...]
+Compiling architecture struct of entity techmap.clkgen [\clkgen(tech=50,clk_mul=16,clk_d...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=9)\]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=9,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=9,dbit...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=9,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=9,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=9,dbit...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="greth2:_10...]
+Compiling architecture rtl of entity gaisler.greth_gbit [\greth_gbit(hindex=2,pindex=14,p...]
+Compiling architecture rtl of entity gaisler.grethm [\grethm(hindex=2,pindex=14,paddr...]
+Compiling architecture idelayctrl_v of entity unisim.IDELAYCTRL [\IDELAYCTRL(1,7)\]
+Compiling architecture idelaye2_v of entity unisim.IDELAYE2 [\IDELAYE2(idelay_value=20)(1,5)(...]
+Compiling architecture iodelaye1_v of entity unisim.IODELAYE1 [\IODELAYE1(idelay_type="FIXED",i...]
+Compiling architecture oddr_v of entity unisim.ODDR [\ODDR(ddr_clk_edge="SAME_EDGE")(...]
+Compiling architecture rtl of entity techmap.unisim_oddr_reg [\unisim_oddr_reg(tech=50,arch=1)...]
+Compiling architecture rtl of entity techmap.ddr_oreg [\ddr_oreg(tech=50,arch=1)\]
+Compiling architecture rtl of entity techmap.clkmux [clkmux_default]
+Compiling module unisims_ver.IDDR(DDR_CLK_EDGE="SAME_EDGE_PIP...
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="rgmii11:_R...]
+Compiling architecture rtl of entity gaisler.rgmii_series7 [\rgmii_series7(pindex=11,paddr=1...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS25",slew...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,slew=1,vo...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,slew=1,v...]
+Compiling architecture rtl of entity techmap.inpadv [\inpadv(tech=50,level=1,voltage=...]
+Compiling architecture rtl of entity techmap.outpadv [\outpadv(tech=50,level=1,slew=1,...]
+Compiling architecture rtl of entity techmap.outpadv [\outpadv(tech=50,level=1,voltage...]
+Compiling architecture ibufds_gte2_v of entity unisim.IBUFDS_GTE2 [\IBUFDS_GTE2(0,1)\]
+Compiling architecture plle2_adv_v of entity unisim.PLLE2_ADV [\PLLE2_ADV(clkfbout_mult=16,clki...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="irqmp:_Mul...]
+Compiling architecture rtl of entity gaisler.irqmp [\irqmp(pindex=2,paddr=2)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="gptimer3:_...]
+Compiling architecture rtl of entity gaisler.gptimer [\gptimer(pindex=3,paddr=3,pirq=8...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="grgpio10:_...]
+Compiling architecture rtl of entity gaisler.grgpio [\grgpio(pindex=10,paddr=10,nbits...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="apbuart1:_...]
+Compiling architecture rtl of entity gaisler.apbuart [\apbuart(pindex=1,paddr=1,pirq=2...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbrom7:_3...]
+Compiling architecture rtl of entity work.ahbrom [\ahbrom(hindex=7)\]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVCMOS15")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(level=1,voltage=15...]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,level=1,voltage=1...]
+Compiling architecture rtl of entity techmap.grdff [\grdff(tech=0)\]
+Compiling architecture tmap of entity techmap.syncreg [syncreg_default]
+Compiling architecture rtl of entity gaisler.rstgen [\rstgen(acthigh=1,syncin=1)\]
+Compiling architecture rtl of entity gaisler.rstgen [\rstgen(acthigh=1)\]
+Compiling architecture rtl of entity grlib.ahbctrl [\ahbctrl(rrobin=1,nahbm=16,nahbs...]
+Compiling architecture rtl of entity gaisler.tbufmem_2p [\tbufmem_2p(tech=50,tbuf=4)\]
+Compiling architecture simple of entity techmap.gen_mult_pipe [\gen_mult_pipe(a_width=33,b_widt...]
+Compiling architecture rtl of entity techmap.techmult [\techmult(tech=50,a_width=33,b_w...]
+Compiling architecture rtl of entity gaisler.mul32 [\mul32(tech=50,multype=3,pipe=1)...]
+Compiling architecture rtl of entity gaisler.div32 [div32_default]
+Compiling architecture rtl of entity gaisler.iu3 [\iu3(v8=50,dsu=1,nwp=2,lddel=1,i...]
+Compiling architecture rtl of entity gaisler.mmu_icache [\mmu_icache(fabtech=50,icen=1,is...]
+Compiling architecture rtl of entity gaisler.mmu_dcache [\mmu_dcache(dsu=1,dcen=1,dsetsiz...]
+Compiling architecture rtl of entity gaisler.mmu_acache [mmu_acache_default]
+Compiling architecture rtl of entity gaisler.mmu_cache [\mmu_cache(fabtech=50,memtech=50...]
+Compiling architecture rtl of entity gaisler.proc3 [\proc3(fabtech=50,memtech=50,dsu...]
+Compiling architecture rb36_internal_vhdl_v of entity unisim.RB36_INTERNAL_VHDL [\RB36_INTERNAL_VHDL(init_a="0000...]
+Compiling architecture ramb36e1_v of entity unisim.RAMB36E1 [\RAMB36E1(read_width_a=36,read_w...]
+Compiling architecture ramb16_s36_s36_v of entity unisim.RAMB16_S36_S36 [\RAMB16_S36_S36(sim_collision_ch...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8)\]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity techmap.regfile_3p [\regfile_3p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity gaisler.regfile_3p_l3 [\regfile_3p_l3(tech=50,abits=8,d...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=8,dbits=24...]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=50,abits=8,dbits=2...]
+Compiling architecture rb18_internal_vhdl_v of entity unisim.RB18_INTERNAL_VHDL [\RB18_INTERNAL_VHDL(bram_size=18...]
+Compiling architecture ramb18e1_v of entity unisim.RAMB18E1 [\RAMB18E1(read_width_a=18,sim_de...]
+Compiling architecture ramb16_s18_v of entity unisim.RAMB16_S18 [\RAMB16_S18(0,19)(0,19)(1,11)(0,...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=10)\]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=50,abits=10,dbits=...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity gaisler.cachemem [\cachemem(tech=50,icen=1,isetsiz...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="leon3_0:_L...]
+Compiling architecture rtl of entity gaisler.leon3x [\leon3x(fabtech=50,memtech=50,ds...]
+Compiling architecture behav of entity techmap.unisim_syncram64 [\unisim_syncram64(abits=8)\]
+Compiling architecture rtl of entity techmap.syncram64 [\syncram64(tech=50,abits=8,custo...]
+Compiling architecture rtl of entity gaisler.tbufmem [\tbufmem(tech=50,tbuf=4)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="dsu3_2:_LE...]
+Compiling architecture rtl of entity gaisler.dsu3x [\dsu3x(hindex=2,tech=50,kbytes=4...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="lstat_13:_...]
+Compiling architecture rtl of entity gaisler.l3stat [\l3stat(pindex=13,paddr=256,pmas...]
+Compiling architecture rtl of entity gaisler.leon_dsu_stat_base [\leon_dsu_stat_base(leon=3,fabte...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS15")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,voltage=1...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,voltage=...]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVCMOS25")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(level=1,voltage=2)...]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,level=1,voltage=2...]
+Compiling architecture iobuf_v of entity unisim.IOBUF [\IOBUF(iostandard="LVCMOS25")(1,...]
+Compiling architecture rtl of entity techmap.unisim_iopad [\unisim_iopad(level=1,voltage=2)...]
+Compiling architecture rtl of entity techmap.iopad [\iopad(tech=50,level=1,voltage=2...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS25")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,voltage=2...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,voltage=...]
+Compiling architecture structural of entity opencores.i2c_master_bit_ctrl [\i2c_master_bit_ctrl(filter=9,dy...]
+Compiling architecture structural of entity opencores.i2c_master_byte_ctrl [\i2c_master_byte_ctrl(filter=9,d...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="i2cmst9:_A...]
+Compiling architecture rtl of entity gaisler.i2cmst [\i2cmst(pindex=9,paddr=9,pirq=4,...]
+Compiling architecture rtl of entity grlib.apbctrlx [\apbctrlx(hindex0=1,haddr0=2048,...]
+Compiling architecture struct of entity grlib.apbctrl [\apbctrl(hindex=1,haddr=2048,nsl...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="testmod3:_...]
+Compiling architecture rtl of entity gaisler.ahbrep [\ahbrep(hindex=3,haddr=512)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="LEON3_Xili...]
+Compiling architecture beh of entity grlib.report_design [\report_design(msg1="LEON3_Xilin...]
+Compiling architecture rtl of entity work.leon3mp [\leon3mp(fabtech=50,memtech=50,p...]
+Compiling architecture behav of entity work.testbench
+Built simulation snapshot testbench_behav
+
+****** Webtalk v2020.1 (64-bit)
+  **** SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+  **** IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+    ** Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+source /home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/xsim.dir/testbench_behav/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Oct 30 17:49:42 2020...
+run_program: Time (s): cpu = 00:00:53 ; elapsed = 00:00:41 . Memory (MB): peak = 7365.984 ; gain = 0.000 ; free physical = 11995 ; free virtual = 14062
+INFO: [USF-XSim-69] 'elaborate' step finished in '41' seconds
+INFO: [USF-XSim-4] XSim::Simulate design
+INFO: [USF-XSim-61] Executing 'SIMULATE' step in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [USF-XSim-98] *** Running xsim
+   with args "testbench_behav -key {Behavioral:sim_1:Functional:testbench} -tclbatch {testbench.tcl} -log {simulate.log}"
+INFO: [USF-XSim-8] Loading simulator feature
+Vivado Simulator 2020.1
+Time resolution is 1 ps
+source testbench.tcl
+# set curr_wave [current_wave_config]
+# if { [string length $curr_wave] == 0 } {
+#   if { [llength [get_objects]] > 0} {
+#     add_wave /
+#     set_property needs_save false [current_wave_config]
+#   } else {
+#      send_msg_id Add_Wave-1 WARNING "No top level signals found. Simulator will start without a wave window. If you want to open a wave window go to 'File->New Waveform Configuration' or type 'create_wave_config' in the TCL console."
+#   }
+# }
+# run 1000ns
+LEON3 Xilinx AC701 Demonstration design
+GRLIB Version 2020.2.0, build 4254
+Target technology: artix7    , memory library: artix7    
+ahbctrl: AHB arbiter/multiplexer rev 1
+ahbctrl: Common I/O area at 0xfff00000, 1 Mbyte
+ahbctrl: AHB masters: 16, AHB slaves: 16
+ahbctrl: Configuration area at 0xfffff000, 4 kbyte
+ahbctrl: mst0: Cobham Gaisler          LEON3 SPARC V8 Processor        
+ahbctrl: mst1: Cobham Gaisler          JTAG Debug Link                 
+ahbctrl: mst2: Cobham Gaisler          GR Ethernet MAC                 
+ahbctrl: slv1: Cobham Gaisler          AHB/APB Bridge                  
+ahbctrl:       memory at 0x80000000, size 1 Mbyte
+ahbctrl: slv2: Cobham Gaisler          LEON3 Debug Support Unit        
+ahbctrl:       memory at 0x90000000, size 256 Mbyte
+ahbctrl: slv3: Cobham Gaisler          Test report module              
+ahbctrl:       memory at 0x20000000, size 1 Mbyte
+ahbctrl: slv4: Cobham Gaisler          Xilinx MIG Controller           
+ahbctrl:       memory at 0x40000000, size 1024 Mbyte, cacheable, prefetch
+ahbctrl: slv7: Cobham Gaisler          Generic AHB ROM                 
+ahbctrl:       memory at 0x00000000, size 1 Mbyte, cacheable, prefetch
+apbctrl: APB Bridge at 0x80000000 rev 1
+apbctrl: slv1: Cobham Gaisler          Generic UART                    
+apbctrl:       I/O ports at 0x80000100, size 256 byte 
+apbctrl: slv2: Cobham Gaisler          Multi-processor Interrupt Ctrl. 
+apbctrl:       I/O ports at 0x80000200, size 256 byte 
+apbctrl: slv3: Cobham Gaisler          Modular Timer Unit              
+apbctrl:       I/O ports at 0x80000300, size 256 byte 
+apbctrl: slv4: Cobham Gaisler          Xilinx MIG Controller           
+apbctrl:       I/O ports at 0x80000400, size 256 byte 
+apbctrl: slv9: Cobham Gaisler          AMBA Wrapper for OC I2C-master  
+apbctrl:       I/O ports at 0x80000900, size 256 byte 
+apbctrl: slv10: Cobham Gaisler          General Purpose I/O port        
+apbctrl:       I/O ports at 0x80000a00, size 256 byte 
+apbctrl: slv11: Cobham Gaisler          Gaisler RGMII Interface         
+apbctrl:       I/O ports at 0x80001000, size 4 kbyte
+apbctrl: slv13: Cobham Gaisler          LEON3 Statistics Unit           
+apbctrl:       I/O ports at 0x80010000, size 1 kbyte
+apbctrl: slv14: Cobham Gaisler          GR Ethernet MAC                 
+apbctrl:       I/O ports at 0x800c0000, size 256 kbyte
+ahbrom7: 32-bit AHB ROM Module,  140 words, 8 address bits
+apbuart1: Generic UART rev 1, fifo 32, irq 2, scaler bits 12
+grgpio10: 7-bit GPIO Unit rev 3
+gptimer3: Timer Unit rev 1, 8-bit scaler, 2 32-bit timers, irq 8
+irqmp: Multi-processor Interrupt Controller rev 4, #cpu 1, eirq 0
+rgmii11: RGMII rev 1, irq 11
+greth2: 10/100/1000 Mbit Ethernet MAC rev 02, EDCL 1, buffer 2 kbyte 512 txfifo,  irq 3
+clkgen_virtex7: virtex-7 sdram/pci clock generator, version 1
+clkgen_virtex7: Frequency 100000 KHz, DCM divisor 16/8
+ahbjtag AHB Debug JTAG rev 2
+testmod3: Test report module
+i2cmst9: AMBA Wrapper for OC I2C-master rev 3, irq 4
+lstat_13: LEON Statistics Unit, ncpu : 1, ncnt : 4, rev 1
+dsu3_2: LEON3 Debug support unit + AHB Trace Buffer, 4 kbytes
+leon3_0: LEON3 SPARC V8 processor rev 3: iuft: 0, fpft: 0, cacheft: 0
+leon3_0: icache 1*4 kbyte, dcache 1*4 kbyte
+Warning: RESETn not asserted on power-up
+Time: 1 us  Iteration: 0  Process: /testbench/gen_mem_model/ddr3mem/u1/initp  File: /home/march/tfm/grlib/lib/gaisler/sim/ddr3ram.vhd
+INFO: [USF-XSim-96] XSim completed. Design snapshot 'testbench_behav' loaded.
+INFO: [USF-XSim-97] XSim simulation ran for 1000ns
+launch_simulation: Time (s): cpu = 00:01:02 ; elapsed = 00:00:51 . Memory (MB): peak = 7365.984 ; gain = 0.000 ; free physical = 11815 ; free virtual = 13895
+run all
+Warning: RESETn raised with less than 200 us init delay
+Time: 201 us  Iteration: 0  Process: /testbench/gen_mem_model/ddr3mem/u1/initp  File: /home/march/tfm/grlib/lib/gaisler/sim/ddr3ram.vhd
+Note: Start DSU transfer
+Time: 213404200 ps  Iteration: 5  Process: /testbench/dsucom  File: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd
+Failure: *** IU in error mode, simulation halted ***
+Time: 318404200 ps  Iteration: 0  Process: /testbench/iuerr  File: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd
+$finish called at time : 318404200 ps : File "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd" Line 672
+run all
+run: Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 7484.672 ; gain = 0.000 ; free physical = 11710 ; free virtual = 13828
+relaunch_sim
+Command: launch_simulation -simset sim_1 -mode behavioral
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [SIM-utils-51] Simulation object is 'sim_1'
+INFO: [USF-XSim-7] Finding pre-compiled libraries...
+INFO: [USF-XSim-11] File '/home/march/opt/Xilinx/Vitis/Vivado/2020.1/data/xsim/xsim.ini' copied to run dir:'/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [SIM-utils-54] Inspecting design source files for 'testbench' in fileset 'sim_1'...
+INFO: [SIM-utils-43] Exported '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/prom.srec'
+INFO: [SIM-utils-43] Exported '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim/ram.srec'
+WARNING: [SIM-utils-65] Failed to find the IP component XML file for 'mig' from IP_OUTPUT_DIR property! (file does not exist:'/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xml')
+WARNING: [SIM-utils-52] IP component XML file does not exist: '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.srcs/sources_1/ip/mig/mig.xml'
+INFO: [USF-XSim-97] Finding global include files...
+INFO: [USF-XSim-98] Fetching design files from 'sim_1'...
+INFO: [USF-XSim-2] XSim::Compile design
+INFO: [USF-XSim-61] Executing 'COMPILE and ANALYZE' step in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+xvlog --incr --relax -prj testbench_vlog.prj
+xvhdl --incr --relax -prj testbench_vhdl.prj
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd" into library work
+INFO: [VRFC 10-3107] analyzing entity 'testbench'
+INFO: [USF-XSim-69] 'compile' step finished in '2' seconds
+Command: launch_simulation -simset sim_1 -mode behavioral
+INFO: [Vivado 12-5698] Checking validity of IPs in the design for the 'XSim' simulator...
+INFO: [Vivado 12-5682] Launching behavioral simulation in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+INFO: [Vivado 12-4795] Using compiled simulation libraries for IPs
+INFO: [USF-XSim-3] XSim::Elaborate design
+INFO: [USF-XSim-61] Executing 'ELABORATE' step in '/home/march/tfm/grlib/designs/leon3-xilinx-ac701/vivado/leon3-xilinx-ac701/leon3-xilinx-ac701.sim/sim_1/behav/xsim'
+xelab -wto b8ec0d1a165f40389b98441dbc3ab377 --incr --debug typical --relax --mt 8 -L gaisler -L grlib -L techmap -L work -L eth -L opencores -L esa -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav work.testbench work.glbl -log elaborate.log
+Vivado Simulator 2020.1
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/bin/unwrapped/lnx64.o/xelab -wto b8ec0d1a165f40389b98441dbc3ab377 --incr --debug typical --relax --mt 8 -L gaisler -L grlib -L techmap -L work -L eth -L opencores -L esa -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav work.testbench work.glbl -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+    CPATH
+Starting static elaboration
+Pass Through NonSizing Optimizer
+WARNING: [VRFC 10-4940] 'mig' remains a black box since it has no binding entity [/home/march/tfm/grlib/lib/gaisler/ddr/ahb2mig_7series.vhd:692]
+WARNING: [VRFC 10-4940] 'greth_gbitc' remains a black box since it has no binding entity [/home/march/tfm/grlib/lib/gaisler/greth/greth_gbit.vhd:152]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package grlib.config_types
+Compiling package grlib.config
+Compiling package grlib.version
+Compiling package grlib.stdlib
+Compiling package grlib.amba
+Compiling package gaisler.uart
+Compiling package grlib.devices
+Compiling package techmap.gencomp
+Compiling package gaisler.misc
+Compiling package gaisler.libdcom
+Compiling package grlib.stdio
+Compiling package gaisler.sim
+Compiling package work.debug
+Compiling package work.config
+Compiling package techmap.allclkgen
+Compiling package gaisler.memctrl
+Compiling package gaisler.leon3
+Compiling package gaisler.spi
+Compiling package gaisler.i2c
+Compiling package gaisler.net
+Compiling package gaisler.jtag
+Compiling package gaisler.l2cache
+Compiling package gaisler.subsys
+Compiling package esa.memoryctrl
+Compiling package techmap.allpads
+Compiling package ieee.math_real
+Compiling package grlib.testlib
+Compiling package gaisler.leon4
+Compiling package techmap.netcomp
+Compiling package gaisler.libfpu
+Compiling package gaisler.arith
+Compiling package gaisler.mmuconfig
+Compiling package gaisler.libiu
+Compiling package gaisler.mmuiface
+Compiling package gaisler.libcache
+Compiling package gaisler.libleon3
+Compiling package grlib.sparc
+Compiling package grlib.sparc_disas
+Compiling package grlib.multlib
+Compiling package techmap.allmul
+Compiling package ieee.std_logic_arith
+Compiling package gaisler.libmmu
+Compiling package techmap.allmem
+Compiling package ieee.std_logic_signed
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_textio
+Compiling package gaisler.libjtagcom
+Compiling package techmap.alltap
+Compiling package gaisler.ahb2mig_7series_pkg
+Compiling package gaisler.ethernet_mac
+Compiling package eth.ethcomp
+Compiling package eth.grethpkg
+Compiling package techmap.allddr
+Compiling package ieee.std_logic_unsigned
+Compiling package opencores.i2coc
+Compiling package vl.vl_types
+Compiling module work.glbl
+Compiling architecture sim of entity gaisler.ddr3ram [\ddr3ram(width=64,abits=14,rowbi...]
+Compiling architecture behavioral of entity gaisler.phy [\phy(address=7,base100_t4=1,base...]
+Compiling architecture bufg_v of entity unisim.BUFG [bufg_default]
+Compiling architecture rtl of entity techmap.clkbuf_xilinx [\clkbuf_xilinx(buftype=2)\]
+Compiling architecture rtl of entity techmap.techbuf [\techbuf(buftype=2,tech=50)\]
+Compiling architecture rtl of entity techmap.grnand2 [\grnand2(tech=50)\]
+Compiling architecture rtl of entity gaisler.jtagcom2 [\jtagcom2(gatetech=50,isel=1)\]
+Compiling architecture rtl of entity grlib.ahbmst [\ahbmst(hindex=1,venid=1,devid=2...]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(1,5)\]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(jtag_chain=2)(1,5)\]
+Compiling architecture rtl of entity techmap.artix7_tap [artix7_tap_default]
+Compiling architecture rtl of entity techmap.tap [\tap(tech=50,irlen=6)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbjtag_AH...]
+Compiling architecture struct of entity gaisler.ahbjtag [\ahbjtag(tech=50,hindex=1)\]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVTTL")(1,9)(1...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,voltage=3)\]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVTTL")(1,9)(1...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,voltage=3)\]
+Compiling architecture obuft_v of entity unisim.OBUFT [\OBUFT(iostandard="LVTTL")(1,9)(...]
+Compiling architecture rtl of entity techmap.unisim_toutpad [\unisim_toutpad(voltage=3)\]
+Compiling architecture rtl of entity techmap.odpad [\odpad(tech=50,voltage=3)\]
+Compiling architecture rtl of entity gaisler.ahb2mig_7series [\ahb2mig_7series(hindex=4,haddr=...]
+Compiling architecture plle2_adv_v of entity unisim.PLLE2_ADV [\PLLE2_ADV(clkfbout_mult=16,clki...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="clkgen_vir...]
+Compiling architecture struct of entity techmap.clkgen_virtex7 [\clkgen_virtex7(clk_mul=16,clk_d...]
+Compiling architecture struct of entity techmap.clkgen [\clkgen(tech=50,clk_mul=16,clk_d...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=9)\]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=9,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=9,dbit...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=9,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=9,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=9,dbit...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="greth2:_10...]
+Compiling architecture rtl of entity gaisler.greth_gbit [\greth_gbit(hindex=2,pindex=14,p...]
+Compiling architecture rtl of entity gaisler.grethm [\grethm(hindex=2,pindex=14,paddr...]
+Compiling architecture idelayctrl_v of entity unisim.IDELAYCTRL [\IDELAYCTRL(1,7)\]
+Compiling architecture idelaye2_v of entity unisim.IDELAYE2 [\IDELAYE2(idelay_value=20)(1,5)(...]
+Compiling architecture iodelaye1_v of entity unisim.IODELAYE1 [\IODELAYE1(idelay_type="FIXED",i...]
+Compiling architecture oddr_v of entity unisim.ODDR [\ODDR(ddr_clk_edge="SAME_EDGE")(...]
+Compiling architecture rtl of entity techmap.unisim_oddr_reg [\unisim_oddr_reg(tech=50,arch=1)...]
+Compiling architecture rtl of entity techmap.ddr_oreg [\ddr_oreg(tech=50,arch=1)\]
+Compiling architecture rtl of entity techmap.clkmux [clkmux_default]
+Compiling module unisims_ver.IDDR(DDR_CLK_EDGE="SAME_EDGE_PIP...
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="rgmii11:_R...]
+Compiling architecture rtl of entity gaisler.rgmii_series7 [\rgmii_series7(pindex=11,paddr=1...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS25",slew...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,slew=1,vo...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,slew=1,v...]
+Compiling architecture rtl of entity techmap.inpadv [\inpadv(tech=50,level=1,voltage=...]
+Compiling architecture rtl of entity techmap.outpadv [\outpadv(tech=50,level=1,slew=1,...]
+Compiling architecture rtl of entity techmap.outpadv [\outpadv(tech=50,level=1,voltage...]
+Compiling architecture ibufds_gte2_v of entity unisim.IBUFDS_GTE2 [\IBUFDS_GTE2(0,1)\]
+Compiling architecture plle2_adv_v of entity unisim.PLLE2_ADV [\PLLE2_ADV(clkfbout_mult=16,clki...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="irqmp:_Mul...]
+Compiling architecture rtl of entity gaisler.irqmp [\irqmp(pindex=2,paddr=2)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="gptimer3:_...]
+Compiling architecture rtl of entity gaisler.gptimer [\gptimer(pindex=3,paddr=3,pirq=8...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="grgpio10:_...]
+Compiling architecture rtl of entity gaisler.grgpio [\grgpio(pindex=10,paddr=10,nbits...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="apbuart1:_...]
+Compiling architecture rtl of entity gaisler.apbuart [\apbuart(pindex=1,paddr=1,pirq=2...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbrom7:_3...]
+Compiling architecture rtl of entity work.ahbrom [\ahbrom(hindex=7)\]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVCMOS15")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(level=1,voltage=15...]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,level=1,voltage=1...]
+Compiling architecture rtl of entity techmap.grdff [\grdff(tech=0)\]
+Compiling architecture tmap of entity techmap.syncreg [syncreg_default]
+Compiling architecture rtl of entity gaisler.rstgen [\rstgen(acthigh=1,syncin=1)\]
+Compiling architecture rtl of entity gaisler.rstgen [\rstgen(acthigh=1)\]
+Compiling architecture rtl of entity grlib.ahbctrl [\ahbctrl(rrobin=1,nahbm=16,nahbs...]
+Compiling architecture rtl of entity gaisler.tbufmem_2p [\tbufmem_2p(tech=50,tbuf=4)\]
+Compiling architecture simple of entity techmap.gen_mult_pipe [\gen_mult_pipe(a_width=33,b_widt...]
+Compiling architecture rtl of entity techmap.techmult [\techmult(tech=50,a_width=33,b_w...]
+Compiling architecture rtl of entity gaisler.mul32 [\mul32(tech=50,multype=3,pipe=1)...]
+Compiling architecture rtl of entity gaisler.div32 [div32_default]
+Compiling architecture rtl of entity gaisler.iu3 [\iu3(v8=50,dsu=1,nwp=2,lddel=1,i...]
+Compiling architecture rtl of entity gaisler.mmu_icache [\mmu_icache(fabtech=50,icen=1,is...]
+Compiling architecture rtl of entity gaisler.mmu_dcache [\mmu_dcache(dsu=1,dcen=1,dsetsiz...]
+Compiling architecture rtl of entity gaisler.mmu_acache [mmu_acache_default]
+Compiling architecture rtl of entity gaisler.mmu_cache [\mmu_cache(fabtech=50,memtech=50...]
+Compiling architecture rtl of entity gaisler.proc3 [\proc3(fabtech=50,memtech=50,dsu...]
+Compiling architecture rb36_internal_vhdl_v of entity unisim.RB36_INTERNAL_VHDL [\RB36_INTERNAL_VHDL(init_a="0000...]
+Compiling architecture ramb36e1_v of entity unisim.RAMB36E1 [\RAMB36E1(read_width_a=36,read_w...]
+Compiling architecture ramb16_s36_s36_v of entity unisim.RAMB16_S36_S36 [\RAMB16_S36_S36(sim_collision_ch...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8)\]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity techmap.regfile_3p [\regfile_3p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity gaisler.regfile_3p_l3 [\regfile_3p_l3(tech=50,abits=8,d...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=8,dbits=24...]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=50,abits=8,dbits=2...]
+Compiling architecture rb18_internal_vhdl_v of entity unisim.RB18_INTERNAL_VHDL [\RB18_INTERNAL_VHDL(bram_size=18...]
+Compiling architecture ramb18e1_v of entity unisim.RAMB18E1 [\RAMB18E1(read_width_a=18,sim_de...]
+Compiling architecture ramb16_s18_v of entity unisim.RAMB16_S18 [\RAMB16_S18(0,19)(0,19)(1,11)(0,...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=10)\]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=50,abits=10,dbits=...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=50,abits=8,dbit...]
+Compiling architecture rtl of entity gaisler.cachemem [\cachemem(tech=50,icen=1,isetsiz...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="leon3_0:_L...]
+Compiling architecture rtl of entity gaisler.leon3x [\leon3x(fabtech=50,memtech=50,ds...]
+Compiling architecture behav of entity techmap.unisim_syncram64 [\unisim_syncram64(abits=8)\]
+Compiling architecture rtl of entity techmap.syncram64 [\syncram64(tech=50,abits=8,custo...]
+Compiling architecture rtl of entity gaisler.tbufmem [\tbufmem(tech=50,tbuf=4)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="dsu3_2:_LE...]
+Compiling architecture rtl of entity gaisler.dsu3x [\dsu3x(hindex=2,tech=50,kbytes=4...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="lstat_13:_...]
+Compiling architecture rtl of entity gaisler.l3stat [\l3stat(pindex=13,paddr=256,pmas...]
+Compiling architecture rtl of entity gaisler.leon_dsu_stat_base [\leon_dsu_stat_base(leon=3,fabte...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS15")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,voltage=1...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,voltage=...]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVCMOS25")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(level=1,voltage=2)...]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=50,level=1,voltage=2...]
+Compiling architecture iobuf_v of entity unisim.IOBUF [\IOBUF(iostandard="LVCMOS25")(1,...]
+Compiling architecture rtl of entity techmap.unisim_iopad [\unisim_iopad(level=1,voltage=2)...]
+Compiling architecture rtl of entity techmap.iopad [\iopad(tech=50,level=1,voltage=2...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS25")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,voltage=2...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=50,level=1,voltage=...]
+Compiling architecture structural of entity opencores.i2c_master_bit_ctrl [\i2c_master_bit_ctrl(filter=9,dy...]
+Compiling architecture structural of entity opencores.i2c_master_byte_ctrl [\i2c_master_byte_ctrl(filter=9,d...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="i2cmst9:_A...]
+Compiling architecture rtl of entity gaisler.i2cmst [\i2cmst(pindex=9,paddr=9,pirq=4,...]
+Compiling architecture rtl of entity grlib.apbctrlx [\apbctrlx(hindex0=1,haddr0=2048,...]
+Compiling architecture struct of entity grlib.apbctrl [\apbctrl(hindex=1,haddr=2048,nsl...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="testmod3:_...]
+Compiling architecture rtl of entity gaisler.ahbrep [\ahbrep(hindex=3,haddr=512)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="LEON3_Xili...]
+Compiling architecture beh of entity grlib.report_design [\report_design(msg1="LEON3_Xilin...]
+Compiling architecture rtl of entity work.leon3mp [\leon3mp(fabtech=50,memtech=50,p...]
+Compiling architecture behav of entity work.testbench
+Built simulation snapshot testbench_behav
+run_program: Time (s): cpu = 00:00:50 ; elapsed = 00:00:38 . Memory (MB): peak = 7484.672 ; gain = 0.000 ; free physical = 11877 ; free virtual = 13971
+INFO: [USF-XSim-69] 'elaborate' step finished in '38' seconds
+launch_simulation: Time (s): cpu = 00:00:50 ; elapsed = 00:00:39 . Memory (MB): peak = 7484.672 ; gain = 0.000 ; free physical = 11877 ; free virtual = 13971
+Vivado Simulator 2020.1
+Time resolution is 1 ps
+LEON3 Xilinx AC701 Demonstration design
+GRLIB Version 2020.2.0, build 4254
+Target technology: artix7    , memory library: artix7    
+ahbctrl: AHB arbiter/multiplexer rev 1
+ahbctrl: Common I/O area at 0xfff00000, 1 Mbyte
+ahbctrl: AHB masters: 16, AHB slaves: 16
+ahbctrl: Configuration area at 0xfffff000, 4 kbyte
+ahbctrl: mst0: Cobham Gaisler          LEON3 SPARC V8 Processor        
+ahbctrl: mst1: Cobham Gaisler          JTAG Debug Link                 
+ahbctrl: mst2: Cobham Gaisler          GR Ethernet MAC                 
+ahbctrl: slv1: Cobham Gaisler          AHB/APB Bridge                  
+ahbctrl:       memory at 0x80000000, size 1 Mbyte
+ahbctrl: slv2: Cobham Gaisler          LEON3 Debug Support Unit        
+ahbctrl:       memory at 0x90000000, size 256 Mbyte
+ahbctrl: slv3: Cobham Gaisler          Test report module              
+ahbctrl:       memory at 0x20000000, size 1 Mbyte
+ahbctrl: slv4: Cobham Gaisler          Xilinx MIG Controller           
+ahbctrl:       memory at 0x40000000, size 1024 Mbyte, cacheable, prefetch
+ahbctrl: slv7: Cobham Gaisler          Generic AHB ROM                 
+ahbctrl:       memory at 0x00000000, size 1 Mbyte, cacheable, prefetch
+apbctrl: APB Bridge at 0x80000000 rev 1
+apbctrl: slv1: Cobham Gaisler          Generic UART                    
+apbctrl:       I/O ports at 0x80000100, size 256 byte 
+apbctrl: slv2: Cobham Gaisler          Multi-processor Interrupt Ctrl. 
+apbctrl:       I/O ports at 0x80000200, size 256 byte 
+apbctrl: slv3: Cobham Gaisler          Modular Timer Unit              
+apbctrl:       I/O ports at 0x80000300, size 256 byte 
+apbctrl: slv4: Cobham Gaisler          Xilinx MIG Controller           
+apbctrl:       I/O ports at 0x80000400, size 256 byte 
+apbctrl: slv9: Cobham Gaisler          AMBA Wrapper for OC I2C-master  
+apbctrl:       I/O ports at 0x80000900, size 256 byte 
+apbctrl: slv10: Cobham Gaisler          General Purpose I/O port        
+apbctrl:       I/O ports at 0x80000a00, size 256 byte 
+apbctrl: slv11: Cobham Gaisler          Gaisler RGMII Interface         
+apbctrl:       I/O ports at 0x80001000, size 4 kbyte
+apbctrl: slv13: Cobham Gaisler          LEON3 Statistics Unit           
+apbctrl:       I/O ports at 0x80010000, size 1 kbyte
+apbctrl: slv14: Cobham Gaisler          GR Ethernet MAC                 
+apbctrl:       I/O ports at 0x800c0000, size 256 kbyte
+ahbrom7: 32-bit AHB ROM Module,  140 words, 8 address bits
+apbuart1: Generic UART rev 1, fifo 32, irq 2, scaler bits 12
+grgpio10: 7-bit GPIO Unit rev 3
+gptimer3: Timer Unit rev 1, 8-bit scaler, 2 32-bit timers, irq 8
+irqmp: Multi-processor Interrupt Controller rev 4, #cpu 1, eirq 0
+rgmii11: RGMII rev 1, irq 11
+greth2: 10/100/1000 Mbit Ethernet MAC rev 02, EDCL 1, buffer 2 kbyte 512 txfifo,  irq 3
+clkgen_virtex7: virtex-7 sdram/pci clock generator, version 1
+clkgen_virtex7: Frequency 100000 KHz, DCM divisor 16/8
+ahbjtag AHB Debug JTAG rev 2
+testmod3: Test report module
+i2cmst9: AMBA Wrapper for OC I2C-master rev 3, irq 4
+lstat_13: LEON Statistics Unit, ncpu : 1, ncnt : 4, rev 1
+dsu3_2: LEON3 Debug support unit + AHB Trace Buffer, 4 kbytes
+leon3_0: LEON3 SPARC V8 processor rev 3: iuft: 0, fpft: 0, cacheft: 0
+leon3_0: icache 1*4 kbyte, dcache 1*4 kbyte
+Warning: RESETn not asserted on power-up
+Time: 1 us  Iteration: 0  Process: /testbench/gen_mem_model/ddr3mem/u1/initp  File: /home/march/tfm/grlib/lib/gaisler/sim/ddr3ram.vhd
+relaunch_sim: Time (s): cpu = 00:01:04 ; elapsed = 00:00:43 . Memory (MB): peak = 7484.672 ; gain = 0.000 ; free physical = 11749 ; free virtual = 13837
+run all
+Warning: RESETn raised with less than 200 us init delay
+Time: 201 us  Iteration: 0  Process: /testbench/gen_mem_model/ddr3mem/u1/initp  File: /home/march/tfm/grlib/lib/gaisler/sim/ddr3ram.vhd
+Note: Start DSU transfer
+Time: 213404200 ps  Iteration: 5  Process: /testbench/dsucom  File: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd
+Failure: *** IU in error mode, simulation halted ***
+Time: 318404200 ps  Iteration: 0  Process: /testbench/iuerr  File: /home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd
+$finish called at time : 318404200 ps : File "/home/march/tfm/grlib/designs/leon3-xilinx-ac701/testbench.vhd" Line 672
+close_sim
+INFO: [Simtcl 6-16] Simulation closed
+exit
+INFO: [Common 17-206] Exiting Vivado at Fri Oct 30 17:54:39 2020...

@@ -1,0 +1,444 @@
+v 4
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/cdcbus.vhd" "23b56468fc7c3f6d12f4720f7601e186586cb350" "20201025141834.627":
+  entity cdcbus at 41( 2072) + 0 on 4;
+  architecture a of cdcbus at 60( 2458) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/toutpad_tm.vhd" "2741c59e88d7b1849051dea7ef962ba3bf5c277a" "20201025141834.623":
+  entity toutpad_tm at 30( 1495) + 0 on 4;
+  architecture rtl of toutpad_tm at 45( 1987) + 0 on 4;
+  entity toutpad_tmvv at 72( 2627) + 0 on 4;
+  architecture rtl of toutpad_tmvv at 90( 3286) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/serdes.vhd" "368109d475046c5470a858cc9634852aaa39ac8c" "20201025141834.619":
+  entity serdes at 26( 1332) + 0 on 4;
+  architecture rtl of serdes at 64( 2458) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/sdram_phy.vhd" "20ad7c449cf0dc56cab6416f31f0d1548725c7f6" "20201025141834.615":
+  entity sdram_phy at 28( 1394) + 0 on 4;
+  architecture rtl of sdram_phy at 81( 3326) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncrambw.vhd" "d8c75fd6dc551c7ec5f8d0dd28f882c60723f861" "20201025141834.610":
+  entity syncrambw at 28( 1336) + 0 on 4;
+  architecture rtl of syncrambw at 53( 2156) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/spictrl_net.vhd" "718796977e6b8e634b2a805469f5252d0b6f1b1b" "20201025141834.606":
+  entity spictrl_net at 27( 1321) + 0 on 4;
+  architecture rtl of spictrl_net at 86( 3340) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram156bw.vhd" "4a226193019266cab8f3836898596f4e678f6f03" "20201025141834.603":
+  entity syncram156bw at 29( 1399) + 0 on 4;
+  architecture rtl of syncram156bw at 53( 2159) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram256bw.vhd" "3fb8e768b79dd3fe8d53af57914e10994a07a64e" "20201025141834.599":
+  entity syncram256bw at 28( 1348) + 0 on 4;
+  architecture rtl of syncram256bw at 51( 2079) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/iopad_ddr.vhd" "5cde8644316aa1a60b8e5492cb2385379ff22f7a" "20201025141834.595":
+  entity iopad_ddr at 29( 1499) + 0 on 4;
+  architecture rtl of iopad_ddr at 55( 2182) + 0 on 4;
+  entity iopad_ddrv at 80( 3116) + 0 on 4;
+  architecture rtl of iopad_ddrv at 104( 3765) + 0 on 4;
+  entity iopad_ddrvv at 112( 4021) + 0 on 4;
+  architecture rtl of iopad_ddrvv at 136( 4695) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/inpad_ddr.vhd" "31d937f1f453f2d1632d845d22f2c42dd05b1390" "20201025141834.592":
+  entity inpad_ddr at 29( 1475) + 0 on 4;
+  architecture rtl of inpad_ddr at 54( 1991) + 0 on 4;
+  entity inpad_ddrv at 85( 2779) + 0 on 4;
+  architecture rtl of inpad_ddrv at 110( 3350) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/grpci2_phy_net.vhd" "9588f5856cf7945182b71b139dabaf4689516fd5" "20201025141834.588":
+  entity grpci2_phy_net at 21( 1003) + 0 on 4;
+  architecture struct of grpci2_phy_net at 296( 14226) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/cpu_disas_net.vhd" "58ed29c52c3b0ec6867809447fc80452e037b046" "20201025141834.584":
+  entity cpu_disas_net at 27( 1321) + 0 on 4;
+  architecture behav of cpu_disas_net at 53( 1936) + 0 on 4;
+  entity fpu_disas_net at 82( 2876) + 0 on 4;
+  architecture behav of fpu_disas_net at 113( 3696) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/leon4_net.vhd" "a73df2e5b9667e5b40dd8a7c05cd4e0b587115b8" "20201025141834.580":
+  entity leon4_net at 21( 1081) + 0 on 4;
+  architecture rtl of leon4_net at 147( 6907) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/grfpw_net.vhd" "962ab7dddf53206a5acbe5fd8fa6e181a02be5b8" "20201025141834.575":
+  entity grfpw_net at 28( 1296) + 0 on 4;
+  architecture rtl of grfpw_net at 115( 4928) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/nandtree.vhd" "2ac9baa2b36d693edb767d44742e160deeaf39ac" "20201025141834.570":
+  entity nandtree at 26( 1289) + 0 on 4;
+  architecture rtl of nandtree at 42( 1619) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/regfile_3p.vhd" "248dc130f5667dde6d0b36384896763b2e3a8735" "20201025141834.567":
+  entity regfile_3p at 27( 1312) + 0 on 4;
+  architecture rtl of regfile_3p at 55( 2298) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram_dp.vhd" "941b32bd99fd1cacccac362b9794512451baf968" "20201025141834.563":
+  entity syncram_dp at 27( 1311) + 0 on 4;
+  architecture rtl of syncram_dp at 59( 2399) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram64.vhd" "18215ce53ecf5d83492b68cb17206b42e79af76a" "20201025141834.559":
+  entity syncram64 at 28( 1342) + 0 on 4;
+  architecture rtl of syncram64 at 53( 2162) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/ddrphy.vhd" "7864b2d1fb9dcd294c0a06f7fd398cfe9927f24a" "20201025141834.555":
+  entity ddrphy at 27( 1283) + 0 on 4;
+  architecture rtl of ddrphy at 93( 4073) + 0 on 4;
+  entity ddrphy_wo_pads at 270( 9924) + 0 on 4;
+  architecture rtl of ddrphy_wo_pads at 332( 12962) + 0 on 4;
+  entity ddrpads at 380( 14492) + 0 on 4;
+  architecture rtl of ddrpads at 440( 17483) + 0 on 4;
+  entity ddr2pads at 556( 21832) + 0 on 4;
+  architecture rtl of ddr2pads at 621( 25142) + 0 on 4;
+  entity ddr2phy at 749( 30141) + 0 on 4;
+  architecture rtl of ddr2phy at 847( 34950) + 0 on 4;
+  entity ddr2phy_wo_pads at 1069( 44506) + 0 on 4;
+  architecture rtl of ddr2phy_wo_pads at 1156( 48922) + 0 on 4;
+  entity lpddr2phy_wo_pads at 1242( 52148) + 0 on 4;
+  architecture tmap of lpddr2phy_wo_pads at 1306( 54922) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/toutpad_ds.vhd" "d4920a69e32e534048f63f71d579744a2f35cc03" "20201025141834.550":
+  entity toutpad_ds at 27( 1326) + 0 on 4;
+  architecture rtl of toutpad_ds at 40( 1684) + 0 on 4;
+  entity toutpad_dsv at 101( 3378) + 0 on 4;
+  architecture rtl of toutpad_dsv at 116( 3856) + 0 on 4;
+  entity toutpad_dsvv at 124( 4079) + 0 on 4;
+  architecture rtl of toutpad_dsvv at 139( 4582) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/outpad_ds.vhd" "852ccfc066c99f978399966170cdc49611668ccd" "20201025141834.547":
+  entity outpad_ds at 27( 1312) + 0 on 4;
+  architecture rtl of outpad_ds at 39( 1639) + 0 on 4;
+  entity outpad_dsv at 88( 3265) + 0 on 4;
+  architecture rtl of outpad_dsv at 102( 3692) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/odpad.vhd" "7f226836edcd72c204d589c9986f140c8a32f0b0" "20201025141834.543":
+  entity odpad at 27( 1301) + 0 on 4;
+  architecture rtl of odpad at 41( 1717) + 0 on 4;
+  entity odpadv at 141( 5102) + 0 on 4;
+  architecture rtl of odpadv at 155( 5561) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/iopad_ds.vhd" "74dc69f421bdbac4986d9e4e364c10404fc950ec" "20201025141834.540":
+  entity iopad_ds at 27( 1312) + 0 on 4;
+  architecture rtl of iopad_ds at 40( 1712) + 0 on 4;
+  entity iopad_dsv at 111( 3812) + 0 on 4;
+  architecture rtl of iopad_dsv at 126( 4293) + 0 on 4;
+  entity iopad_dsvv at 134( 4518) + 0 on 4;
+  architecture rtl of iopad_dsvv at 149( 5024) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/iodpad.vhd" "967c36343c8a8e45836676969a2caacd95934251" "20201025141834.537":
+  entity iodpad at 27( 1301) + 0 on 4;
+  architecture rtl of iodpad at 40( 1666) + 0 on 4;
+  entity iodpadv at 129( 4629) + 0 on 4;
+  architecture rtl of iodpadv at 143( 5071) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/inpad.vhd" "38950d40877c6c8c45c476375b9d285609e7bdbd" "20201025141834.534":
+  entity inpad at 27( 1290) + 0 on 4;
+  architecture rtl of inpad at 40( 1605) + 0 on 4;
+  entity inpadv at 123( 4850) + 0 on 4;
+  architecture rtl of inpadv at 136( 5232) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkpad.vhd" "8e1956d8c9cd3961289ee60f8fd8943559b05817" "20201025141834.531":
+  entity clkpad at 27( 1292) + 0 on 4;
+  architecture rtl of clkpad at 40( 1688) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/ddr_ireg.vhd" "2d890a8c4499b2cc55893816736f5944de356d9b" "20201025141834.528":
+  entity ddr_ireg at 26( 1311) + 0 on 4;
+  architecture rtl of ddr_ireg at 46( 1795) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkand.vhd" "ccaca6f28b9bec4351ffccb17a5f8cdbac4a63f2" "20201025141834.525":
+  entity clkand at 27( 1271) + 0 on 4;
+  architecture rtl of clkand at 48( 1834) + 0 on 4;
+  entity clkrand at 194( 5688) + 0 on 4;
+  architecture rtl of clkrand at 209( 5981) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkmux.vhd" "32e11d2e9b9ee641b373b09d4d31620a1d83a912" "20201025141834.522":
+  entity clkmux at 27( 1289) + 0 on 4;
+  architecture rtl of clkmux at 44( 1693) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/alltap.vhd" "df91474e87c3b22cf3c5192cc6ab3dd1c04a44f6" "20201025141834.518":
+  package alltap at 28( 1340) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/allmul.vhd" "6a8abc9bc273ed4eea79bbd85f1381e78f18547f" "20201025141834.514":
+  package allmul at 27( 1280) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/allddr.vhd" "f33b30ded75705142decb878fc4511ebd7f4ee56" "20201025141834.510":
+  package allddr at 27( 1314) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/allclkgen.vhd" "35e5aec3d2b666ca7e49e704629dc5378b70a694" "20201025141834.506":
+  package allclkgen at 27( 1299) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/mul_unisim.vhd" "ac68f91a117ed0bd2a58affda624e83e1d651e9d" "20201025141834.502":
+  entity virtex4_mul_61x61 at 2( 1) + 0 on 4;
+  architecture beh of virtex4_mul_61x61 at 16( 321) + 0 on 4;
+  entity virtex6_mul_61x61 at 16578( 432178) + 0 on 4;
+  architecture beh of virtex6_mul_61x61 at 16592( 432498) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/ddr_phy_unisim.vhd" "5510628f2ee800bf0b4603effd1af72882c28b9e" "20201025141834.478":
+  entity virtex4_ddr_phy at 27( 1300) + 0 on 4;
+  architecture rtl of virtex4_ddr_phy at 92( 3730) + 0 on 4;
+  entity virtex2_ddr_phy at 457( 17287) + 0 on 4;
+  architecture rtl of virtex2_ddr_phy at 521( 19670) + 0 on 4;
+  entity spartan3e_ddr_phy at 867( 31935) + 0 on 4;
+  architecture rtl of spartan3e_ddr_phy at 932( 34363) + 0 on 4;
+  entity virtex5_ddr2_phy_wo_pads at 1285( 46408) + 0 on 4;
+  architecture rtl of virtex5_ddr2_phy_wo_pads at 1369( 50261) + 0 on 4;
+  entity spartan3a_ddr2_phy at 2148( 82818) + 0 on 4;
+  architecture rtl of spartan3a_ddr2_phy at 2209( 85732) + 0 on 4;
+  entity spartan6_ddr2_phy_wo_pads at 2598( 101754) + 0 on 4;
+  architecture rtl of spartan6_ddr2_phy_wo_pads at 2663( 104977) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/tap_unisim.vhd" "951947f12332da528734cc0796b8d4e609747fc2" "20201025141834.473":
+  entity virtex_tap at 27( 1332) + 0 on 4;
+  architecture rtl of virtex_tap at 49( 3038) + 0 on 4;
+  entity virtex2_tap at 85( 5822) + 0 on 4;
+  architecture rtl of virtex2_tap at 107( 6334) + 0 on 4;
+  entity spartan3_tap at 145( 7415) + 0 on 4;
+  architecture rtl of spartan3_tap at 167( 7939) + 0 on 4;
+  entity virtex4_tap at 205( 9010) + 0 on 4;
+  architecture rtl of virtex4_tap at 227( 9532) + 0 on 4;
+  entity virtex5_tap at 287( 11089) + 0 on 4;
+  architecture rtl of virtex5_tap at 309( 11611) + 0 on 4;
+  entity virtex6_tap at 371( 13170) + 0 on 4;
+  architecture rtl of virtex6_tap at 393( 13682) + 0 on 4;
+  entity spartan6_tap at 463( 15425) + 0 on 4;
+  architecture rtl of spartan6_tap at 485( 15938) + 0 on 4;
+  entity virtex7_tap at 554( 17647) + 0 on 4;
+  architecture rtl of virtex7_tap at 576( 18159) + 0 on 4;
+  entity kintex7_tap at 645( 19884) + 0 on 4;
+  architecture rtl of kintex7_tap at 667( 20396) + 0 on 4;
+  entity kintexu_tap at 736( 22121) + 0 on 4;
+  architecture rtl of kintexu_tap at 758( 22633) + 0 on 4;
+  entity artix7_tap at 826( 24355) + 0 on 4;
+  architecture rtl of artix7_tap at 848( 24866) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/pads_unisim.vhd" "d9625362519c39af91a63c345ef50c895282a187" "20201025141834.469":
+  entity unisim_inpad at 27( 1296) + 0 on 4;
+  architecture rtl of unisim_inpad at 40( 1602) + 0 on 4;
+  entity unisim_iopad at 89( 3596) + 0 on 4;
+  architecture rtl of unisim_iopad at 103( 3981) + 0 on 4;
+  entity unisim_outpad at 207( 8532) + 0 on 4;
+  architecture rtl of unisim_outpad at 221( 8888) + 0 on 4;
+  entity unisim_toutpad at 336( 13555) + 0 on 4;
+  architecture rtl of unisim_toutpad at 350( 13917) + 0 on 4;
+  entity unisim_skew_outpad at 417( 16639) + 0 on 4;
+  architecture rtl of unisim_skew_outpad at 434( 17103) + 0 on 4;
+  entity unisim_clkpad at 551( 21621) + 0 on 4;
+  architecture rtl of unisim_clkpad at 568( 22107) + 0 on 4;
+  entity unisim_inpad_ds at 802( 31237) + 0 on 4;
+  architecture rtl of unisim_inpad_ds at 817( 31615) + 0 on 4;
+  entity unisim_clkpad_ds at 838( 32280) + 0 on 4;
+  architecture rtl of unisim_clkpad_ds at 854( 32681) + 0 on 4;
+  entity virtex4_inpad_ds at 900( 34457) + 0 on 4;
+  architecture rtl of virtex4_inpad_ds at 914( 34780) + 0 on 4;
+  entity virtex4_clkpad_ds at 941( 35706) + 0 on 4;
+  architecture rtl of virtex4_clkpad_ds at 955( 36052) + 0 on 4;
+  entity unisim_iopad_ds at 982( 36946) + 0 on 4;
+  architecture rtl of unisim_iopad_ds at 996( 37364) + 0 on 4;
+  entity unisim_outpad_ds at 1030( 38824) + 0 on 4;
+  architecture rtl of unisim_outpad_ds at 1043( 39168) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/memory_unisim.vhd" "1e3e901af0967e436c6acef1568bef57abf913e5" "20201025141834.466":
+  entity unisim_syncram at 29( 1385) + 0 on 4;
+  architecture behav of unisim_syncram at 57( 2071) + 0 on 4;
+  entity unisim_syncram_dp at 269( 9296) + 0 on 4;
+  architecture behav of unisim_syncram_dp at 302( 10234) + 0 on 4;
+  entity unisim_syncram_2p at 598( 21348) + 0 on 4;
+  architecture behav of unisim_syncram_2p at 618( 21954) + 0 on 4;
+  entity unisim_syncram64 at 680( 24171) + 0 on 4;
+  architecture behav of unisim_syncram64 at 699( 24668) + 0 on 4;
+  entity unisim_syncram128 at 761( 26839) + 0 on 4;
+  architecture behav of unisim_syncram128 at 775( 27250) + 0 on 4;
+  entity unisim_syncram128bw at 796( 28038) + 0 on 4;
+  architecture behav of unisim_syncram128bw at 815( 28542) + 0 on 4;
+  entity unisim_syncram_be at 882( 30772) + 0 on 4;
+  architecture behav of unisim_syncram_be at 907( 31456) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/memory_kintex7.vhd" "32aa3cde5c4e4c600a0e474725e0e60a34ac1d44" "20201025141834.459":
+  entity kintex7_syncram_dp at 51( 2644) + 0 on 4;
+  architecture behav of kintex7_syncram_dp at 76( 3394) + 0 on 4;
+  entity kintex7_syncram_2p at 107( 4149) + 0 on 4;
+  architecture behav of kintex7_syncram_2p at 129( 4807) + 2 on 4;
+  entity kintex7_syncram at 169( 5807) + 2 on 4;
+  architecture behav of kintex7_syncram at 188( 6312) + 2 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/sim_pll.vhd" "cf8ac4cd8f5eecbf3f966b7dd17494764317f093" "20201025141834.456":
+  entity sim_pll at 27( 1331) + 0 on 4;
+  architecture sim of sim_pll at 60( 2046) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/ddrphy_datapath.vhd" "c180f0d0984a867ca3a913f0380e4bf454147311" "20201025141834.454":
+  entity ddrphy_datapath at 27( 1346) + 0 on 4;
+  architecture rtl of ddrphy_datapath at 93( 3699) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/mul_inferred.vhd" "80903cde52b224cf4a5da5061945500214f1358d" "20201025141834.451":
+  entity gen_mul_61x61 at 27( 1296) + 0 on 4;
+  architecture rtl of gen_mul_61x61 at 41( 1668) + 0 on 4;
+  entity gen_mult_pipe at 73( 2364) + 0 on 4;
+  architecture simple of gen_mult_pipe at 94( 3255) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/memory_inferred.vhd" "1eb34fd525af9c8a40fc77d3eef3f3337181e4e6" "20201025141834.449":
+  entity generic_syncram at 27( 1296) + 0 on 4;
+  architecture behavioral of generic_syncram at 44( 1796) + 0 on 4;
+  entity generic_syncram_reg at 79( 2554) + 0 on 4;
+  architecture behavioral of generic_syncram_reg at 95( 3006) + 0 on 4;
+  entity generic_syncram_2p at 132( 3880) + 0 on 4;
+  architecture behav of generic_syncram_2p at 157( 4481) + 0 on 4;
+  entity generic_syncram_2p_reg at 214( 5857) + 0 on 4;
+  architecture behav of generic_syncram_2p_reg at 237( 6403) + 0 on 4;
+  entity generic_regfile_3p at 283( 7665) + 0 on 4;
+  architecture rtl of generic_regfile_3p at 310( 8605) + 0 on 4;
+  entity generic_regfile_4p at 384( 10430) + 0 on 4;
+  architecture rtl of generic_regfile_4p at 417( 11631) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/gencomp/gencomp.vhd" "bf5a68d85e93cbdc4232bdc2e761891ff5478d45" "20201025141834.445":
+  package gencomp at 27( 1298) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/gencomp/netcomp.vhd" "1ee3d4e8289ad9f13db5123941a82ace08c8fa97" "20201025141834.447":
+  package netcomp at 27( 1311) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/ddr_inferred.vhd" "63e58dc91d3412e85a84e51bc15a3facd4e2df60" "20201025141834.450":
+  entity gen_iddr_reg at 27( 1321) + 0 on 4;
+  architecture rtl of gen_iddr_reg at 46( 1757) + 0 on 4;
+  entity gen_oddr_reg at 68( 2303) + 0 on 4;
+  architecture rtl of gen_oddr_reg at 86( 2700) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/ddr_phy_inferred.vhd" "aae657d3d9ff34ee3f17a66d3eee1ed04243e721" "20201025141834.452":
+  entity generic_ddr_phy_wo_pads at 32( 1575) + 0 on 4;
+  architecture rtl of generic_ddr_phy_wo_pads at 88( 4135) + 0 on 4;
+  entity generic_ddr2_phy_wo_pads at 271( 9254) + 0 on 4;
+  architecture rtl of generic_ddr2_phy_wo_pads at 330( 12039) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/fifo_inferred.vhd" "451df5ee7f7f24b676a7b3de57e2b4f1d7455a4b" "20201025141834.455":
+  entity generic_fifo at 43( 2281) + 0 on 4;
+  architecture rtl_fifo of generic_fifo at 90( 4608) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/inferred/lpddr2_phy_inferred.vhd" "e2e1f5058d02cef088ad7c7fdef85a93ecdde793" "20201025141834.457":
+  entity clkswitch at 27( 1365) + 0 on 4;
+  architecture sim of clkswitch at 35( 1504) + 0 on 4;
+  entity generic_lpddr2phy_wo_pads at 54( 1883) + 0 on 4;
+  architecture beh of generic_lpddr2phy_wo_pads at 116( 4618) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/memory_ultrascale.vhd" "3305edc3e0c9ba06c918ab05d8c8c8d2f9e197b0" "20201025141834.463":
+  entity ultrascale_syncram at 26( 1284) + 0 on 4;
+  architecture behav of ultrascale_syncram at 50( 1842) + 0 on 4;
+  entity ultrascale_syncram_dp at 107( 3825) + 0 on 4;
+  architecture behav of ultrascale_syncram_dp at 138( 4661) + 0 on 4;
+  entity ultrascale_syncram_2p at 894( 50218) + 0 on 4;
+  architecture behav of ultrascale_syncram_2p at 921( 50904) + 0 on 4;
+  entity ultrascale_syncram64 at 1536( 92001) + 0 on 4;
+  architecture behav of ultrascale_syncram64 at 1561( 92570) + 0 on 4;
+  entity ultrascale_syncram128 at 1588( 93461) + 0 on 4;
+  architecture behav of ultrascale_syncram128 at 1602( 93876) + 0 on 4;
+  entity ultrascale_syncram128bw at 1626( 94793) + 0 on 4;
+  architecture behav of ultrascale_syncram128bw at 1641( 95213) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/buffer_unisim.vhd" "7ff97da828d8e6b9ef9efebfffad028d3c98ee8b" "20201025141834.467":
+  entity clkbuf_xilinx at 26( 1328) + 0 on 4;
+  architecture rtl of clkbuf_xilinx at 43( 1637) + 0 on 4;
+  entity clkmux_xilinx at 64( 2319) + 0 on 4;
+  architecture rtl of clkmux_xilinx at 79( 2588) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/clkgen_unisim.vhd" "cdc11088a3762c298cb60ec1ea84837007b29570" "20201025141834.471":
+  entity clkgen_virtex5 at 32( 1566) + 0 on 4;
+  architecture struct of clkgen_virtex5 at 73( 2718) + 0 on 4;
+  entity clkgen_virtex7 at 257( 9221) + 0 on 4;
+  architecture struct of clkgen_virtex7 at 284( 9867) + 0 on 4;
+  entity clkgen_kintexu at 447( 15666) + 0 on 4;
+  architecture struct of clkgen_kintexu at 477( 16392) + 0 on 4;
+  entity clkand_unisim at 674( 25509) + 0 on 4;
+  architecture rtl of clkand_unisim at 689( 25775) + 0 on 4;
+  entity clkmux_unisim at 704( 26021) + 0 on 4;
+  architecture rtl of clkmux_unisim at 719( 26290) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/ddr_unisim.vhd" "933f01a63dbb1b9e214ce7a68247f666275d64e7" "20201025141834.474":
+  entity unisim_iddr_reg at 27( 1331) + 0 on 4;
+  architecture rtl of unisim_iddr_reg at 50( 1836) + 0 on 4;
+  entity unisim_iddre1_reg at 215( 6533) + 0 on 4;
+  architecture rtl of unisim_iddre1_reg at 236( 6949) + 0 on 4;
+  entity unisim_oddr_reg at 259( 7526) + 0 on 4;
+  architecture rtl of unisim_oddr_reg at 283( 8038) + 0 on 4;
+  entity oddrv2 at 448( 11794) + 0 on 4;
+  architecture rtl of oddrv2 at 471( 12257) + 0 on 4;
+  entity oddrc3e at 503( 12920) + 0 on 4;
+  architecture rtl of oddrc3e at 526( 13380) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/sysmon_unisim.vhd" "62a25eb356b340bd0b36fc78693529dca7872582" "20201025141834.479":
+  entity sysmon_virtex5 at 27( 1282) + 0 on 4;
+  architecture struct of sysmon_virtex5 at 93( 3529) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/unisim/spictrl_unisim.vhd" "3296cfffa315f40036ac24b007dd9e6853425abe" "20201025141834.504":
+  entity spictrl_unisim at 11( 451) + 0 on 4;
+  architecture rtl of spictrl_unisim at 55( 1874) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/techbuf.vhd" "2685f52b2a86fe08d0b3dcc385c0a4888760aa59" "20201025141834.507":
+  entity techbuf at 26( 1309) + 0 on 4;
+  architecture rtl of techbuf at 39( 1613) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/allmem.vhd" "47a65b766d8fefd2a8a90141d85908f429e931a6" "20201025141834.513":
+  package allmem at 27( 1284) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/allpads.vhd" "3225eb8c0f62cb24bc5067a26a9939bff4a93896" "20201025141834.516":
+  package allpads at 27( 1281) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkgen.vhd" "d582f36483816f018961a2e58b7d2e5f97dd0658" "20201025141834.520":
+  entity clkgen at 27( 1292) + 0 on 4;
+  architecture struct of clkgen at 67( 2775) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkinv.vhd" "bd20de25d0d04215e0aea7dbd10e46a10c33552c" "20201025141834.524":
+  entity clkinv at 27( 1310) + 0 on 4;
+  architecture rtl of clkinv at 40( 1526) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/grgates.vhd" "c4d4f432bcc869de91ce32bf02cb571687bcbcf6" "20201025141834.527":
+  entity grmux2 at 26( 1291) + 0 on 4;
+  architecture rtl of grmux2 at 35( 1543) + 0 on 4;
+  entity grmux2v at 89( 2885) + 0 on 4;
+  architecture rtl of grmux2v at 100( 3215) + 0 on 4;
+  entity grdff at 109( 3396) + 0 on 4;
+  architecture rtl of grdff at 117( 3616) + 0 on 4;
+  entity gror2 at 153( 4443) + 0 on 4;
+  architecture rtl of gror2 at 161( 4663) + 0 on 4;
+  entity grand12 at 196( 5423) + 0 on 4;
+  architecture rtl of grand12 at 204( 5645) + 0 on 4;
+  entity grnand2 at 239( 6426) + 0 on 4;
+  architecture rtl of grnand2 at 256( 6688) + 0 on 4;
+  entity grand2 at 271( 6924) + 0 on 4;
+  architecture rtl of grand2 at 288( 7185) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/ddr_oreg.vhd" "e7ea0efa33b5451263383ca01168d47c43eccf0c" "20201025141834.530":
+  entity ddr_oreg at 26( 1312) + 0 on 4;
+  architecture rtl of ddr_oreg at 46( 1791) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/clkpad_ds.vhd" "7677cdb562dff18e66df71f249c3b727e043e3fe" "20201025141834.533":
+  entity clkpad_ds at 27( 1298) + 0 on 4;
+  architecture rtl of clkpad_ds at 39( 1602) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/inpad_ds.vhd" "93dd8f40677b52dc60f16b6bdef952bc8a2ae0a3" "20201025141834.536":
+  entity inpad_ds at 27( 1296) + 0 on 4;
+  architecture rtl of inpad_ds at 38( 1595) + 0 on 4;
+  entity inpad_dsv at 86( 3429) + 0 on 4;
+  architecture rtl of inpad_dsv at 99( 3834) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/iopad.vhd" "ba245e2a9b5e74f614d7621b6e7bc101d722759d" "20201025141834.539":
+  entity iopad at 27( 1287) + 0 on 4;
+  architecture rtl of iopad at 41( 1752) + 0 on 4;
+  entity iopadv at 169( 6255) + 0 on 4;
+  architecture rtl of iopadv at 185( 6819) + 0 on 4;
+  entity iopadvv at 193( 7042) + 0 on 4;
+  architecture rtl of iopadvv at 209( 7633) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/lvds_combo.vhd" "0b4b19cb94c3be2dad87a5a4c11e1523c50dffe4" "20201025141834.542":
+  entity lvds_combo at 27( 1334) + 0 on 4;
+  architecture rtl of lvds_combo at 47( 2113) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/outpad.vhd" "3302c7efe460a8abe71ae0bf09b969c1bc7ccad1" "20201025141834.545":
+  entity outpad at 27( 1293) + 0 on 4;
+  architecture rtl of outpad at 40( 1684) + 0 on 4;
+  entity outpadv at 133( 5510) + 0 on 4;
+  architecture rtl of outpadv at 146( 5949) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/toutpad.vhd" "284af30a1e087e8e6b4674243b3895080ae7f284" "20201025141834.548":
+  entity toutpad at 27( 1305) + 0 on 4;
+  architecture rtl of toutpad at 41( 1727) + 0 on 4;
+  entity toutpadv at 159( 5916) + 0 on 4;
+  architecture rtl of toutpadv at 175( 6412) + 0 on 4;
+  entity toutpadvv at 183( 6625) + 0 on 4;
+  architecture rtl of toutpadvv at 198( 7141) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/skew_outpad.vhd" "a9dee17aab9fabf7b6eb74247a28480c9827ce93" "20201025141834.552":
+  entity skew_outpad at 27( 1309) + 0 on 4;
+  architecture rtl of skew_outpad at 40( 1702) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram.vhd" "a8cc78ae8aedc15bb993e3db5d163207e41d9ad6" "20201025141834.557":
+  entity syncram at 27( 1302) + 0 on 4;
+  architecture rtl of syncram at 51( 2049) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram_2p.vhd" "8a25896beffef88e9656e11f5f7b4a9f952860db" "20201025141834.561":
+  entity syncram_2p at 27( 1308) + 0 on 4;
+  architecture rtl of syncram_2p at 55( 2235) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncfifo_2p.vhd" "b95cd3459e26fdc21d6d384f31b642cf337e86b2" "20201025141834.565":
+  entity syncfifo_2p at 42( 2392) + 0 on 4;
+  architecture rtl of syncfifo_2p at 89( 4845) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/tap.vhd" "8ea16b55f5f1aa7f1383702ff980538ed29b71ce" "20201025141834.569":
+  entity tap at 28( 1307) + 0 on 4;
+  architecture rtl of tap at 78( 2771) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/grlfpw_net.vhd" "8676856a0e9872f864131c0e2907bb6731dc8ddf" "20201025141834.573":
+  entity grlfpw_net at 28( 1288) + 0 on 4;
+  architecture rtl of grlfpw_net at 115( 4863) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/leon3_net.vhd" "f19ac4920c76ea710b0b4793505bdaf45d63a495" "20201025141834.577":
+  entity leon3_net at 21( 1081) + 0 on 4;
+  architecture rtl of leon3_net at 165( 7745) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/mul_61x61.vhd" "26502a02d53151bdb033793a4a66054f33069f15" "20201025141834.581":
+  entity mul_61x61 at 27( 1282) + 0 on 4;
+  architecture rtl of mul_61x61 at 43( 1694) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/ringosc.vhd" "f02d4ed46d4e39c8a5a2e99d03571b40881d4050" "20201025141834.586":
+  entity ringosc at 26( 1317) + 0 on 4;
+  architecture rtl of ringosc at 38( 1545) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/system_monitor.vhd" "352dc1420993fd9c0ff088746ad15b9e5cb15540" "20201025141834.590":
+  entity system_monitor at 27( 1312) + 0 on 4;
+  architecture struct of system_monitor at 90( 3425) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/outpad_ddr.vhd" "b6a1d427f33c2e4f13e7e007fad86971268c5007" "20201025141834.594":
+  entity outpad_ddr at 30( 1561) + 0 on 4;
+  architecture rtl of outpad_ddr at 55( 2080) + 0 on 4;
+  entity outpad_ddrv at 87( 3036) + 0 on 4;
+  architecture rtl of outpad_ddrv at 110( 3581) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram128bw.vhd" "6e8d81569e051a3db56ffad2421b1386ff41a21d" "20201025141834.597":
+  entity syncram128bw at 28( 1348) + 0 on 4;
+  architecture rtl of syncram128bw at 51( 2084) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram128.vhd" "1b32f13154c270b1be0928399793e456448311da" "20201025141834.601":
+  entity syncram128 at 28( 1345) + 0 on 4;
+  architecture rtl of syncram128 at 53( 2170) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/techmult.vhd" "b5ea1f523b83728b12816506997abd916a71d8c4" "20201025141834.605":
+  entity techmult at 27( 1291) + 0 on 4;
+  architecture rtl of techmult at 53( 2247) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/scanreg.vhd" "beb241f68c0ed703fe4a8e6a35e4873577e9f803" "20201025141834.608":
+  entity scanregi at 27( 1330) + 0 on 4;
+  architecture tmap of scanregi at 53( 1872) + 0 on 4;
+  entity scanrego at 82( 2895) + 0 on 4;
+  architecture tmap of scanrego at 107( 3409) + 0 on 4;
+  entity scanregto at 129( 4094) + 0 on 4;
+  architecture tmap of scanregto at 163( 4901) + 0 on 4;
+  entity scanregio at 194( 5936) + 0 on 4;
+  architecture tmap of scanregio at 232( 6872) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncram_2pbw.vhd" "f1860dbcaa2479499ae6f6d147c0d3232e72f0b3" "20201025141834.613":
+  entity syncram_2pbw at 28( 1352) + 0 on 4;
+  architecture rtl of syncram_2pbw at 56( 2313) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/syncreg.vhd" "d942ea89fedcd6bc0cb4f1b07501e1834071df24" "20201025141834.617":
+  entity syncreg at 27( 1302) + 0 on 4;
+  architecture tmap of syncreg at 44( 1601) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/iopad_tm.vhd" "26b25d3c53c00731f22d7e077a32566d92a3e702" "20201025141834.621":
+  entity iopad_tm at 30( 1489) + 0 on 4;
+  architecture rtl of iopad_tm at 45( 2024) + 0 on 4;
+  entity iopad_tmvv at 72( 2686) + 0 on 4;
+  architecture rtl of iopad_tmvv at 91( 3420) + 0 on 4;
+file "/home/march/tfm/grlib/designs/noelv-xilinx-vc707/" "../../lib/techmap/maps/memrwcol.vhd" "4c2e0eba052f0a0fe50b48f5267275ae99001299" "20201025141834.625":
+  entity memrwcol at 27( 1333) + 0 on 4;
+  architecture rtl of memrwcol at 65( 2447) + 0 on 4;

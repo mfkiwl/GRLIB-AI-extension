@@ -1,0 +1,143 @@
+/*
+
+Xilinx Vivado v2020.1 (64-bit) [Major: 2020, Minor: 1]
+SW Build: 2902540 on Wed May 27 19:54:35 MDT 2020
+IP Build: 2902112 on Wed May 27 22:43:36 MDT 2020
+
+Process ID (PID): 7981
+License: Customer
+
+Current time: 	Mon Nov 02 20:16:30 UTC 2020
+Time zone: 	Coordinated Universal Time (UTC)
+
+OS: Linux
+OS Version: 5.9.2-arch1-1
+OS Architecture: amd64
+Available processors (cores): 6
+
+Display: :0.0
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/march/opt/Xilinx/Vitis/Vivado/2020.1/tps/lnx64/jre9.0.4
+Java executable location: 	/home/march/opt/Xilinx/Vitis/Vivado/2020.1/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	march
+User home directory: /home/march
+User working directory: /home/march/pd_project/grlib/designs/leon3mp
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/march/opt/Xilinx/Vitis/Vivado
+HDI_APPROOT: /home/march/opt/Xilinx/Vitis/Vivado/2020.1
+RDI_DATADIR: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/data
+RDI_BINDIR: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/bin
+
+Vivado preferences file location: /home/march/.Xilinx/Vivado/2020.1/vivado.xml
+Vivado preferences directory: /home/march/.Xilinx/Vivado/2020.1/
+Vivado layouts directory: /home/march/.Xilinx/Vivado/2020.1/data/layouts
+PlanAhead jar file location: 	/home/march/opt/Xilinx/Vitis/Vivado/2020.1/lib/classes/planAhead.jar
+Vivado log file location: 	/home/march/pd_project/grlib/designs/leon3mp/vivado.log
+Vivado journal file location: 	/home/march/pd_project/grlib/designs/leon3mp/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-7981-marcPC
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/ids_lite/ISE
+XILINX_DSP: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/ids_lite/ISE
+XILINX_PLANAHEAD: /home/march/opt/Xilinx/Vitis/Vivado/2020.1
+XILINX_SDK: /home/march/opt/Xilinx/Vitis/Vitis/2020.1
+XILINX_VITIS: /home/march/opt/Xilinx/Vitis/Vitis/2020.1
+XILINX_VIVADO: /home/march/opt/Xilinx/Vitis/Vivado/2020.1
+XILINX_VIVADO_HLS: /home/march/opt/Xilinx/Vitis/Vivado/2020.1
+
+
+GUI allocated memory:	264 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 1,542 MB
+
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// TclEventType: START_PROGRESS_DIALOG
+// Tcl Message: start_gui 
+// TclEventType: START_PROGRESS_DIALOG
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// bz (cs):  Sourcing Tcl script './vivado/leon3mp_vivado.tcl' : addNotify
+// Tcl Message: source ./vivado/leon3mp_vivado.tcl 
+// Tcl Message: # create_project leon3mp ./vivado/leon3mp -part xc7a200tfbg676-2 -force 
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 121 MB (+124484kb) [00:00:06]
+// [Engine Memory]: 1,476 MB (+1396165kb) [00:00:06]
+// WARNING: HEventQueue.dispatchEvent() is taking  1635 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/march/opt/Xilinx/Vitis/Vivado/2020.1/data/ip'. 
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,480 MB. GUI used memory: 57 MB. Current time: 11/2/20, 8:16:31 PM UTC
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: RUN_OPTIONS_MODIFIED
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// TclEventType: RUN_MODIFY
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/decoder_8b10b.v 
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/encoder_8b10b.v 
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_constants.v 
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_regs.v 
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_test.v 
+// Tcl Message: # read_verilog -library opencores ../../lib/opencores/ge_1000baseX/timescale.v 
+// Tcl Message: # read_vhdl -library opencores ../../lib/opencores/ge_1000baseX/ge_1000baseX_comp.vhd # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX.v 
+// Tcl Message: # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_an.v 
+// Tcl Message: # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_mdio.v 
+// Tcl Message: # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_rx.v 
+// Tcl Message: # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_sync.v 
+// Tcl Message: # read_verilog -library opencores -sv ../../lib/opencores/ge_1000baseX/ge_1000baseX_tx.v 
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 1,580 MB (+32028kb) [00:00:15]
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: # set_property used_in_synthesis false [get_files ../../lib/micron/sdram/mobile_sdr.v] # read_vhdl -library work ../../lib/work/debug/debug.vhd # set_property used_in_synthesis false [get_files ../../lib/work/debug/debug.vhd] 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// TclEventType: BOARD_MODIFIED
+// TclEventType: STOP_PROGRESS_DIALOG
+dismissDialog("Sourcing Tcl script './vivado/leon3mp_vivado.tcl'"); // bz (cs)
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// [Engine Memory]: 1,663 MB (+3721kb) [00:00:23]
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [GUI Memory]: 142 MB (+15405kb) [00:00:29]
+// Tcl Message: update_compile_order -fileset sources_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,597 MB. GUI used memory: 74 MB. Current time: 11/2/20, 8:16:56 PM UTC

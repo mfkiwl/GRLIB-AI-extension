@@ -1,0 +1,12 @@
+
+{ 
+    crc :  13312067259407616049  , 
+    ccp_crc :  0  , 
+    cmdline : " -wto b8ec0d1a165f40389b98441dbc3ab377 --incr --debug typical --relax --mt 8 -L gaisler -L grlib -L techmap -L work -L eth -L opencores -L esa -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot testbench_behav work.testbench work.glbl" , 
+    buildDate : "May 27 2020" , 
+    buildTime : "19:59:15" , 
+    linkCmd : "/usr/bin/gcc -Wa,-W  -O -fPIC  -m64  -Wl,--no-as-needed  -Wl,--unresolved-symbols=ignore-all  -o \"xsim.dir/testbench_behav/xsimk\"   \"xsim.dir/testbench_behav/obj/xsim_0.lnx64.o\" \"xsim.dir/testbench_behav/obj/xsim_1.lnx64.o\" \"xsim.dir/testbench_behav/obj/xsim_2.lnx64.o\" \"xsim.dir/testbench_behav/obj/xsim_3.lnx64.o\" \"xsim.dir/testbench_behav/obj/xsim_4.lnx64.o\" -L\"/home/march/opt/Xilinx/Vitis/Vivado/2020.1/lib/lnx64.o\" -lrdi_simulator_kernel   -lrdi_simbridge_kernel" , 
+    aggregate_nets : 
+    [ 
+    ] 
+} 

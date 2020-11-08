@@ -1,0 +1,172 @@
+Vivado Simulator 2020.1
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: /home/march/opt/Xilinx/Vitis/Vivado/2020.1/bin/unwrapped/lnx64.o/xelab -wto 520d3faf8f814237b1a762b780bd6575 --incr --debug typical --relax --mt 8 -L grlib -L techmap -L gaisler -L work -L secureip --snapshot testbench_behav work.testbench -log elaborate.log 
+Using 8 slave threads.
+WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the "-mt off -v 1" switches to see more information from the C compiler. The following environment variables have been detected:
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package grlib.config_types
+Compiling package grlib.config
+Compiling package techmap.gencomp
+Compiling package work.config
+Compiling package ieee.numeric_std
+Compiling package grlib.version
+Compiling package grlib.stdlib
+Compiling package grlib.amba
+Compiling package grlib.devices
+Compiling package gaisler.leon3
+Compiling package gaisler.uart
+Compiling package gaisler.misc
+Compiling package gaisler.jtag
+Compiling package gaisler.axi
+Compiling package grlib.stdio
+Compiling package gaisler.sim
+Compiling package techmap.allpads
+Compiling package ieee.math_real
+Compiling package grlib.testlib
+Compiling package techmap.netcomp
+Compiling package gaisler.libfpu
+Compiling package gaisler.arith
+Compiling package gaisler.mmuconfig
+Compiling package gaisler.libiu
+Compiling package gaisler.mmuiface
+Compiling package gaisler.libcache
+Compiling package gaisler.libleon3
+Compiling package grlib.sparc
+Compiling package grlib.sparc_disas
+Compiling package grlib.multlib
+Compiling package techmap.allmul
+Compiling package ieee.std_logic_arith
+Compiling package gaisler.libmmu
+Compiling package techmap.allmem
+Compiling package ieee.std_logic_signed
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_textio
+Compiling package gaisler.libjtagcom
+Compiling package techmap.alltap
+Compiling package techmap.allclkgen
+Compiling architecture behav of entity techmap.unisim_syncram64 [\unisim_syncram64(abits=7)\]
+Compiling architecture rtl of entity techmap.syncram64 [\syncram64(tech=51,abits=7,custo...]
+Compiling architecture rtl of entity gaisler.tbufmem [\tbufmem(tech=51,tbuf=2)\]
+Compiling architecture simple of entity techmap.gen_mult_pipe [\gen_mult_pipe(a_width=33,b_widt...]
+Compiling architecture rtl of entity techmap.techmult [\techmult(tech=51,a_width=33,b_w...]
+Compiling architecture rtl of entity gaisler.mul32 [\mul32(tech=51,multype=3,pipe=1)...]
+Compiling architecture rtl of entity gaisler.div32 [div32_default]
+Compiling architecture rtl of entity gaisler.iu3 [\iu3(isets=2,dsets=2,v8=50,dsu=1...]
+Compiling architecture rtl of entity gaisler.mmutlbcam [\mmutlbcam(tlb_type=0)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=7)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=6)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=5)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=4)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=3)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=2)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=1)\]
+Compiling architecture rtl of entity gaisler.mmulrue [\mmulrue(position=0)\]
+Compiling architecture rtl of entity gaisler.mmulru [mmulru_default]
+Compiling architecture behavioral of entity techmap.generic_syncram [\generic_syncram(abits=3,dbits=3...]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=51,abits=3,dbits=3...]
+Compiling architecture rtl of entity gaisler.mmutlb [\mmutlb(tech=51,tlb_type=0,tlb_r...]
+Compiling architecture rtl of entity gaisler.mmutlbcam [\mmutlbcam(tlb_type=2)\]
+Compiling architecture rtl of entity gaisler.mmutlb [\mmutlb(tech=51,tlb_type=2,tlb_r...]
+Compiling architecture rtl of entity gaisler.mmutw [mmutw_default]
+Compiling architecture rtl of entity gaisler.mmu [\mmu(tech=51,tlb_type=2,ramcbits...]
+Compiling architecture rtl of entity gaisler.mmu_icache [\mmu_icache(fabtech=51,icen=1,is...]
+Compiling architecture rtl of entity gaisler.mmu_dcache [\mmu_dcache(dsu=1,dcen=1,dsets=2...]
+Compiling architecture rtl of entity gaisler.mmu_acache [\mmu_acache(ilinesize=8)\]
+Compiling architecture rtl of entity gaisler.mmu_cache [\mmu_cache(fabtech=51,memtech=51...]
+Compiling architecture rtl of entity gaisler.proc3 [\proc3(fabtech=51,memtech=51,dsu...]
+Compiling architecture rb36_internal_vhdl_v of entity unisim.RB36_INTERNAL_VHDL [\RB36_INTERNAL_VHDL(init_a="0000...]
+Compiling architecture ramb36e1_v of entity unisim.RAMB36E1 [\RAMB36E1(read_width_a=36,read_w...]
+Compiling architecture ramb16_s36_s36_v of entity unisim.RAMB16_S36_S36 [\RAMB16_S36_S36(sim_collision_ch...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=8)\]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=8,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=51,abits=8,dbit...]
+Compiling architecture rtl of entity techmap.regfile_3p [\regfile_3p(tech=51,abits=8,dbit...]
+Compiling architecture rtl of entity gaisler.regfile_3p_l3 [\regfile_3p_l3(tech=51,abits=8,d...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=8,dbits=35...]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=51,abits=8,dbits=3...]
+Compiling architecture rb18_internal_vhdl_v of entity unisim.RB18_INTERNAL_VHDL [\RB18_INTERNAL_VHDL(bram_size=18...]
+Compiling architecture ramb18e1_v of entity unisim.RAMB18E1 [\RAMB18E1(init_a="000000000000",...]
+Compiling architecture ramb16_s9_v of entity unisim.RAMB16_S9 [\RAMB16_S9(0,11)(0,11)(1,11)(0,2...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=11)\]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=51,abits=11,dbits=...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=7,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=7,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=51,abits=7,dbit...]
+Compiling architecture behav of entity techmap.unisim_syncram_dp [\unisim_syncram_dp(abits=7,dbits...]
+Compiling architecture behav of entity techmap.unisim_syncram_2p [\unisim_syncram_2p(abits=7,dbits...]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(tech=51,abits=7,dbit...]
+Compiling architecture rb18_internal_vhdl_v of entity unisim.RB18_INTERNAL_VHDL [\RB18_INTERNAL_VHDL(bram_size=18...]
+Compiling architecture ramb18e1_v of entity unisim.RAMB18E1 [\RAMB18E1(read_width_a=18,sim_de...]
+Compiling architecture ramb16_s18_v of entity unisim.RAMB16_S18 [\RAMB16_S18(0,19)(0,19)(1,11)(0,...]
+Compiling architecture behav of entity techmap.unisim_syncram [\unisim_syncram(abits=10)\]
+Compiling architecture rtl of entity techmap.syncram [\syncram(tech=51,abits=10,dbits=...]
+Compiling architecture rtl of entity gaisler.cachemem [\cachemem(tech=51,icen=1,isets=2...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="leon3_0:_L...]
+Compiling architecture rtl of entity gaisler.leon3x [\leon3x(fabtech=51,memtech=51,ds...]
+Compiling architecture rtl of entity gaisler.leon3s [\leon3s(fabtech=51,memtech=51,ds...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="dsu3_2:_LE...]
+Compiling architecture rtl of entity gaisler.dsu3x [\dsu3x(hindex=2,tech=51,kbytes=2...]
+Compiling architecture rtl of entity gaisler.dsu3 [\dsu3(hindex=2,tech=51,kbytes=2)...]
+Compiling architecture bufg_v of entity unisim.BUFG [bufg_default]
+Compiling architecture rtl of entity techmap.clkbuf_xilinx [\clkbuf_xilinx(buftype=2)\]
+Compiling architecture rtl of entity techmap.techbuf [\techbuf(buftype=2,tech=51)\]
+Compiling architecture rtl of entity techmap.grdff [\grdff(tech=0)\]
+Compiling architecture rtl of entity techmap.grnand2 [\grnand2(tech=51)\]
+Compiling architecture rtl of entity gaisler.jtagcom2 [\jtagcom2(gatetech=51,isel=1)\]
+Compiling architecture rtl of entity grlib.ahbmst [\ahbmst(hindex=1,venid=1,devid=2...]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(1,5)\]
+Compiling architecture bscane2_v of entity unisim.BSCANE2 [\BSCANE2(jtag_chain=2)(1,5)\]
+Compiling architecture rtl of entity techmap.virtex7_tap [virtex7_tap_default]
+Compiling architecture rtl of entity techmap.tap [\tap(tech=51,irlen=6)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbjtag_AH...]
+Compiling architecture struct of entity gaisler.ahbjtag [\ahbjtag(tech=51,hindex=1)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="irqmp:_Mul...]
+Compiling architecture rtl of entity gaisler.irqmp [\irqmp(pindex=2,paddr=2)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="gptimer3:_...]
+Compiling architecture rtl of entity gaisler.gptimer [\gptimer(pindex=3,paddr=3,pirq=8...]
+Compiling architecture iobuf_v of entity unisim.IOBUF [\IOBUF(iostandard="LVCMOS18")(1,...]
+Compiling architecture rtl of entity techmap.unisim_iopad [\unisim_iopad(level=1,voltage=1)...]
+Compiling architecture rtl of entity techmap.iopad [\iopad(tech=51,level=1,voltage=1...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="grgpio8:_1...]
+Compiling architecture rtl of entity gaisler.grgpio [\grgpio(pindex=8,paddr=8)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="apbuart1:_...]
+Compiling architecture rtl of entity gaisler.apbuart [\apbuart(pindex=1,paddr=1,pirq=2...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbstat15:...]
+Compiling architecture rtl of entity gaisler.ahbstat [\ahbstat(pindex=15,paddr=15,pirq...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="ahbrom0:_3...]
+Compiling architecture rtl of entity work.ahbrom [\ahbrom(pipe=1)\]
+Compiling architecture ibuf_v of entity unisim.IBUF [\IBUF(iostandard="LVCMOS18")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_inpad [\unisim_inpad(level=1,voltage=1)...]
+Compiling architecture rtl of entity techmap.inpad [\inpad(tech=51,level=1,voltage=1...]
+Compiling architecture rtl of entity grlib.ahbctrl [\ahbctrl(rrobin=1,nahbm=2,nahbs=...]
+Compiling architecture obuf_v of entity unisim.OBUF [\OBUF(iostandard="LVCMOS33")(1,9...]
+Compiling architecture rtl of entity techmap.unisim_outpad [\unisim_outpad(level=1,voltage=3...]
+Compiling architecture rtl of entity techmap.outpad [\outpad(tech=51,level=1,voltage=...]
+Compiling architecture structure of entity work.leon3_zc702_stub [leon3_zc702_stub_default]
+Compiling architecture behav of entity techmap.generic_syncram_2p [\generic_syncram_2p(abits=1)\]
+Compiling architecture rtl of entity techmap.memrwcol [\memrwcol(techwrfst=0,techrwcol=...]
+Compiling architecture rtl of entity techmap.syncram_2p [\syncram_2p(abits=1,dbits=32)\]
+Compiling architecture rtl of entity gaisler.ahb2axib [\ahb2axib(hindex=3,wbuffer_num=2...]
+Compiling architecture rtl of entity gaisler.ahb2axi3b [\ahb2axi3b(hindex=3,wbuffer_num=...]
+Compiling architecture rtl of entity grlib.apbctrlx [\apbctrlx(hindex0=1,haddr0=2048,...]
+Compiling architecture struct of entity grlib.apbctrl [\apbctrl(hindex=1,haddr=2048,nsl...]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="testmod6:_...]
+Compiling architecture rtl of entity gaisler.ahbrep [\ahbrep(hindex=6,haddr=512)\]
+Compiling architecture beh of entity grlib.report_version [\report_version(msg1="LEON3_Xili...]
+Compiling architecture beh of entity grlib.report_design [\report_design(msg1="LEON3_Xilin...]
+Compiling architecture rtl of entity work.leon3mp [\leon3mp(fabtech=51,memtech=51,p...]
+Compiling architecture behav of entity work.testbench
+Built simulation snapshot testbench_behav

@@ -1,0 +1,36 @@
+source compile.synp
+add_file -vhdl -lib work rtl/ddr4ram.vhd
+add_file -vhdl -lib work rtl/axi_mig4_7series.vhd
+add_file -vhdl -lib work rtl/sgmii_kcu105.vhd
+add_file -vhdl -lib work config.vhd
+add_file -vhdl -lib work ahbrom.vhd
+add_file -vhdl -lib work noelvmp.vhd
+
+#implementation: "synplify"
+impl -add synplify
+
+#device options
+set_option -technology KintexU
+set_option -part xcku040
+set_option -speed_grade 2-e
+
+#compilation/mapping options
+set_option -use_fsm_explorer 0
+set_option -symbolic_fsm_compiler 0
+set_option -resource_sharing 0
+
+set_option -write_vhdl 1
+#set_option -disable_io_insertion 0
+
+#map options
+set_option -frequency 
+
+set_option -top_module noelvmp
+
+#set result format/file last
+project -result_file "synplify/noelvmp.edf"
+
+#implementation attributes
+set_option -package ffva1156
+
+impl -active "synplify"

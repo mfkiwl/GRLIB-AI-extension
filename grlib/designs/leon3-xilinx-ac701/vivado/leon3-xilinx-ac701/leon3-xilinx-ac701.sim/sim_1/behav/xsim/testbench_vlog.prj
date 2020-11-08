@@ -1,0 +1,9 @@
+# compile verilog/system verilog design source files
+verilog gaisler  \
+"../../../../../../../../lib/gaisler/ddr/mig_interface_model.v" \
+
+# compile glbl module
+verilog work "glbl.v"
+
+# Do not sort compile order
+nosort

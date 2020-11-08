@@ -1,0 +1,4 @@
+gen .srec
+sparc-gaisler-elf-gcc -O2 -g -msoft-float file.c -o file.exe
+sparc-gaisler-elf-objcopy -O srec file.exe file.srec
+

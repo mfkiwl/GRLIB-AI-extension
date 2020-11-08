@@ -1,0 +1,7 @@
+JDF B
+PROJECT noelvmp
+DESIGN noelvmp Normal
+DEVKIT xcku0402-effva1156
+ENTRY EDIF
+MODULE ./synplify/noelvmp.edf
+MODSTYLE noelvmp Normal

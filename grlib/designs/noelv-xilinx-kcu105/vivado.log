@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2020.1 (64-bit)
+# SW Build 2902540 on Wed May 27 19:54:35 MDT 2020
+# IP Build 2902112 on Wed May 27 22:43:36 MDT 2020
+# Start of session at: Wed Oct 21 00:58:27 2020
+# Process ID: 106961
+# Current directory: /home/march/tfm/grlib/designs/noelv-xilinx-kcu105
+# Command line: vivado
+# Log file: /home/march/tfm/grlib/designs/noelv-xilinx-kcu105/vivado.log
+# Journal file: /home/march/tfm/grlib/designs/noelv-xilinx-kcu105/vivado.jou
+#-----------------------------------------------------------
+start_gui
+exit
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 21 00:59:10 2020...

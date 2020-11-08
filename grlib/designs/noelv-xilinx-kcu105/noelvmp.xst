@@ -1,0 +1,13 @@
+set -tmpdir xst/projnav.tmp
+set -xsthdpdir xst
+run
+-opt_mode Speed
+-opt_level 2
+-fsm_extract no
+-iob true
+-ifn noelvmp_files.prj
+-bus_delimiter ()
+-ifmt mixed
+-p xcku040-ffva1156-2-e
+-top noelvmp
+-ofn noelvmp -define {XSTDUMMY } -sd ../../netlists/xilinx/kintexu

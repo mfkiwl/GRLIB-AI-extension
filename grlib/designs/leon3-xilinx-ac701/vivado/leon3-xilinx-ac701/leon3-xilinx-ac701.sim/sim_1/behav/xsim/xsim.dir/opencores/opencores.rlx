@@ -1,0 +1,7 @@
+0.7
+2020.1
+May 27 2020
+19:59:15
+/home/march/tfm/grlib/lib/opencores/i2c/i2c_master_bit_ctrl.vhd,1593541772,vhdl,,,,i2c_master_bit_ctrl,,,,,,,,
+/home/march/tfm/grlib/lib/opencores/i2c/i2c_master_byte_ctrl.vhd,1593541772,vhdl,,,,i2c_master_byte_ctrl,,,,,,,,
+/home/march/tfm/grlib/lib/opencores/i2c/i2coc.vhd,1593541772,vhdl,/home/march/tfm/grlib/lib/gaisler/i2c/i2cmst.vhd,,,i2coc,,,,,,,,

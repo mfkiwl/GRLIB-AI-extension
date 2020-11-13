@@ -56,6 +56,33 @@ architecture rtl of simd is
 		end if;
 	end;
 
+    --https://vhdlguru.blogspot.com/2010/03/vhdl-function-for-division-two-signed.html
+    function div_u(divident, divisor : signed; sign : std_logic) return std_logic_vector is
+        variable a1 : unsigned(VLEN-1 downto 0) := unsigned(divident);
+        variable b1 : unsigned(VLEN-1 downto 0) := unsigned(divisor);
+        variable p1 : unsigned(VLEN downto 0) := (others => '0');
+    begin
+        for i in 0 to VLEN-1 loop
+            p1(VLEN-1 downto 1) := p1(VLEN-2 downto 0);
+            p1(0) := a1(VLEN-1);
+            a1(VLEN-1 downto 1) := a1(VLEN-2 downto 0);
+            p1 := p1-b1;
+            if p1(VLEN) = '1' then
+                a1(0) := '0';
+                p1 := p1 + b1;
+            else 
+                a1(0) := '1';
+            end if;
+        end loop;
+        if sign = '0' then return std_logic_vector(a1);
+        else 
+            if ((divisor > 0) and (divident < 0)) or ((divisor < 0) and (divident > 0)) then
+                return std_logic_vector((-1)*signed(a1));
+            else return std_logic_vector(signed(a1));
+            end if;
+        end if;
+    end;
+
     ---------------------------------------------------------------
     -- CONSTANTS FOR OPERATIONS --
     --------------------------------------------------------------
@@ -229,16 +256,13 @@ architecture rtl of simd is
                 end loop;  
             when S1_DIV => --TODO error handling and exception
                 for i in 0 to (XLEN/VLEN)-1 loop
-					case sg is
-						when '0' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                   / unsigned(rb.data(VLEN*i+VLEN-1 downto VLEN*i)));
-						when '1' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                   / signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i)));
-                        when others => 
-                            rc.data <= ra.data;
-					end case;
+                    if rb.data(VLEN*i+VLEN-1 downto VLEN*i) = (VLEN => '0') then
+                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
+                            -- Error of some kind?
+                    else 
+                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= div_u(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
+                                                                      signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i)), sg);
+                    end if;
                 end loop;  
             when S1_MAX => 
                 for i in 0 to (XLEN/VLEN)-1 loop
@@ -280,11 +304,12 @@ architecture rtl of simd is
 	variable acc : std_logic_vector (XLEN-1 downto 0);
     begin
 		acc:=(others => '0');
+		acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 		case op is 
 			when S2_NOP => 
 				acc := ra.data;
 			when S2_SUM =>
-				for i in 0 to (XLEN/VLEN)-1 loop
+				for i in 1 to (XLEN/VLEN)-1 loop
 					case sg is 
 						when '0' =>
 							acc := std_logic_vector(resize(unsigned(acc) + unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)), acc'length));
@@ -295,7 +320,7 @@ architecture rtl of simd is
 					end case;
 				end loop;
 			when S2_MAX =>
-				for i in 0 to (XLEN/VLEN)-1 loop
+				for i in 1 to (XLEN/VLEN)-1 loop
 					case sg is 
 						when '0' =>
 							acc := std_logic_vector(resize(max_u(unsigned(acc(VLEN-1 downto 0)), unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));
@@ -306,7 +331,7 @@ architecture rtl of simd is
 					end case;
 				end loop;
 			when S2_MIN =>
-				for i in 0 to (XLEN/VLEN)-1 loop
+				for i in 1 to (XLEN/VLEN)-1 loop
 					case sg is 
 						when '0' =>
 							acc := std_logic_vector(resize(min_u(unsigned(acc(VLEN-1 downto 0)), unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));

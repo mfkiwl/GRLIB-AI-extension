@@ -55,26 +55,58 @@ begin
 
     clk <= not clk after 5 ns;
     process begin
+        --Test nop
         holdn <= '1';
         ra_i <= x"01020304";
         rb_i <= x"00010203";
         op_s1_i <= "000";
         op_s2_i <= "00";
         sign_i <= '1';
-        rc_we_i <= '1';
+        rc_we_i <= '0';
         rc_addr_i <= (others => '0');
         wait for 10 ns;
+        --Test ADD
         op_s1_i <= "001";
         op_s2_i <= "00";
+        rc_we_i <= '1';
         wait for 10 ns;
-        op_s1_i <= "000";
+        --Test Max i MAX signed
+        ra_i <= x"0204080A";
+        rb_i <= x"204080A0";
+        op_s1_i <= "101";
         op_s2_i <= "10";
         wait for 10 ns;
+        --Test Max i MAX unsigned
+        sign_i <= '0';
+        wait for 10 ns;
+        --Test Min i MIN unsigned
+        op_s1_i <= "110";
+        op_s2_i <= "11";
+        wait for 10 ns;
+        --Test Min i MIN signed
+        sign_i <= '1';
+        wait for 10 ns;
+        --Test dot product
+        ra_i <= x"01020304";
+        rb_i <= x"00010203";
         op_s1_i <= "011";
         op_s2_i <= "01";
         wait for 10 ns;
+        --Test Div
+        ra_i <= x"40404040";
+        rb_i <= x"01020040";
+        op_s1_i <= "100";
+        op_s2_i <= "00";
+        wait for 10 ns;
+        --Test sub
+        ra_i <= x"0A0A0A0A";
+        rb_i <= x"00050A0B";
+        op_s1_i <= "010";
+        op_s2_i <= "00";
+        wait for 10 ns;
 
-        wait for 40 ns;
+        
+        -- End
         assert false report "End of test";
         wait;
     end process;

@@ -14,8 +14,8 @@ entity simd is
             holdn : in  std_ulogic;
             ra_i  : in  std_logic_vector (XLEN-1 downto 0);
             rb_i  : in  std_logic_vector (XLEN-1 downto 0);
-            op_s1_i : in  std_logic_vector (2 downto 0);
-            op_s2_i : in  std_logic_vector (1 downto 0);
+            op_s1_i : in  std_logic_vector (3 downto 0);
+            op_s2_i : in  std_logic_vector (2 downto 0);
             sign_i  : in  std_logic;
             rc_we_i   : in std_logic;
             rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
@@ -31,43 +31,58 @@ architecture rtl of simd is
     ---------------------------------------------------------------
     -- AUXILIAR FUNCTIONS --
     --------------------------------------------------------------
-	function max_u(left, right: unsigned) return unsigned is
-	begin
-		if left > right then return left;
-		else return right;
-		end if;
-	end;
-	function max_s(left, right: signed) return signed is
-	begin
-		if left > right then return left;
-		else return right;
-		end if;
-	end;
-	function min_u(left, right: unsigned) return unsigned is
-	begin
-		if left < right then return left;
-		else return right;
-		end if;
-	end;
-	function min_s(left, right: signed) return signed is
-	begin
-		if left < right then return left;
-		else return right;
-		end if;
-	end;
+    function max(left, right : std_logic_vector; sign :std_logic) return std_logic_vector is
+    begin
+        if sign='1' and left(left'left)>right(right'left) then return right;
+        elsif sign='1' and left(left'left)<right(right'left) then return left;
+        end if;
+        if left > right then return left;
+        else return right;
+        end if;
+    end;
+
+    function min(left, right : std_logic_vector; sign :std_logic) return std_logic_vector is
+    begin
+        if sign='1' and left(left'left)<right(right'left) then return right;
+        elsif sign='1' and left(left'left)>right(right'left) then return left;
+        end if;
+        if left < right then return left;
+        else return right;
+        end if;
+    end;
+
+    function add(left, right : std_logic_vector; sign :std_logic; sat :std_logic) return std_logic_vector is
+        variable left1 : std_logic_vector(left'length downto 0) := (sign and left(left'left)) & left;
+        variable right1: std_logic_vector(right'length downto 0):= (sign and right(right'left)) & right;
+        constant U_MAX : std_logic_vector(left'length-1 downto 0) := (others => '1');
+        constant S_MAX : std_logic_vector(left'length downto 0) :=  "00" & (left1'left-2 downto 0 => '1');
+        constant S_MIN : std_logic_vector(left'length downto 0) :=  "11" & (left1'left-2 downto 0 => '0');
+    begin
+        left1 := std_logic_vector(unsigned(left1) + unsigned(right1));
+        if sat = '0' or (sign = '0' and left1(left1'left) = '0') then return left1(left1'left-1 downto 0);
+        end if;
+        if sign = '0' then 
+            return U_MAX;
+        else 
+            return max(min(S_MAX, left1,'1'), S_MIN, '1')(left'length-1 downto 0);
+        end if;
+    end;
+
 
     --https://vhdlguru.blogspot.com/2010/03/vhdl-function-for-division-two-signed.html
-    function div_u(divident, divisor : signed; sign : std_logic) return std_logic_vector is
-        variable a1 : unsigned(VLEN-1 downto 0) := unsigned(divident);
-        variable b1 : unsigned(VLEN-1 downto 0) := unsigned(divisor);
-        variable p1 : unsigned(VLEN downto 0) := (others => '0');
+    function div(divident, divisor : std_logic_vector; sign : std_logic) return std_logic_vector is
+        variable a1 : unsigned(divident'length-1 downto 0);
+        variable b1 : unsigned(divisor'length-1 downto 0);
+        variable p1 : unsigned(divident'length downto 0) := (others => '0');
     begin
-        for i in 0 to VLEN-1 loop
-            p1(VLEN-1 downto 1) := p1(VLEN-2 downto 0);
-            p1(0) := a1(VLEN-1);
-            a1(VLEN-1 downto 1) := a1(VLEN-2 downto 0);
+        a1 := unsigned(abs(signed(divident)));
+        b1 := unsigned(abs(signed(divisor)));
+        for i in 0 to divident'length-1 loop
+            p1(divident'length-1 downto 1) := p1(divident'length-2 downto 0);
+            p1(0) := a1(divident'length-1);
+            a1(divident'length-1 downto 1) := a1(divident'length-2 downto 0);
             p1 := p1-b1;
-            if p1(VLEN) = '1' then
+            if p1(divident'length) = '1' then
                 a1(0) := '0';
                 p1 := p1 + b1;
             else 
@@ -76,9 +91,9 @@ architecture rtl of simd is
         end loop;
         if sign = '0' then return std_logic_vector(a1);
         else 
-            if ((divisor > 0) and (divident < 0)) or ((divisor < 0) and (divident > 0)) then
-                return std_logic_vector((-1)*signed(a1));
-            else return std_logic_vector(signed(a1));
+            if ((divisor(divisor'left) = '0') and (divident(divident'left) = '1')) or ((divisor(divisor'left) = '1') and (divident(divident'left) = '0')) then
+                return std_logic_vector(not(a1)+1);
+            else return std_logic_vector(a1);
             end if;
         end if;
     end;
@@ -87,20 +102,29 @@ architecture rtl of simd is
     -- CONSTANTS FOR OPERATIONS --
     --------------------------------------------------------------
     --constants function operations stage1
-    constant S1_NOP : std_logic_vector (2 downto 0) := "000";
-    constant S1_ADD : std_logic_vector (2 downto 0) := "001";
-    constant S1_SUB : std_logic_vector (2 downto 0) := "010";
-    constant S1_MUL : std_logic_vector (2 downto 0) := "011";
-    constant S1_DIV : std_logic_vector (2 downto 0) := "100";
-    constant S1_MAX : std_logic_vector (2 downto 0) := "101";
-    constant S1_MIN : std_logic_vector (2 downto 0) := "110";
-    --constant S1_FREE : std_logic_vector (2 downto 0) := "111";
+    constant S1_NOP : std_logic_vector (3 downto 0) := "0000";
+    constant S1_ADD : std_logic_vector (3 downto 0) := "0001";
+    constant S1_SUB : std_logic_vector (3 downto 0) := "0010";
+    constant S1_MUL : std_logic_vector (3 downto 0) := "0011";
+    constant S1_DIV : std_logic_vector (3 downto 0) := "0100";
+    constant S1_MAX : std_logic_vector (3 downto 0) := "0101";
+    constant S1_MIN : std_logic_vector (3 downto 0) := "0110";
+    constant S1_AND : std_logic_vector (3 downto 0) := "0111";
+    constant S1_OR  : std_logic_vector (3 downto 0) := "1000";
+    constant S1_XOR : std_logic_vector (3 downto 0) := "1001";
+    constant S1_NAND: std_logic_vector (3 downto 0) := "1010";
+    constant S1_NOR : std_logic_vector (3 downto 0) := "1011";
+    constant S1_XNOR: std_logic_vector (3 downto 0) := "1100";
+    constant S1_SADD : std_logic_vector (3 downto 0) :="1101";
+    constant S1_SSUB : std_logic_vector (3 downto 0) :="1110";
+    constant S1_SMUL : std_logic_vector (3 downto 0) :="1111";
 
     --constants function operations stage2
-    constant S2_NOP : std_logic_vector (1 downto 0) := "00";
-    constant S2_SUM : std_logic_vector (1 downto 0) := "01";
-    constant S2_MAX : std_logic_vector (1 downto 0) := "10";
-    constant S2_MIN : std_logic_vector (1 downto 0) := "11";
+    constant S2_NOP : std_logic_vector (2 downto 0) := "000";
+    constant S2_SUM : std_logic_vector (2 downto 0) := "001";
+    constant S2_MAX : std_logic_vector (2 downto 0) := "010";
+    constant S2_MIN : std_logic_vector (2 downto 0) := "011";
+    constant S2_XOR : std_logic_vector (2 downto 0) := "100";
 
 
     ---------------------------------------------------------------
@@ -123,8 +147,8 @@ architecture rtl of simd is
     type s1_reg_type is record
         ra : operand_reg_type;
         rb : operand_reg_type;
-        op1: std_logic_vector(2 downto 0);
-        op2: std_logic_vector(1 downto 0);
+        op1: std_logic_vector(3 downto 0);
+        op2: std_logic_vector(2 downto 0);
         rc_addr : std_logic_vector (RSIZE-1 downto 0);
         sg : std_logic;
         we : std_logic;
@@ -133,7 +157,7 @@ architecture rtl of simd is
     -- Stage2 entry register
     type s2_reg_type is record
         ra : result_reg_type;
-        op2: std_logic_vector(1 downto 0);
+        op2: std_logic_vector(2 downto 0);
         sg : std_logic;
     end record;
 
@@ -205,28 +229,25 @@ architecture rtl of simd is
     ---------------------------------------------------------------
     -- TWO OPERANDS OPERATIONS (S1) --
     --------------------------------------------------------------
-    procedure stage1_ops(signal op : in std_logic_vector (2 downto 0);
+    procedure stage1_ops(signal op : in std_logic_vector (3 downto 0);
 						 signal sg : in std_logic;
                          signal ra : in operand_reg_type;
                          signal rb : in operand_reg_type;
 						 --exceptions or errors
                          signal rc : out result_reg_type) is
     begin
-        case op(2 downto 0) is
+        case op is
             when S1_NOP =>
                 rc.data <= ra.data;
             when S1_ADD => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-					case sg is
-						when '0' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(resize(unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                          + unsigned(rb.data(VLEN*i+VLEN-1 downto VLEN*i)),VLEN));
-						when '1' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(resize(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                          + signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i)),VLEN));
-                        when others => 
-                            rc.data <= ra.data;
-					end case;
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg,'0');
+                end loop;  
+            when S1_SADD => 
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg,'1');
                 end loop;  
             when S1_SUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
@@ -260,36 +281,32 @@ architecture rtl of simd is
                         rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
                             -- Error of some kind?
                     else 
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= div_u(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
-                                                                      signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i)), sg);
+                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= div(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
+                                                                    rb.data(VLEN*i+VLEN-1 downto VLEN*i), sg);
                     end if;
                 end loop;  
             when S1_MAX => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-					case sg is
-						when '0' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(max_u(unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
-																						   unsigned(rb.data(VLEN*i+VLEN-1 downto VLEN*i))));
-						when '1' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(max_s(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
-										   												   signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i))));
-                        when others => 
-                            rc.data <= ra.data;
-					end case;
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= max(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg);
                 end loop;  
             when S1_MIN => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-					case sg is
-						when '0' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(min_u(unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
-																						 unsigned(rb.data(VLEN*i+VLEN-1 downto VLEN*i))));
-						when '1' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(min_s(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)),
-																						 signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i))));
-                        when others => 
-                            rc.data <= ra.data;
-					end case;
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= min(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg);
                 end loop;  
+            when S1_AND => 
+				rc.data <= ra.data and rb.data;
+            when S1_OR  => 
+				rc.data <= ra.data or rb.data;
+            when S1_XOR  => 
+				rc.data <= ra.data xor rb.data;
+            when S1_NAND => 
+				rc.data <= ra.data nand rb.data;
+            when S1_NOR  => 
+				rc.data <= ra.data nor rb.data;
+            when S1_XNOR  => 
+				rc.data <= ra.data xnor rb.data;
 			when others =>
         end case;
     end procedure stage1_ops;
@@ -297,49 +314,40 @@ architecture rtl of simd is
     ---------------------------------------------------------------
     -- REDUCTION OPERATIONS (S2) --
     --------------------------------------------------------------
-    procedure stage2_ops(signal op : in std_logic_vector (1 downto 0);
+    procedure stage2_ops(signal op : in std_logic_vector (2 downto 0);
 						 signal ra : in result_reg_type; 
 	                     signal sg : in std_logic;
 						 signal rc : out result_reg_type) is 
 	variable acc : std_logic_vector (XLEN-1 downto 0);
     begin
-		acc:=(others => '0');
-		acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 		case op is 
 			when S2_NOP => 
 				acc := ra.data;
 			when S2_SUM =>
+                acc(XLEN-1 downto VLEN) := (others => (sg and ra.data(VLEN-1)));
+                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 				for i in 1 to (XLEN/VLEN)-1 loop
-					case sg is 
-						when '0' =>
-							acc := std_logic_vector(resize(unsigned(acc) + unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)), acc'length));
-						when '1' =>
-							acc := std_logic_vector(resize(signed(acc) + signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)), acc'length));
-                        when others => 
-                            acc := ra.data;
-					end case;
+					acc := add(acc, (XLEN-1 downto VLEN => (sg and ra.data(VLEN*i+VLEN-1))) & ra.data(VLEN*i+VLEN-1 downto VLEN*i), sg, '0');
 				end loop;
 			when S2_MAX =>
+                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 				for i in 1 to (XLEN/VLEN)-1 loop
-					case sg is 
-						when '0' =>
-							acc := std_logic_vector(resize(max_u(unsigned(acc(VLEN-1 downto 0)), unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));
-						when '1' =>
-							acc := std_logic_vector(resize(max_s(signed(acc(VLEN-1 downto 0)), signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));
-                        when others => 
-                            acc := ra.data;
-					end case;
+                    acc(VLEN-1 downto 0) :=   max(acc(VLEN-1 downto 0),
+                                                  ra.data(VLEN*i+VLEN-1 downto VLEN*i),sg);
 				end loop;
+                acc(XLEN-1 downto VLEN) := (others => (sg and acc(VLEN-1)));
 			when S2_MIN =>
+                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 				for i in 1 to (XLEN/VLEN)-1 loop
-					case sg is 
-						when '0' =>
-							acc := std_logic_vector(resize(min_u(unsigned(acc(VLEN-1 downto 0)), unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));
-						when '1' =>
-							acc := std_logic_vector(resize(min_s(signed(acc(VLEN-1 downto 0)), signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i))), acc'length));
-                        when others => 
-                            acc := ra.data;
-					end case;
+                    acc(VLEN-1 downto 0) :=   min(acc(VLEN-1 downto 0),
+                                                  ra.data(VLEN*i+VLEN-1 downto VLEN*i),sg);
+				end loop;
+                acc(XLEN-1 downto VLEN) := (others => (sg and acc(VLEN-1)));
+			when S2_XOR =>
+                acc(XLEN-1 downto VLEN) := (others => '0');
+                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
+				for i in 1 to (XLEN/VLEN)-1 loop
+				    acc(VLEN-1 downto 0) := acc(VLEN-1 downto 0) xor ra.data(VLEN*i+VLEN-1 downto VLEN*i);
 				end loop;
 			when others =>
 		end case;
@@ -371,8 +379,8 @@ architecture rtl of simd is
 
     procedure input_to_stage1( signal ra  : in  std_logic_vector (XLEN-1 downto 0);
                                signal rb  : in  std_logic_vector (XLEN-1 downto 0);
-                               signal op_s1 : in  std_logic_vector (2 downto 0);
-                               signal op_s2 : in  std_logic_vector (1 downto 0);
+                               signal op_s1 : in  std_logic_vector (3 downto 0);
+                               signal op_s2 : in  std_logic_vector (2 downto 0);
                                signal sign  : in  std_logic;
                                signal rc_we   : in std_logic;
                                signal rc_addr : in std_logic_vector (RSIZE-1 downto 0);

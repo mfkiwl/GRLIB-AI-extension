@@ -17,8 +17,8 @@ architecture tests of simd_test is
             holdn : in  std_ulogic;
             ra_i  : in  std_logic_vector (XLEN-1 downto 0);
             rb_i  : in  std_logic_vector (XLEN-1 downto 0);
-            op_s1_i : in  std_logic_vector (2 downto 0);
-            op_s2_i : in  std_logic_vector (1 downto 0);
+            op_s1_i : in  std_logic_vector (3 downto 0);
+            op_s2_i : in  std_logic_vector (2 downto 0);
             sign_i  : in  std_logic;
             rc_we_i   : in std_logic;
             rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
@@ -33,8 +33,8 @@ architecture tests of simd_test is
     signal sign_i, rc_we_i, rc_we_o : std_logic;
     signal ra_i, rb_i, rc_data_o : std_logic_vector(31 downto 0);
     signal rc_addr_i, rc_addr_o : std_logic_vector(4 downto 0) := "00000";
-    signal op_s1_i : std_logic_vector(2 downto 0);
-    signal op_s2_i : std_logic_vector(1 downto 0);
+    signal op_s1_i : std_logic_vector(3 downto 0);
+    signal op_s2_i : std_logic_vector(2 downto 0);
 
 begin
     simd_module : simd port map (   clk   => clk,
@@ -59,50 +59,107 @@ begin
         holdn <= '1';
         ra_i <= x"01020304";
         rb_i <= x"00010203";
-        op_s1_i <= "000";
-        op_s2_i <= "00";
+        --rc = ra;
+        op_s1_i <= "0000";
+        op_s2_i <= "000";
         sign_i <= '1';
         rc_we_i <= '0';
         rc_addr_i <= (others => '0');
         wait for 10 ns;
+
         --Test ADD
-        op_s1_i <= "001";
-        op_s2_i <= "00";
+        op_s1_i <= "0001";
+        op_s2_i <= "000";
+        --rc = x01030507
         rc_we_i <= '1';
         wait for 10 ns;
+
+        --Test SADD 
+        ra_i <= x"8180FF01";
+        rb_i <= x"81FF7F7F";
+        op_s1_i <= "1101";
+        op_s2_i <= "000";
+        --rc = x  80807E7F
+        rc_we_i <= '1';
+        wait for 10 ns;
+
+        --Test SUB
+        ra_i <= x"0A0A0A0A";
+        rb_i <= x"00050A0B";
+        --rc = x0A0500FF
+        op_s1_i <= "0010";
+        op_s2_i <= "000";
+        wait for 10 ns;
+
         --Test Max i MAX signed
         ra_i <= x"0204080A";
         rb_i <= x"204080A0";
-        op_s1_i <= "101";
-        op_s2_i <= "10";
+        --rc = x00000040
+        op_s1_i <= "0101";
+        op_s2_i <= "010";
         wait for 10 ns;
+
         --Test Max i MAX unsigned
+        --rc = x000000A0
         sign_i <= '0';
         wait for 10 ns;
+
         --Test Min i MIN unsigned
-        op_s1_i <= "110";
-        op_s2_i <= "11";
+        --rc = x00000002
+        op_s1_i <= "0110";
+        op_s2_i <= "011";
         wait for 10 ns;
+
         --Test Min i MIN signed
+        --rc = xFFFFFF80
         sign_i <= '1';
         wait for 10 ns;
-        --Test dot product
+
+        --Test dot product (MUL i SUM) pos
         ra_i <= x"01020304";
         rb_i <= x"00010203";
-        op_s1_i <= "011";
-        op_s2_i <= "01";
+        --rc = x00000014
+        op_s1_i <= "0011";
+        op_s2_i <= "001";
         wait for 10 ns;
-        --Test Div
+
+        --Test dot product (MUL i SUM) neg
+        ra_i <= x"FFFE03FC";
+        rb_i <= x"00FF0203";
+        --rc = xFFFFFFFC
+        op_s1_i <= "0011";
+        op_s2_i <= "001";
+        wait for 10 ns;
+
+        --Test DIV pos 
         ra_i <= x"40404040";
         rb_i <= x"01020040";
-        op_s1_i <= "100";
-        op_s2_i <= "00";
+        --rc_0 = x"4020FF01"
+        op_s1_i <= "0100";
+        op_s2_i <= "000";
         wait for 10 ns;
-        --Test sub
-        ra_i <= x"0A0A0A0A";
-        rb_i <= x"00050A0B";
-        op_s1_i <= "010";
-        op_s2_i <= "00";
+
+        --Test DIV neg 
+        ra_i <= x"F6F6F6F6";
+        rb_i <= x"0102FF0A";
+        --rc = x"F6FB0AFF"
+        op_s1_i <= "0100";
+        op_s2_i <= "000";
+        wait for 10 ns;
+
+        --Test NAND (a nand a = !a)
+        ra_i <= x"DEADBEAF";
+        rb_i <= x"DEADBEAF";
+        --rc = x21524150
+        op_s1_i <= "1010";
+        op_s2_i <= "000";
+        wait for 10 ns;
+
+        --Test XOR reduction
+        ra_i <= x"FEEDCAFE";
+        --rc = x00000027
+        op_s1_i <= "0000";
+        op_s2_i <= "100";
         wait for 10 ns;
 
         

@@ -53,7 +53,7 @@ begin
                                     rc_addr_o => rc_addr_o
                                 );
 
-    clk <= not clk after 5 ns;
+    clk <= not clk after 5 ps;
     process begin
         --Test nop
         holdn <= '1';
@@ -65,14 +65,14 @@ begin
         sign_i <= '1';
         rc_we_i <= '0';
         rc_addr_i <= (others => '0');
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test ADD
         op_s1_i <= "0001";
         op_s2_i <= "000";
         --rc = x01030507
         rc_we_i <= '1';
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test SADD 
         ra_i <= x"8180FF01";
@@ -81,7 +81,7 @@ begin
         op_s2_i <= "000";
         --rc = x  80807E7F
         rc_we_i <= '1';
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test SUB
         ra_i <= x"0A0A0A0A";
@@ -89,7 +89,7 @@ begin
         --rc = x0A0500FF
         op_s1_i <= "0010";
         op_s2_i <= "000";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test Max i MAX signed
         ra_i <= x"0204080A";
@@ -97,23 +97,23 @@ begin
         --rc = x00000040
         op_s1_i <= "0101";
         op_s2_i <= "010";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test Max i MAX unsigned
         --rc = x000000A0
         sign_i <= '0';
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test Min i MIN unsigned
         --rc = x00000002
         op_s1_i <= "0110";
         op_s2_i <= "011";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test Min i MIN signed
         --rc = xFFFFFF80
         sign_i <= '1';
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test dot product (MUL i SUM) pos
         ra_i <= x"01020304";
@@ -121,7 +121,7 @@ begin
         --rc = x00000014
         op_s1_i <= "0011";
         op_s2_i <= "001";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test dot product (MUL i SUM) neg
         ra_i <= x"FFFE03FC";
@@ -129,7 +129,7 @@ begin
         --rc = xFFFFFFFC
         op_s1_i <= "0011";
         op_s2_i <= "001";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test DIV pos 
         ra_i <= x"40404040";
@@ -137,7 +137,7 @@ begin
         --rc_0 = x"4020FF01"
         op_s1_i <= "0100";
         op_s2_i <= "000";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test DIV neg 
         ra_i <= x"F6F6F6F6";
@@ -145,7 +145,7 @@ begin
         --rc = x"F6FB0AFF"
         op_s1_i <= "0100";
         op_s2_i <= "000";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test NAND (a nand a = !a)
         ra_i <= x"DEADBEAF";
@@ -153,14 +153,14 @@ begin
         --rc = x21524150
         op_s1_i <= "1010";
         op_s2_i <= "000";
-        wait for 10 ns;
+        wait for 10 ps;
 
         --Test XOR reduction
         ra_i <= x"FEEDCAFE";
         --rc = x00000027
         op_s1_i <= "0000";
         op_s2_i <= "100";
-        wait for 10 ns;
+        wait for 45 ps;
 
         
         -- End

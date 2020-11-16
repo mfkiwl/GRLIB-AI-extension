@@ -70,24 +70,34 @@ begin
         --Test ADD
         op_s1_i <= "0001";
         op_s2_i <= "000";
-        --rc = x01030507
+        ra_i <= x"01020304";
+        rb_i <= x"00010203";
+        --rc =   x01030507
         rc_we_i <= '1';
         wait for 10 ps;
 
         --Test SADD 
         ra_i <= x"8180FF01";
         rb_i <= x"81FF7F7F";
+        --rc =   x80807E7F
         op_s1_i <= "1101";
         op_s2_i <= "000";
-        --rc = x  80807E7F
         rc_we_i <= '1';
         wait for 10 ps;
 
         --Test SUB
         ra_i <= x"0A0A0A0A";
         rb_i <= x"00050A0B";
-        --rc = x0A0500FF
+        --rc =   x0A0500FF
         op_s1_i <= "0010";
+        op_s2_i <= "000";
+        wait for 10 ps;
+
+        --Test SSUB
+        ra_i <= x"807F0AFB";
+        rb_i <= x"05FFFB0A";
+        --rc =   x807F0FF1
+        op_s1_i <= "1110";
         op_s2_i <= "000";
         wait for 10 ps;
 
@@ -118,7 +128,7 @@ begin
         --Test dot product (MUL i SUM) pos
         ra_i <= x"01020304";
         rb_i <= x"00010203";
-        --rc = x00000014
+        --rc =   x00000014
         op_s1_i <= "0011";
         op_s2_i <= "001";
         wait for 10 ps;
@@ -126,7 +136,7 @@ begin
         --Test dot product (MUL i SUM) neg
         ra_i <= x"FFFE03FC";
         rb_i <= x"00FF0203";
-        --rc = xFFFFFFFC
+        --rc =   xFFFFFFFC
         op_s1_i <= "0011";
         op_s2_i <= "001";
         wait for 10 ps;
@@ -134,7 +144,7 @@ begin
         --Test DIV pos 
         ra_i <= x"40404040";
         rb_i <= x"01020040";
-        --rc_0 = x"4020FF01"
+        --rc_0  x"4020FF01"
         op_s1_i <= "0100";
         op_s2_i <= "000";
         wait for 10 ps;
@@ -142,7 +152,7 @@ begin
         --Test DIV neg 
         ra_i <= x"F6F6F6F6";
         rb_i <= x"0102FF0A";
-        --rc = x"F6FB0AFF"
+        --rc =  x"F6FB0AFF"
         op_s1_i <= "0100";
         op_s2_i <= "000";
         wait for 10 ps;
@@ -150,7 +160,7 @@ begin
         --Test NAND (a nand a = !a)
         ra_i <= x"DEADBEAF";
         rb_i <= x"DEADBEAF";
-        --rc = x21524150
+        --rc =   x21524150
         op_s1_i <= "1010";
         op_s2_i <= "000";
         wait for 10 ps;

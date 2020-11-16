@@ -68,6 +68,23 @@ architecture rtl of simd is
         end if;
     end;
 
+    function sub(left, right : std_logic_vector; sign :std_logic; sat :std_logic) return std_logic_vector is
+        variable left1 : std_logic_vector(left'length downto 0) := (sign and left(left'left)) & left;
+        variable right1: std_logic_vector(right'length downto 0):= (sign and right(right'left)) & right;
+        constant U_MIN : std_logic_vector(left'length-1 downto 0) := (others => '0');
+        constant S_MAX : std_logic_vector(left'length downto 0) :=  "00" & (left1'left-2 downto 0 => '1');
+        constant S_MIN : std_logic_vector(left'length downto 0) :=  "11" & (left1'left-2 downto 0 => '0');
+    begin
+        left1 := std_logic_vector(unsigned(left1) - unsigned(right1));
+        if sat = '0' or (sign = '0' and left1(left1'left) = '0') then return left1(left1'left-1 downto 0);
+        end if;
+        if sign = '0' then 
+            return U_MIN;
+        else 
+            return max(min(S_MAX, left1,'1'), S_MIN, '1')(left'length-1 downto 0);
+        end if;
+    end;
+
 
     --https://vhdlguru.blogspot.com/2010/03/vhdl-function-for-division-two-signed.html
     function div(divident, divisor : std_logic_vector; sign : std_logic) return std_logic_vector is
@@ -251,16 +268,13 @@ architecture rtl of simd is
                 end loop;  
             when S1_SUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-					case sg is
-						when '0' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(resize(unsigned(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                          - unsigned(rb.data(VLEN*i+VLEN-1 downto VLEN*i)),VLEN));
-						when '1' => 
-							rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= std_logic_vector(resize(signed(ra.data(VLEN*i+VLEN-1 downto VLEN*i)) 
-																                          - signed(rb.data(VLEN*i+VLEN-1 downto VLEN*i)),VLEN));
-                        when others => 
-                            rc.data <= ra.data;
-					end case;
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg,'0');
+                end loop;  
+            when S1_SSUB => 
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
+                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i),sg,'1');
                 end loop;  
             when S1_MUL => --TODO error handling and exception
                 for i in 0 to (XLEN/VLEN)-1 loop

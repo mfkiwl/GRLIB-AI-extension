@@ -1,0 +1,214 @@
+
+simd_test.o:     file format elf32-sparc
+
+
+Disassembly of section .text:
+
+00000000 <main>:
+   0:	9d e3 bf 90 	save  %sp, -112, %sp
+   4:	03 00 40 80 	sethi  %hi(0x1020000), %g1
+   8:	82 10 63 04 	or  %g1, 0x304, %g1	! 1020304 <main+0x1020304>
+   c:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+  10:	03 00 00 40 	sethi  %hi(0x10000), %g1
+  14:	82 10 62 03 	or  %g1, 0x203, %g1	! 10203 <main+0x10203>
+  18:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+  1c:	03 00 00 00 	sethi  %hi(0), %g1
+  20:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+  24:	40 00 00 00 	call  24 <main+0x24>
+  28:	01 00 00 00 	nop 
+  2c:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+  30:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+  34:	82 00 80 01 	add  %g2, %g1, %g1
+  38:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+  3c:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+  40:	03 00 00 00 	sethi  %hi(0), %g1
+  44:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+  48:	40 00 00 00 	call  48 <main+0x48>
+  4c:	01 00 00 00 	nop 
+  50:	03 20 60 3f 	sethi  %hi(0x8180fc00), %g1
+  54:	82 10 63 01 	or  %g1, 0x301, %g1	! 8180ff01 <main+0x8180ff01>
+  58:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+  5c:	03 20 7f df 	sethi  %hi(0x81ff7c00), %g1
+  60:	82 10 63 7f 	or  %g1, 0x37f, %g1	! 81ff7f7f <main+0x81ff7f7f>
+  64:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+  68:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+  6c:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+  70:	82 00 80 01 	add  %g2, %g1, %g1
+  74:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+  78:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+  7c:	03 00 00 00 	sethi  %hi(0), %g1
+  80:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+  84:	40 00 00 00 	call  84 <main+0x84>
+  88:	01 00 00 00 	nop 
+  8c:	03 02 82 82 	sethi  %hi(0xa0a0800), %g1
+  90:	82 10 62 0a 	or  %g1, 0x20a, %g1	! a0a0a0a <main+0xa0a0a0a>
+  94:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+  98:	03 00 01 42 	sethi  %hi(0x50800), %g1
+  9c:	82 10 62 0b 	or  %g1, 0x20b, %g1	! 50a0b <main+0x50a0b>
+  a0:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+  a4:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+  a8:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+  ac:	82 20 80 01 	sub  %g2, %g1, %g1
+  b0:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+  b4:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+  b8:	03 00 00 00 	sethi  %hi(0), %g1
+  bc:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+  c0:	40 00 00 00 	call  c0 <main+0xc0>
+  c4:	01 00 00 00 	nop 
+  c8:	03 20 1f c2 	sethi  %hi(0x807f0800), %g1
+  cc:	82 10 62 fb 	or  %g1, 0x2fb, %g1	! 807f0afb <main+0x807f0afb>
+  d0:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+  d4:	03 01 7f fe 	sethi  %hi(0x5fff800), %g1
+  d8:	82 10 63 0a 	or  %g1, 0x30a, %g1	! 5fffb0a <main+0x5fffb0a>
+  dc:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+  e0:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+  e4:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+  e8:	82 20 80 01 	sub  %g2, %g1, %g1
+  ec:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+  f0:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+  f4:	03 00 00 00 	sethi  %hi(0), %g1
+  f8:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+  fc:	40 00 00 00 	call  fc <main+0xfc>
+ 100:	01 00 00 00 	nop 
+ 104:	03 00 81 02 	sethi  %hi(0x2040800), %g1
+ 108:	82 10 60 0a 	or  %g1, 0xa, %g1	! 204080a <main+0x204080a>
+ 10c:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 110:	03 08 10 20 	sethi  %hi(0x20408000), %g1
+ 114:	82 10 60 a0 	or  %g1, 0xa0, %g1	! 204080a0 <main+0x204080a0>
+ 118:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+ 11c:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 120:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 124:	82 20 80 01 	sub  %g2, %g1, %g1
+ 128:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 12c:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 130:	03 00 00 00 	sethi  %hi(0), %g1
+ 134:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 138:	40 00 00 00 	call  138 <main+0x138>
+ 13c:	01 00 00 00 	nop 
+ 140:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 144:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 148:	82 20 80 01 	sub  %g2, %g1, %g1
+ 14c:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 150:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 154:	03 00 00 00 	sethi  %hi(0), %g1
+ 158:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 15c:	40 00 00 00 	call  15c <main+0x15c>
+ 160:	01 00 00 00 	nop 
+ 164:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 168:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 16c:	82 20 80 01 	sub  %g2, %g1, %g1
+ 170:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 174:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 178:	03 00 00 00 	sethi  %hi(0), %g1
+ 17c:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 180:	40 00 00 00 	call  180 <main+0x180>
+ 184:	01 00 00 00 	nop 
+ 188:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 18c:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 190:	82 20 80 01 	sub  %g2, %g1, %g1
+ 194:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 198:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 19c:	03 00 00 00 	sethi  %hi(0), %g1
+ 1a0:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 1a4:	40 00 00 00 	call  1a4 <main+0x1a4>
+ 1a8:	01 00 00 00 	nop 
+ 1ac:	03 00 40 80 	sethi  %hi(0x1020000), %g1
+ 1b0:	82 10 63 04 	or  %g1, 0x304, %g1	! 1020304 <main+0x1020304>
+ 1b4:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 1b8:	03 00 00 40 	sethi  %hi(0x10000), %g1
+ 1bc:	82 10 62 03 	or  %g1, 0x203, %g1	! 10203 <main+0x10203>
+ 1c0:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+ 1c4:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 1c8:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 1cc:	82 58 80 01 	smul  %g2, %g1, %g1
+ 1d0:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 1d4:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 1d8:	03 00 00 00 	sethi  %hi(0), %g1
+ 1dc:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 1e0:	40 00 00 00 	call  1e0 <main+0x1e0>
+ 1e4:	01 00 00 00 	nop 
+ 1e8:	03 3f ff 80 	sethi  %hi(0xfffe0000), %g1
+ 1ec:	82 10 63 fc 	or  %g1, 0x3fc, %g1	! fffe03fc <main+0xfffe03fc>
+ 1f0:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 1f4:	03 00 3f c0 	sethi  %hi(0xff0000), %g1
+ 1f8:	82 10 62 03 	or  %g1, 0x203, %g1	! ff0203 <main+0xff0203>
+ 1fc:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+ 200:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 204:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 208:	82 58 80 01 	smul  %g2, %g1, %g1
+ 20c:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 210:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 214:	03 00 00 00 	sethi  %hi(0), %g1
+ 218:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 21c:	40 00 00 00 	call  21c <main+0x21c>
+ 220:	01 00 00 00 	nop 
+ 224:	03 10 10 10 	sethi  %hi(0x40404000), %g1
+ 228:	82 10 60 40 	or  %g1, 0x40, %g1	! 40404040 <main+0x40404040>
+ 22c:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 230:	03 00 40 80 	sethi  %hi(0x1020000), %g1
+ 234:	82 10 60 40 	or  %g1, 0x40, %g1	! 1020040 <main+0x1020040>
+ 238:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+ 23c:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+ 240:	85 38 60 1f 	sra  %g1, 0x1f, %g2
+ 244:	81 80 a0 00 	wr  %g2, %y
+ 248:	c4 07 bf f8 	ld  [ %fp + -8 ], %g2
+ 24c:	01 00 00 00 	nop 
+ 250:	01 00 00 00 	nop 
+ 254:	82 78 40 02 	sdiv  %g1, %g2, %g1
+ 258:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 25c:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 260:	03 00 00 00 	sethi  %hi(0), %g1
+ 264:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 268:	40 00 00 00 	call  268 <main+0x268>
+ 26c:	01 00 00 00 	nop 
+ 270:	03 3d bd bd 	sethi  %hi(0xf6f6f400), %g1
+ 274:	82 10 62 f6 	or  %g1, 0x2f6, %g1	! f6f6f6f6 <main+0xf6f6f6f6>
+ 278:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 27c:	03 00 40 bf 	sethi  %hi(0x102fc00), %g1
+ 280:	82 10 63 0a 	or  %g1, 0x30a, %g1	! 102ff0a <main+0x102ff0a>
+ 284:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+ 288:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+ 28c:	85 38 60 1f 	sra  %g1, 0x1f, %g2
+ 290:	81 80 a0 00 	wr  %g2, %y
+ 294:	c4 07 bf f8 	ld  [ %fp + -8 ], %g2
+ 298:	01 00 00 00 	nop 
+ 29c:	01 00 00 00 	nop 
+ 2a0:	82 78 40 02 	sdiv  %g1, %g2, %g1
+ 2a4:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 2a8:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 2ac:	03 00 00 00 	sethi  %hi(0), %g1
+ 2b0:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 2b4:	40 00 00 00 	call  2b4 <main+0x2b4>
+ 2b8:	01 00 00 00 	nop 
+ 2bc:	03 37 ab 6f 	sethi  %hi(0xdeadbc00), %g1
+ 2c0:	82 10 62 af 	or  %g1, 0x2af, %g1	! deadbeaf <main+0xdeadbeaf>
+ 2c4:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 2c8:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+ 2cc:	82 38 00 01 	xnor  %g0, %g1, %g1
+ 2d0:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 2d4:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 2d8:	03 00 00 00 	sethi  %hi(0), %g1
+ 2dc:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 2e0:	40 00 00 00 	call  2e0 <main+0x2e0>
+ 2e4:	01 00 00 00 	nop 
+ 2e8:	03 3f bb 72 	sethi  %hi(0xfeedc800), %g1
+ 2ec:	82 10 62 fe 	or  %g1, 0x2fe, %g1	! feedcafe <main+0xfeedcafe>
+ 2f0:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+ 2f4:	c4 07 bf fc 	ld  [ %fp + -4 ], %g2
+ 2f8:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+ 2fc:	82 58 80 01 	smul  %g2, %g1, %g1
+ 300:	c2 27 bf f4 	st  %g1, [ %fp + -12 ]
+ 304:	d2 07 bf f4 	ld  [ %fp + -12 ], %o1
+ 308:	03 00 00 00 	sethi  %hi(0), %g1
+ 30c:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 310:	40 00 00 00 	call  310 <main+0x310>
+ 314:	01 00 00 00 	nop 
+ 318:	03 00 00 00 	sethi  %hi(0), %g1
+ 31c:	90 10 60 00 	mov  %g1, %o0	! 0 <main>
+ 320:	40 00 00 00 	call  320 <main+0x320>
+ 324:	01 00 00 00 	nop 
+ 328:	82 10 20 00 	clr  %g1	! 0 <main>
+ 32c:	b0 10 00 01 	mov  %g1, %i0
+ 330:	81 e8 00 00 	restore 
+ 334:	81 c3 e0 08 	retl 
+ 338:	01 00 00 00 	nop 

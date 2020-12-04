@@ -122,6 +122,8 @@ set_global_assignment -name VHDL_FILE ../../lib/eth/core/greth_tx.vhd -library e
 set_global_assignment -name VHDL_FILE ../../lib/eth/core/greth_rx.vhd -library eth
 set_global_assignment -name VHDL_FILE ../../lib/eth/core/grethc.vhd -library eth
 set_global_assignment -name VHDL_FILE ../../lib/eth/wrapper/greth_gen.vhd -library eth
+set_global_assignment -name VHDL_FILE ../../lib/opencores/can/cancomp.vhd -library opencores
+set_global_assignment -name VHDL_FILE ../../lib/opencores/can/can_top.vhd -library opencores
 set_global_assignment -name VHDL_FILE ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd -library opencores
 set_global_assignment -name VHDL_FILE ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd -library opencores
 set_global_assignment -name VHDL_FILE ../../lib/opencores/i2c/i2coc.vhd -library opencores
@@ -189,6 +191,12 @@ set_global_assignment -name VHDL_FILE ../../lib/gaisler/irqmp/irqmp.vhd -library
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/irqmp/irqamp.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/irqmp/irqmp_bmode.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/l2cache/pkg/l2cache.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/can.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/can_mod.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/can_oc.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/can_mc.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/canmux.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/can/can_rd.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/axi/axi.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/axi/ahbm2axi.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/axi/ahbm2axi3.vhd -library gaisler
@@ -224,6 +232,15 @@ set_global_assignment -name VHDL_FILE ../../lib/gaisler/misc/ahbsmux.vhd -librar
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/misc/ahbmmux.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/misc/grtachom.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/net/net.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/pci.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/pcipads.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/pcilib2.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/grpci2.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/uart/uart.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/uart/libdcom.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/uart/apbuart.vhd -library gaisler
@@ -258,6 +275,7 @@ set_global_assignment -name VHDL_FILE ../../lib/gaisler/greth/adapters/sgmii.vhd
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/greth/adapters/elastic_buffer.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/greth/adapters/word_aligner.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/gaisler/spacewire/spacewire.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/spacefibre/spacefibre.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/ddr/ddrpkg.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/ddr/ddrintpkg.vhd -library gaisler
@@ -351,8 +369,14 @@ set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/tbufmem5.vhd -li
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/dbgmod5.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/irqmp5.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/leon5sys.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/marcmod/simd/simdmod.vhd -library marcmod
+set_global_assignment -name VHDL_FILE ../../lib/marcmod/simd/simd.vhd -library marcmod
 set_global_assignment -name VHDL_FILE ../../lib/esa/memoryctrl/memoryctrl.vhd -library esa
 set_global_assignment -name VHDL_FILE ../../lib/esa/memoryctrl/mctrl.vhd -library esa
+set_global_assignment -name VHDL_FILE ../../lib/esa/pci/pcicomp.vhd -library esa
+set_global_assignment -name VHDL_FILE ../../lib/esa/pci/pci_arb_pkg.vhd -library esa
+set_global_assignment -name VHDL_FILE ../../lib/esa/pci/pci_arb.vhd -library esa
+set_global_assignment -name VHDL_FILE ../../lib/esa/pci/pciarb.vhd -library esa
 set_global_assignment -name VHDL_FILE config.vhd
 set_global_assignment -name VHDL_FILE ahbrom.vhd
 set_global_assignment -name VHDL_FILE leon3mp.vhd

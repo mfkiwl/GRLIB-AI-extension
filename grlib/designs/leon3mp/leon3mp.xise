@@ -636,6 +636,16 @@
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="eth"/>
     </file>
+    <file xil_pn:name="../../lib/opencores/can/cancomp.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="opencores"/>
+    </file>
+    <file xil_pn:name="../../lib/opencores/can/can_top.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="opencores"/>
+    </file>
     <file xil_pn:name="../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -971,6 +981,36 @@
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="gaisler"/>
     </file>
+    <file xil_pn:name="../../lib/gaisler/can/can.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/can/can_mod.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/can/can_oc.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/can/can_mc.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/can/canmux.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/can/can_rd.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
     <file xil_pn:name="../../lib/gaisler/axi/axi.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -1144,6 +1184,67 @@
     <file xil_pn:name="../../lib/gaisler/net/net.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/pci.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/pcipads.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/pcilib2.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/grpci2_phy.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/grpci2.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/ptf/pt_pkg.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/ptf/pt_pci_master.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/ptf/pt_pci_target.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/pci/ptf/pt_pci_arb.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
       <library xil_pn:name="gaisler"/>
     </file>
     <file xil_pn:name="../../lib/gaisler/uart/uart.vhd" xil_pn:type="FILE_VHDL">
@@ -1396,6 +1497,11 @@
       <library xil_pn:name="gaisler"/>
     </file>
     <file xil_pn:name="../../lib/gaisler/greth/adapters/word_aligner.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="gaisler"/>
+    </file>
+    <file xil_pn:name="../../lib/gaisler/spacewire/spacewire.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="gaisler"/>
@@ -1865,12 +1971,42 @@
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="gaisler"/>
     </file>
+    <file xil_pn:name="../../lib/marcmod/simd/simdmod.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="marcmod"/>
+    </file>
+    <file xil_pn:name="../../lib/marcmod/simd/simd.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="marcmod"/>
+    </file>
     <file xil_pn:name="../../lib/esa/memoryctrl/memoryctrl.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="esa"/>
     </file>
     <file xil_pn:name="../../lib/esa/memoryctrl/mctrl.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="esa"/>
+    </file>
+    <file xil_pn:name="../../lib/esa/pci/pcicomp.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="esa"/>
+    </file>
+    <file xil_pn:name="../../lib/esa/pci/pci_arb_pkg.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="esa"/>
+    </file>
+    <file xil_pn:name="../../lib/esa/pci/pci_arb.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="esa"/>
+    </file>
+    <file xil_pn:name="../../lib/esa/pci/pciarb.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="esa"/>
@@ -1975,6 +2111,7 @@
     <library xil_pn:name="eth"/>
     <library xil_pn:name="opencores"/>
     <library xil_pn:name="gaisler"/>
+    <library xil_pn:name="marcmod"/>
     <library xil_pn:name="esa"/>
     <library xil_pn:name="fmf"/>
     <library xil_pn:name="micron"/>

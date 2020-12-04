@@ -124,6 +124,8 @@
 	acom -quiet   -93 -work eth ../../lib/eth/core/greth_rx.vhd
 	acom -quiet   -93 -work eth ../../lib/eth/core/grethc.vhd
 	acom -quiet   -93 -work eth ../../lib/eth/wrapper/greth_gen.vhd
+	acom -quiet   -93 -work opencores ../../lib/opencores/can/cancomp.vhd
+	acom -quiet   -93 -work opencores ../../lib/opencores/can/can_top.vhd
 	acom -quiet   -93 -work opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 	acom -quiet   -93 -work opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 	acom -quiet   -93 -work opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -191,6 +193,12 @@
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/can.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/can_mod.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/can_oc.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/can_mc.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/canmux.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/can/can_rd.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/axi/axi.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -226,6 +234,19 @@
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/misc/grtachom.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/net/net.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/pci.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/pcipads.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pkg.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_master.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_target.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/uart/uart.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/uart/libdcom.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -281,6 +302,7 @@
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+	acom -quiet   -93 -work gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -376,8 +398,14 @@
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	acom -quiet   -93 -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	acom -quiet   -93 -work marcmod ../../lib/marcmod/simd/simd.vhd
 	acom -quiet   -93 -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	acom -quiet   -93 -work esa ../../lib/esa/memoryctrl/mctrl.vhd
+	acom -quiet   -93 -work esa ../../lib/esa/pci/pcicomp.vhd
+	acom -quiet   -93 -work esa ../../lib/esa/pci/pci_arb_pkg.vhd
+	acom -quiet   -93 -work esa ../../lib/esa/pci/pci_arb.vhd
+	acom -quiet   -93 -work esa ../../lib/esa/pci/pciarb.vhd
 	acom -quiet   -93 -work fmf ../../lib/fmf/utilities/conversions.vhd
 	acom -quiet   -93 -work fmf ../../lib/fmf/utilities/gen_utils.vhd
 	acom -quiet   -93 -work fmf ../../lib/fmf/flash/flash.vhd

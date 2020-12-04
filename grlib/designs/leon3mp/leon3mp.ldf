@@ -381,6 +381,12 @@
         <Source name="../../lib/eth/wrapper/greth_gen.vhd" type="VHDL" type_short="VHDL">
             <Options lib="eth"/>
         </Source>
+        <Source name="../../lib/opencores/can/cancomp.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="opencores"/>
+        </Source>
+        <Source name="../../lib/opencores/can/can_top.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="opencores"/>
+        </Source>
         <Source name="../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd" type="VHDL" type_short="VHDL">
             <Options lib="opencores"/>
         </Source>
@@ -543,6 +549,24 @@
         <Source name="../../lib/gaisler/l2cache/pkg/l2cache.vhd" type="VHDL" type_short="VHDL">
             <Options lib="gaisler"/>
         </Source>
+        <Source name="../../lib/gaisler/can/can.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/can/can_mod.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/can/can_oc.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/can/can_mc.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/can/canmux.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/can/can_rd.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
         <Source name="../../lib/gaisler/axi/axi.vhd" type="VHDL" type_short="VHDL">
             <Options lib="gaisler"/>
         </Source>
@@ -646,6 +670,45 @@
             <Options lib="gaisler"/>
         </Source>
         <Source name="../../lib/gaisler/net/net.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/pci.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/pcipads.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/pcilib2.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/grpci2_phy.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/grpci2.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/ptf/pt_pkg.vhd" type="VHDL" type_short="VHDL" syn_sim="SimOnly" excluded="TRUE" >
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/ptf/pt_pci_master.vhd" type="VHDL" type_short="VHDL" syn_sim="SimOnly" excluded="TRUE" >
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/ptf/pt_pci_target.vhd" type="VHDL" type_short="VHDL" syn_sim="SimOnly" excluded="TRUE" >
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/pci/ptf/pt_pci_arb.vhd" type="VHDL" type_short="VHDL" syn_sim="SimOnly" excluded="TRUE" >
             <Options lib="gaisler"/>
         </Source>
         <Source name="../../lib/gaisler/uart/uart.vhd" type="VHDL" type_short="VHDL">
@@ -811,6 +874,9 @@
             <Options lib="gaisler"/>
         </Source>
         <Source name="../../lib/gaisler/greth/adapters/word_aligner.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="gaisler"/>
+        </Source>
+        <Source name="../../lib/gaisler/spacewire/spacewire.vhd" type="VHDL" type_short="VHDL">
             <Options lib="gaisler"/>
         </Source>
         <Source name="../../lib/gaisler/spacefibre/spacefibre.vhd" type="VHDL" type_short="VHDL">
@@ -1092,10 +1158,28 @@
         <Source name="../../lib/gaisler/leon5v0/leon5sys.vhd" type="VHDL" type_short="VHDL">
             <Options lib="gaisler"/>
         </Source>
+        <Source name="../../lib/marcmod/simd/simdmod.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="marcmod"/>
+        </Source>
+        <Source name="../../lib/marcmod/simd/simd.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="marcmod"/>
+        </Source>
         <Source name="../../lib/esa/memoryctrl/memoryctrl.vhd" type="VHDL" type_short="VHDL">
             <Options lib="esa"/>
         </Source>
         <Source name="../../lib/esa/memoryctrl/mctrl.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="esa"/>
+        </Source>
+        <Source name="../../lib/esa/pci/pcicomp.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="esa"/>
+        </Source>
+        <Source name="../../lib/esa/pci/pci_arb_pkg.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="esa"/>
+        </Source>
+        <Source name="../../lib/esa/pci/pci_arb.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="esa"/>
+        </Source>
+        <Source name="../../lib/esa/pci/pciarb.vhd" type="VHDL" type_short="VHDL">
             <Options lib="esa"/>
         </Source>
         <Source name="../../lib/fmf/utilities/conversions.vhd" type="VHDL" type_short="VHDL" syn_sim="SimOnly" excluded="TRUE" >

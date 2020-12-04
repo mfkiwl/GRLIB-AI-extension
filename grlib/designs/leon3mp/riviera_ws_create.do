@@ -149,6 +149,8 @@ amap grlib grlib/grlib/grlib.lib
 amap techmap techmap/techmap/techmap.lib 
 amap eth eth/eth/eth.lib 
 amap opencores opencores/opencores/opencores.lib 
+design.file.add /home/march/pd_project/grlib/lib/opencores/can/cancomp.vhd
+design.file.add /home/march/pd_project/grlib/lib/opencores/can/can_top.vhd
 design.file.add /home/march/pd_project/grlib/lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 design.file.add /home/march/pd_project/grlib/lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 design.file.add /home/march/pd_project/grlib/lib/opencores/i2c/i2coc.vhd
@@ -227,6 +229,12 @@ design.file.add /home/march/pd_project/grlib/lib/gaisler/irqmp/irqmp.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/irqmp/irqamp.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/irqmp/irqmp_bmode.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/l2cache/pkg/l2cache.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/can.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/can_mod.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/can_oc.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/can_mc.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/canmux.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/can/can_rd.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/axi/axi.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/axi/ahbm2axi.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/axi/ahbm2axi3.vhd
@@ -262,6 +270,19 @@ design.file.add /home/march/pd_project/grlib/lib/gaisler/misc/ahbsmux.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/misc/ahbmmux.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/misc/grtachom.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/net/net.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/pci.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/pcipads.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/pcilib2.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/grpci2_phy.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/grpci2.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/ptf/pt_pkg.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/ptf/pt_pci_master.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/ptf/pt_pci_target.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/pci/ptf/pt_pci_arb.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/uart/uart.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/uart/libdcom.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/uart/apbuart.vhd
@@ -317,6 +338,7 @@ design.file.add /home/march/pd_project/grlib/lib/gaisler/greth/adapters/sgmii.vh
 design.file.add /home/march/pd_project/grlib/lib/gaisler/greth/adapters/elastic_buffer.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/greth/adapters/gmii_to_mii.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/greth/adapters/word_aligner.vhd
+design.file.add /home/march/pd_project/grlib/lib/gaisler/spacewire/spacewire.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/spacefibre/spacefibre.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/ddr/ddrpkg.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/ddr/ddrintpkg.vhd
@@ -412,6 +434,21 @@ design.file.add /home/march/pd_project/grlib/lib/gaisler/leon5v0/tbufmem5.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/leon5v0/dbgmod5.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/leon5v0/irqmp5.vhd
 design.file.add /home/march/pd_project/grlib/lib/gaisler/leon5v0/leon5sys.vhd
+workspace.design.create marcmod . 
+workspace.design.setactive marcmod 
+workspace.dependencies.add marcmod grlib 
+workspace.dependencies.add marcmod techmap 
+workspace.dependencies.add marcmod eth 
+workspace.dependencies.add marcmod opencores 
+workspace.dependencies.add marcmod gaisler 
+amap grlib grlib/grlib/grlib.lib 
+amap techmap techmap/techmap/techmap.lib 
+amap eth eth/eth/eth.lib 
+amap opencores opencores/opencores/opencores.lib 
+amap gaisler gaisler/gaisler/gaisler.lib 
+amap marcmod marcmod/marcmod/marcmod.lib 
+design.file.add /home/march/pd_project/grlib/lib/marcmod/simd/simdmod.vhd
+design.file.add /home/march/pd_project/grlib/lib/marcmod/simd/simd.vhd
 workspace.design.create esa . 
 workspace.design.setactive esa 
 workspace.dependencies.add esa grlib 
@@ -419,14 +456,20 @@ workspace.dependencies.add esa techmap
 workspace.dependencies.add esa eth 
 workspace.dependencies.add esa opencores 
 workspace.dependencies.add esa gaisler 
+workspace.dependencies.add esa marcmod 
 amap grlib grlib/grlib/grlib.lib 
 amap techmap techmap/techmap/techmap.lib 
 amap eth eth/eth/eth.lib 
 amap opencores opencores/opencores/opencores.lib 
 amap gaisler gaisler/gaisler/gaisler.lib 
+amap marcmod marcmod/marcmod/marcmod.lib 
 amap esa esa/esa/esa.lib 
 design.file.add /home/march/pd_project/grlib/lib/esa/memoryctrl/memoryctrl.vhd
 design.file.add /home/march/pd_project/grlib/lib/esa/memoryctrl/mctrl.vhd
+design.file.add /home/march/pd_project/grlib/lib/esa/pci/pcicomp.vhd
+design.file.add /home/march/pd_project/grlib/lib/esa/pci/pci_arb_pkg.vhd
+design.file.add /home/march/pd_project/grlib/lib/esa/pci/pci_arb.vhd
+design.file.add /home/march/pd_project/grlib/lib/esa/pci/pciarb.vhd
 workspace.design.create fmf . 
 workspace.design.setactive fmf 
 workspace.dependencies.add fmf grlib 
@@ -434,12 +477,14 @@ workspace.dependencies.add fmf techmap
 workspace.dependencies.add fmf eth 
 workspace.dependencies.add fmf opencores 
 workspace.dependencies.add fmf gaisler 
+workspace.dependencies.add fmf marcmod 
 workspace.dependencies.add fmf esa 
 amap grlib grlib/grlib/grlib.lib 
 amap techmap techmap/techmap/techmap.lib 
 amap eth eth/eth/eth.lib 
 amap opencores opencores/opencores/opencores.lib 
 amap gaisler gaisler/gaisler/gaisler.lib 
+amap marcmod marcmod/marcmod/marcmod.lib 
 amap esa esa/esa/esa.lib 
 amap fmf fmf/fmf/fmf.lib 
 design.file.add /home/march/pd_project/grlib/lib/fmf/utilities/conversions.vhd
@@ -455,6 +500,7 @@ workspace.dependencies.add micron techmap
 workspace.dependencies.add micron eth 
 workspace.dependencies.add micron opencores 
 workspace.dependencies.add micron gaisler 
+workspace.dependencies.add micron marcmod 
 workspace.dependencies.add micron esa 
 workspace.dependencies.add micron fmf 
 amap grlib grlib/grlib/grlib.lib 
@@ -462,6 +508,7 @@ amap techmap techmap/techmap/techmap.lib
 amap eth eth/eth/eth.lib 
 amap opencores opencores/opencores/opencores.lib 
 amap gaisler gaisler/gaisler/gaisler.lib 
+amap marcmod marcmod/marcmod/marcmod.lib 
 amap esa esa/esa/esa.lib 
 amap fmf fmf/fmf/fmf.lib 
 amap micron micron/micron/micron.lib 
@@ -475,6 +522,7 @@ workspace.dependencies.add work techmap
 workspace.dependencies.add work eth 
 workspace.dependencies.add work opencores 
 workspace.dependencies.add work gaisler 
+workspace.dependencies.add work marcmod 
 workspace.dependencies.add work esa 
 workspace.dependencies.add work fmf 
 workspace.dependencies.add work micron 
@@ -483,6 +531,7 @@ amap techmap techmap/techmap/techmap.lib
 amap eth eth/eth/eth.lib 
 amap opencores opencores/opencores/opencores.lib 
 amap gaisler gaisler/gaisler/gaisler.lib 
+amap marcmod marcmod/marcmod/marcmod.lib 
 amap esa esa/esa/esa.lib 
 amap fmf fmf/fmf/fmf.lib 
 amap micron micron/micron/micron.lib 

@@ -124,6 +124,8 @@
 	vhdlan -nc  -work eth ../../lib/eth/core/greth_rx.vhd
 	vhdlan -nc  -work eth ../../lib/eth/core/grethc.vhd
 	vhdlan -nc  -work eth ../../lib/eth/wrapper/greth_gen.vhd
+	vhdlan -nc  -work opencores ../../lib/opencores/can/cancomp.vhd
+	vhdlan -nc  -work opencores ../../lib/opencores/can/can_top.vhd
 	vhdlan -nc  -work opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 	vhdlan -nc  -work opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 	vhdlan -nc  -work opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -191,6 +193,12 @@
 	vhdlan -nc  -work gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/can.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/can_mod.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/can_oc.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/can_mc.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/canmux.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/can/can_rd.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/axi/axi.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -226,6 +234,19 @@
 	vhdlan -nc  -work gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/misc/grtachom.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/net/net.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/pci.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/pcipads.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/ptf/pt_pkg.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_master.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_target.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/uart/uart.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/uart/libdcom.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -281,6 +302,7 @@
 	vhdlan -nc  -work gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+	vhdlan -nc  -work gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -376,8 +398,14 @@
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	vhdlan -nc  -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	vhdlan -nc  -work marcmod ../../lib/marcmod/simd/simd.vhd
 	vhdlan -nc  -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	vhdlan -nc  -work esa ../../lib/esa/memoryctrl/mctrl.vhd
+	vhdlan -nc  -work esa ../../lib/esa/pci/pcicomp.vhd
+	vhdlan -nc  -work esa ../../lib/esa/pci/pci_arb_pkg.vhd
+	vhdlan -nc  -work esa ../../lib/esa/pci/pci_arb.vhd
+	vhdlan -nc  -work esa ../../lib/esa/pci/pciarb.vhd
 	vhdlan -nc  -work fmf ../../lib/fmf/utilities/conversions.vhd
 	vhdlan -nc  -work fmf ../../lib/fmf/utilities/gen_utils.vhd
 	vhdlan -nc  -work fmf ../../lib/fmf/flash/flash.vhd

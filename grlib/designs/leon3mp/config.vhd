@@ -26,9 +26,9 @@ package config is
   constant CFG_LEON3 : integer := 1;
   constant CFG_NCPU : integer := (1);
   constant CFG_NWIN : integer := (8);
-  constant CFG_V8 : integer := 0 + 4*0;
+  constant CFG_V8 : integer := 2 + 4*0;
   constant CFG_MAC : integer := 0;
-  constant CFG_BP : integer := 0;
+  constant CFG_BP : integer := 1;
   constant CFG_SVT : integer := 0;
   constant CFG_RSTADDR : integer := 16#00000#;
   constant CFG_LDDEL : integer := (1);
@@ -205,16 +205,16 @@ package config is
   constant CFG_SPW_RTSAME : integer := 0;
 -- UART 1
   constant CFG_UART1_ENABLE : integer := 1;
-  constant CFG_UART1_FIFO : integer := 4;
+  constant CFG_UART1_FIFO : integer := 32;
 -- UART 2
-  constant CFG_UART2_ENABLE : integer := 1;
-  constant CFG_UART2_FIFO : integer := 4;
+  constant CFG_UART2_ENABLE : integer := 0;
+  constant CFG_UART2_FIFO : integer := 1;
 -- LEON3 interrupt controller
   constant CFG_IRQ3_ENABLE : integer := 1;
   constant CFG_IRQ3_NSEC : integer := 0;
 -- Modular timer
   constant CFG_GPT_ENABLE : integer := 1;
-  constant CFG_GPT_NTIM : integer := (2);
+  constant CFG_GPT_NTIM : integer := (4);
   constant CFG_GPT_SW : integer := (8);
   constant CFG_GPT_TW : integer := (32);
   constant CFG_GPT_IRQ : integer := (8);

@@ -132,6 +132,8 @@ ghdl-import:
 	ghdl -i --mb-comments --workdir=gnu/eth --work=eth -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth ../../lib/eth/core/grethc.vhd
 	ghdl -i --mb-comments --workdir=gnu/eth --work=eth -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth ../../lib/eth/wrapper/greth_gen.vhd
 	mkdir -p gnu/opencores
+	ghdl -i --mb-comments --workdir=gnu/opencores --work=opencores -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores ../../lib/opencores/can/cancomp.vhd
+	ghdl -i --mb-comments --workdir=gnu/opencores --work=opencores -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores ../../lib/opencores/can/can_top.vhd
 	ghdl -i --mb-comments --workdir=gnu/opencores --work=opencores -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 	ghdl -i --mb-comments --workdir=gnu/opencores --work=opencores -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 	ghdl -i --mb-comments --workdir=gnu/opencores --work=opencores -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -187,6 +189,12 @@ ghdl-import:
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/can.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/can_mod.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/can_oc.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/can_mc.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/canmux.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/can/can_rd.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/axi/axi.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -222,6 +230,19 @@ ghdl-import:
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/misc/grtachom.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/net/net.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/pci.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/pcipads.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/ptf/pt_pkg.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/ptf/pt_pci_master.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/ptf/pt_pci_target.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/uart/uart.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/uart/libdcom.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -277,6 +298,7 @@ ghdl-import:
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -370,24 +392,31 @@ ghdl-import:
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	ghdl -i --mb-comments --workdir=gnu/gaisler --work=gaisler -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	mkdir -p gnu/marcmod
+	ghdl -i --mb-comments --workdir=gnu/marcmod --work=marcmod -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod ../../lib/marcmod/simd/simdmod.vhd
+	ghdl -i --mb-comments --workdir=gnu/marcmod --work=marcmod -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod ../../lib/marcmod/simd/simd.vhd
 	mkdir -p gnu/esa
-	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa ../../lib/esa/memoryctrl/memoryctrl.vhd
-	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa ../../lib/esa/memoryctrl/mctrl.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/memoryctrl/memoryctrl.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/memoryctrl/mctrl.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/pci/pcicomp.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/pci/pci_arb_pkg.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/pci/pci_arb.vhd
+	ghdl -i --mb-comments --workdir=gnu/esa --work=esa -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa ../../lib/esa/pci/pciarb.vhd
 	mkdir -p gnu/fmf
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/utilities/conversions.vhd
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/utilities/gen_utils.vhd
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/flash.vhd
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/s25fl064a.vhd
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/m25p80.vhd
-	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf ../../lib/fmf/fifo/idt7202.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/utilities/conversions.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/utilities/gen_utils.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/flash.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/s25fl064a.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/flash/m25p80.vhd
+	ghdl -i --mb-comments --workdir=gnu/fmf --work=fmf -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf ../../lib/fmf/fifo/idt7202.vhd
 	mkdir -p gnu/micron
-	ghdl -i --mb-comments --workdir=gnu/micron --work=micron -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron ../../lib/micron/sdram/components.vhd
-	ghdl -i --mb-comments --workdir=gnu/micron --work=micron -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron ../../lib/micron/sdram/mt48lc16m16a2.vhd
+	ghdl -i --mb-comments --workdir=gnu/micron --work=micron -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron ../../lib/micron/sdram/components.vhd
+	ghdl -i --mb-comments --workdir=gnu/micron --work=micron -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron ../../lib/micron/sdram/mt48lc16m16a2.vhd
 	mkdir -p gnu/work
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/debug.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/grtestmod.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/cpu_disas.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work config.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ahbrom.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work leon3mp.vhd
-	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work testbench.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/debug.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/grtestmod.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ../../lib/work/debug/cpu_disas.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work config.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work ahbrom.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work leon3mp.vhd
+	ghdl -i --mb-comments --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/techmap -Pgnu/eth -Pgnu/opencores -Pgnu/gaisler -Pgnu/marcmod -Pgnu/esa -Pgnu/fmf -Pgnu/micron -Pgnu/work testbench.vhd

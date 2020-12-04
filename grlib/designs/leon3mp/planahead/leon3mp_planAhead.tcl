@@ -161,6 +161,8 @@ read_vhdl -library eth ../../lib/eth/core/greth_tx.vhd
 read_vhdl -library eth ../../lib/eth/core/greth_rx.vhd
 read_vhdl -library eth ../../lib/eth/core/grethc.vhd
 read_vhdl -library eth ../../lib/eth/wrapper/greth_gen.vhd
+read_vhdl -library opencores ../../lib/opencores/can/cancomp.vhd
+read_vhdl -library opencores ../../lib/opencores/can/can_top.vhd
 read_vhdl -library opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 read_vhdl -library opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 read_vhdl -library opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -235,6 +237,12 @@ read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqmp.vhd
 read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 read_vhdl -library gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 read_vhdl -library gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/can.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/can_mod.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/can_oc.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/can_mc.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/canmux.vhd
+read_vhdl -library gaisler ../../lib/gaisler/can/can_rd.vhd
 read_vhdl -library gaisler ../../lib/gaisler/axi/axi.vhd
 read_vhdl -library gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 read_vhdl -library gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -270,6 +278,27 @@ read_vhdl -library gaisler ../../lib/gaisler/misc/ahbsmux.vhd
 read_vhdl -library gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 read_vhdl -library gaisler ../../lib/gaisler/misc/grtachom.vhd
 read_vhdl -library gaisler ../../lib/gaisler/net/net.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/pci.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/pcipads.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+read_vhdl -library gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+add_files -fileset sim_1 -norecurse ../../lib/gaisler/pci/ptf/pt_pkg.vhd
+set_property library gaisler [get_files ../../lib/gaisler/pci/ptf/pt_pkg.vhd]
+set_property file_type VHDL [get_files ../../lib/gaisler/pci/ptf/pt_pkg.vhd]
+add_files -fileset sim_1 -norecurse ../../lib/gaisler/pci/ptf/pt_pci_master.vhd
+set_property library gaisler [get_files ../../lib/gaisler/pci/ptf/pt_pci_master.vhd]
+set_property file_type VHDL [get_files ../../lib/gaisler/pci/ptf/pt_pci_master.vhd]
+add_files -fileset sim_1 -norecurse ../../lib/gaisler/pci/ptf/pt_pci_target.vhd
+set_property library gaisler [get_files ../../lib/gaisler/pci/ptf/pt_pci_target.vhd]
+set_property file_type VHDL [get_files ../../lib/gaisler/pci/ptf/pt_pci_target.vhd]
+add_files -fileset sim_1 -norecurse ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd
+set_property library gaisler [get_files ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd]
+set_property file_type VHDL [get_files ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd]
 read_vhdl -library gaisler ../../lib/gaisler/uart/uart.vhd
 read_vhdl -library gaisler ../../lib/gaisler/uart/libdcom.vhd
 read_vhdl -library gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -367,6 +396,7 @@ read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/sgmii.vhd
 read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 read_vhdl -library gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+read_vhdl -library gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 read_vhdl -library gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 read_vhdl -library gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -466,8 +496,14 @@ read_vhdl -library gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+read_vhdl -library marcmod ../../lib/marcmod/simd/simdmod.vhd
+read_vhdl -library marcmod ../../lib/marcmod/simd/simd.vhd
 read_vhdl -library esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 read_vhdl -library esa ../../lib/esa/memoryctrl/mctrl.vhd
+read_vhdl -library esa ../../lib/esa/pci/pcicomp.vhd
+read_vhdl -library esa ../../lib/esa/pci/pci_arb_pkg.vhd
+read_vhdl -library esa ../../lib/esa/pci/pci_arb.vhd
+read_vhdl -library esa ../../lib/esa/pci/pciarb.vhd
 add_files -fileset sim_1 -norecurse ../../lib/fmf/utilities/conversions.vhd
 set_property library fmf [get_files ../../lib/fmf/utilities/conversions.vhd]
 set_property file_type VHDL [get_files ../../lib/fmf/utilities/conversions.vhd]

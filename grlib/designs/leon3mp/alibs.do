@@ -4,6 +4,7 @@ alib techmap techmap.lib
 alib eth eth.lib 
 alib opencores opencores.lib 
 alib gaisler gaisler.lib 
+alib marcmod marcmod.lib 
 alib esa esa.lib 
 alib fmf fmf.lib 
 alib micron micron.lib 

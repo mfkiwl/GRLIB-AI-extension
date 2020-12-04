@@ -238,6 +238,10 @@ puts "../../lib/eth/core/grethc.vhd"
 xfile add "../../lib/eth/wrapper/greth_gen.vhd" -lib_vhdl eth
 puts "../../lib/eth/wrapper/greth_gen.vhd"
 lib_vhdl new opencores
+xfile add "../../lib/opencores/can/cancomp.vhd" -lib_vhdl opencores
+puts "../../lib/opencores/can/cancomp.vhd"
+xfile add "../../lib/opencores/can/can_top.vhd" -lib_vhdl opencores
+puts "../../lib/opencores/can/can_top.vhd"
 xfile add "../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd" -lib_vhdl opencores
 puts "../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd"
 xfile add "../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd" -lib_vhdl opencores
@@ -373,6 +377,18 @@ xfile add "../../lib/gaisler/irqmp/irqmp_bmode.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/irqmp/irqmp_bmode.vhd"
 xfile add "../../lib/gaisler/l2cache/pkg/l2cache.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/l2cache/pkg/l2cache.vhd"
+xfile add "../../lib/gaisler/can/can.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/can.vhd"
+xfile add "../../lib/gaisler/can/can_mod.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/can_mod.vhd"
+xfile add "../../lib/gaisler/can/can_oc.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/can_oc.vhd"
+xfile add "../../lib/gaisler/can/can_mc.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/can_mc.vhd"
+xfile add "../../lib/gaisler/can/canmux.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/canmux.vhd"
+xfile add "../../lib/gaisler/can/can_rd.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/can/can_rd.vhd"
 xfile add "../../lib/gaisler/axi/axi.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/axi/axi.vhd"
 xfile add "../../lib/gaisler/axi/ahbm2axi.vhd" -lib_vhdl gaisler
@@ -443,6 +459,24 @@ xfile add "../../lib/gaisler/misc/grtachom.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/misc/grtachom.vhd"
 xfile add "../../lib/gaisler/net/net.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/net/net.vhd"
+xfile add "../../lib/gaisler/pci/pci.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/pci.vhd"
+xfile add "../../lib/gaisler/pci/pcipads.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/pcipads.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/pcilib2.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/pcilib2.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/grpci2_phy.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/grpci2_phy.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/grpci2.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/grpci2.vhd"
+xfile add "../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd"
 xfile add "../../lib/gaisler/uart/uart.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/uart/uart.vhd"
 xfile add "../../lib/gaisler/uart/libdcom.vhd" -lib_vhdl gaisler
@@ -511,6 +545,8 @@ xfile add "../../lib/gaisler/greth/adapters/gmii_to_mii.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/greth/adapters/gmii_to_mii.vhd"
 xfile add "../../lib/gaisler/greth/adapters/word_aligner.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/greth/adapters/word_aligner.vhd"
+xfile add "../../lib/gaisler/spacewire/spacewire.vhd" -lib_vhdl gaisler
+puts "../../lib/gaisler/spacewire/spacewire.vhd"
 xfile add "../../lib/gaisler/spacefibre/spacefibre.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/spacefibre/spacefibre.vhd"
 xfile add "../../lib/gaisler/ddr/ddrpkg.vhd" -lib_vhdl gaisler
@@ -697,11 +733,24 @@ xfile add "../../lib/gaisler/leon5v0/irqmp5.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/leon5v0/irqmp5.vhd"
 xfile add "../../lib/gaisler/leon5v0/leon5sys.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/leon5v0/leon5sys.vhd"
+lib_vhdl new marcmod
+xfile add "../../lib/marcmod/simd/simdmod.vhd" -lib_vhdl marcmod
+puts "../../lib/marcmod/simd/simdmod.vhd"
+xfile add "../../lib/marcmod/simd/simd.vhd" -lib_vhdl marcmod
+puts "../../lib/marcmod/simd/simd.vhd"
 lib_vhdl new esa
 xfile add "../../lib/esa/memoryctrl/memoryctrl.vhd" -lib_vhdl esa
 puts "../../lib/esa/memoryctrl/memoryctrl.vhd"
 xfile add "../../lib/esa/memoryctrl/mctrl.vhd" -lib_vhdl esa
 puts "../../lib/esa/memoryctrl/mctrl.vhd"
+xfile add "../../lib/esa/pci/pcicomp.vhd" -lib_vhdl esa
+puts "../../lib/esa/pci/pcicomp.vhd"
+xfile add "../../lib/esa/pci/pci_arb_pkg.vhd" -lib_vhdl esa
+puts "../../lib/esa/pci/pci_arb_pkg.vhd"
+xfile add "../../lib/esa/pci/pci_arb.vhd" -lib_vhdl esa
+puts "../../lib/esa/pci/pci_arb.vhd"
+xfile add "../../lib/esa/pci/pciarb.vhd" -lib_vhdl esa
+puts "../../lib/esa/pci/pciarb.vhd"
 lib_vhdl new fmf
 lib_vhdl new work
 xfile add "../../boards/xilinx-ac701-xc7a200t/leon3mp.ucf"

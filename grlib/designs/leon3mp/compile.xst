@@ -113,6 +113,8 @@ elaborate -ifmt vhdl -work_lib eth -ifn ../../lib/eth/core/greth_tx.vhd
 elaborate -ifmt vhdl -work_lib eth -ifn ../../lib/eth/core/greth_rx.vhd
 elaborate -ifmt vhdl -work_lib eth -ifn ../../lib/eth/core/grethc.vhd
 elaborate -ifmt vhdl -work_lib eth -ifn ../../lib/eth/wrapper/greth_gen.vhd
+elaborate -ifmt vhdl -work_lib opencores -ifn ../../lib/opencores/can/cancomp.vhd
+elaborate -ifmt vhdl -work_lib opencores -ifn ../../lib/opencores/can/can_top.vhd
 elaborate -ifmt vhdl -work_lib opencores -ifn ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 elaborate -ifmt vhdl -work_lib opencores -ifn ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 elaborate -ifmt vhdl -work_lib opencores -ifn ../../lib/opencores/i2c/i2coc.vhd
@@ -180,6 +182,12 @@ elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/irqmp/irqmp.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/irqmp/irqamp.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/can.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/can_mod.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/can_oc.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/can_mc.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/canmux.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/can/can_rd.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/axi/axi.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/axi/ahbm2axi.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -215,6 +223,15 @@ elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/misc/ahbsmux.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/misc/ahbmmux.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/misc/grtachom.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/net/net.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/pci.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/pcipads.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/grpci2.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/uart/uart.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/uart/libdcom.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/uart/apbuart.vhd
@@ -249,6 +266,7 @@ elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/greth/adapters/sgm
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/greth/adapters/word_aligner.vhd
+elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/spacewire/spacewire.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/spacefibre/spacefibre.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/ddr/ddrpkg.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -342,5 +360,11 @@ elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/tbufmem5.v
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/dbgmod5.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/irqmp5.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/leon5sys.vhd
+elaborate -ifmt vhdl -work_lib marcmod -ifn ../../lib/marcmod/simd/simdmod.vhd
+elaborate -ifmt vhdl -work_lib marcmod -ifn ../../lib/marcmod/simd/simd.vhd
 elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/memoryctrl/memoryctrl.vhd
 elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/memoryctrl/mctrl.vhd
+elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/pci/pcicomp.vhd
+elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/pci/pci_arb_pkg.vhd
+elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/pci/pci_arb.vhd
+elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/pci/pciarb.vhd

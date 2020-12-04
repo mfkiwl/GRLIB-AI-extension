@@ -95,6 +95,8 @@ entity iu3 is
     mulo  : in  mul32_out_type;
     divi  : out div32_in_type;
     divo  : in  div32_out_type;
+    sdi   : out simd_in_type;
+    sdo   : in  simd_out_type;
     fpo   : in  fpc_out_type;
     fpi   : out fpc_in_type;
     cpo   : in  fpc_out_type;
@@ -362,7 +364,6 @@ architecture rtl of iu3 is
     addr   : pctype;
     pwd    : std_ulogic;
   end record;
-  
  
   type pwd_register_type is record
     pwd    : std_ulogic;

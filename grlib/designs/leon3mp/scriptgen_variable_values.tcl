@@ -7,7 +7,7 @@ set DIRADD {}
 set TECHLIBS {inferred}
 set XLIBSKIP {core1553bbc core1553brm core1553brt gr1553 corePCIF tmtc openchip ihp usbhc gsi cypress hynix spansion leon4v0 spw dummy}
 set GRLIB_LEON3_VERSION {3}
-set XDIRSKIP {b1553 pci/pcif leon2 leon2ft crypto satcan pci ambatest can usb grusbhc ascs slink spi hcan spacewire leon4v0 l2cache pwm gr1553b iommu ac97 secureip b1553/core pci/pcif/core leon2/core leon2ft/core crypto/core satcan/core pci/core ambatest/core can/core usb/core grusbhc/core ascs/core slink/core spi/core hcan/core spacewire/core leon4v0/core l2cache/core pwm/core gr1553b/core iommu/core ac97/core secureip/core core1553bbc core1553brm core1553brt gr1553 corePCIF tmtc openchip ihp usbhc gsi cypress hynix spansion leon4v0 spw core1553bbc core1553brm core1553brt gr1553 corePCIF tmtc openchip ihp usbhc gsi cypress hynix spansion leon4v0 spw dummy}
+set XDIRSKIP {b1553 leon2 leon2ft crypto satcan ambatest usb grusbhc ascs slink spi hcan leon4v0 l2cache pwm gr1553b iommu ac97 secureip b1553/core leon2/core leon2ft/core crypto/core satcan/core ambatest/core usb/core grusbhc/core ascs/core slink/core spi/core hcan/core leon4v0/core l2cache/core pwm/core gr1553b/core iommu/core ac97/core secureip/core core1553bbc core1553brm core1553brt gr1553 corePCIF tmtc openchip ihp usbhc gsi cypress hynix spansion leon4v0 spw core1553bbc core1553brm core1553brt gr1553 corePCIF tmtc openchip ihp usbhc gsi cypress hynix spansion leon4v0 spw dummy}
 set GRLIB_CONFIG {dummy}
 set XFILESKIP {grcan.vhd ddr2.v mobile_ddr.v *_core1553bbc.vhd *_core1553brm.vhd *_core1553brt.vhd *_gr1553.vhd *_corePCIF.vhd *_tmtc.vhd *_openchip.vhd *_ihp.vhd *_usbhc.vhd *_gsi.vhd *_cypress.vhd *_hynix.vhd *_spansion.vhd *_leon4v0.vhd *_spw.vhd dummy}
 set VHDLANOPT {}

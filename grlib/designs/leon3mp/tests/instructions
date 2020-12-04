@@ -1,4 +1,5 @@
-gen .srec
-sparc-gaisler-elf-gcc -O2 -g -msoft-float file.c -o file.exe
-sparc-gaisler-elf-objcopy -O srec file.exe file.srec
+-- to compile the program 
+make prog_name 
+-- this compiles and moves the file data to test.srec
+-- which is used by the testbench
 

@@ -17,8 +17,7 @@ architecture tests of simd_test is
             holdn : in  std_ulogic;
             ra_i  : in  std_logic_vector (XLEN-1 downto 0);
             rb_i  : in  std_logic_vector (XLEN-1 downto 0);
-            op_s1_i : in  std_logic_vector (3 downto 0);
-            op_s2_i : in  std_logic_vector (2 downto 0);
+            op_i  : in  std_logic_vector (7 downto 0);
             sign_i  : in  std_logic;
             rc_we_i   : in std_logic;
             rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
@@ -35,6 +34,7 @@ architecture tests of simd_test is
     signal rc_addr_i, rc_addr_o : std_logic_vector(4 downto 0) := "00000";
     signal op_s1_i : std_logic_vector(3 downto 0);
     signal op_s2_i : std_logic_vector(2 downto 0);
+    signal op_i : std_logic_vector(7 downto 0);
 
 begin
     simd_module : simd port map (   clk   => clk,
@@ -42,8 +42,7 @@ begin
                                     holdn => holdn,
                                     ra_i  => ra_i,
                                     rb_i  => rb_i,
-                                    op_s1_i => op_s1_i,
-                                    op_s2_i => op_s2_i,
+                                    op_i => op_i,
                                     sign_i  => sign_i,
                                     rc_we_i   => rc_we_i,
                                     rc_addr_i => rc_addr_i,
@@ -53,6 +52,7 @@ begin
                                     rc_addr_o => rc_addr_o
                                 );
 
+    op_i <= '0' & op_s2_i & op_s1_i;
     clk <= not clk after 5 ps;
     process begin
         --Test nop

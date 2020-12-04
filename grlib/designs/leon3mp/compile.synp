@@ -113,6 +113,8 @@ add_file -vhdl -lib eth ../../lib/eth/core/greth_tx.vhd
 add_file -vhdl -lib eth ../../lib/eth/core/greth_rx.vhd
 add_file -vhdl -lib eth ../../lib/eth/core/grethc.vhd
 add_file -vhdl -lib eth ../../lib/eth/wrapper/greth_gen.vhd
+add_file -vhdl -lib opencores ../../lib/opencores/can/cancomp.vhd
+add_file -vhdl -lib opencores ../../lib/opencores/can/can_top.vhd
 add_file -vhdl -lib opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 add_file -vhdl -lib opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 add_file -vhdl -lib opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -180,6 +182,12 @@ add_file -vhdl -lib gaisler ../../lib/gaisler/irqmp/irqmp.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/can.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/can_mod.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/can_oc.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/can_mc.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/canmux.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/can/can_rd.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/axi/axi.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -215,6 +223,15 @@ add_file -vhdl -lib gaisler ../../lib/gaisler/misc/ahbsmux.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/misc/grtachom.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/net/net.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/pci.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/pcipads.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/uart/uart.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/uart/libdcom.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -249,6 +266,7 @@ add_file -vhdl -lib gaisler ../../lib/gaisler/greth/adapters/sgmii.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+add_file -vhdl -lib gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -342,5 +360,11 @@ add_file -vhdl -lib gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 add_file -vhdl -lib gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+add_file -vhdl -lib marcmod ../../lib/marcmod/simd/simdmod.vhd
+add_file -vhdl -lib marcmod ../../lib/marcmod/simd/simd.vhd
 add_file -vhdl -lib esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 add_file -vhdl -lib esa ../../lib/esa/memoryctrl/mctrl.vhd
+add_file -vhdl -lib esa ../../lib/esa/pci/pcicomp.vhd
+add_file -vhdl -lib esa ../../lib/esa/pci/pci_arb_pkg.vhd
+add_file -vhdl -lib esa ../../lib/esa/pci/pci_arb.vhd
+add_file -vhdl -lib esa ../../lib/esa/pci/pciarb.vhd

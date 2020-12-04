@@ -45,6 +45,21 @@ package libiu is
   subtype cbwmaskword is std_logic_vector(3 downto 0);
   type cbwmasktype is array (0 to 3) of cbwmaskword;
 
+  type simd_in_type is record
+     ra          : std_logic_vector (31 downto 0); -- operand 1 data
+     rb          : std_logic_vector (31 downto 0); -- operand 2 data
+     op          : std_logic_vector (7 downto 0);  -- operation code
+     sign        : std_logic;                      -- signed
+     rc_we       : std_logic;                      -- we on destination (work)
+     rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
+  end record;
+
+  type simd_out_type is record
+     rc_data     : std_logic_vector(31 downto 0); -- output data
+     rc_we       : std_logic;                     -- we on destination
+     rc_addr     : std_logic_vector(4 downto 0);  -- addr of destination
+  end record;
+
 
   type iregfile_in_type is record
      raddr1        : std_logic_vector(9 downto 0); -- read address 1
@@ -207,6 +222,8 @@ package libiu is
       mulo    : in  mul32_out_type;
       divi    : out div32_in_type;
       divo    : in  div32_out_type;
+      sdi     : out simd_in_type;
+      sdo     : in  simd_out_type;
       fpo     : in  fpc_out_type;
       fpi     : out fpc_in_type;
       cpo     : in  fpc_out_type;

@@ -41,6 +41,10 @@ use gaisler.arith.all;
 use gaisler.libleon3.all;
 use gaisler.libfpu.all;
 
+-- use simd module
+library marcmod;
+use marcmod.simdmod.all;
+
 entity proc3 is
   generic (
     hindex     : integer                  := 0;
@@ -147,6 +151,9 @@ architecture rtl of proc3 is
   signal divi  : div32_in_type;
   signal divo  : div32_out_type;
 
+  signal sdi   : simd_in_type;
+  signal sdo   : simd_out_type;
+
 begin
 
   holdnx <= ico.hold and dco.hold and fpo.holdn; holdn <= holdnx;
@@ -159,7 +166,15 @@ begin
                  notag, hindex, lddel, IRFWT, disas, tbuf, pwd, svt, rstaddr, smp, fabtech,
                  clk2x, bp, npasi, pwrpsr, rex, altwin, rfmemtech, irqlat, rfreadhold)
     port map (clk, rstn, holdnx, ici, ico, dci, dco, rfi, rfo, irqi, irqo,
-              dbgi, dbgo, muli, mulo, divi, divo, fpo, fpi, cpo, cpi, tbo, tbi, tbo_2p, tbi_2p, sclk);
+              dbgi, dbgo, muli, mulo, divi, divo, sdi, sdo, fpo, fpi, cpo,
+              cpi, tbo, tbi, tbo_2p, tbi_2p, sclk);
+
+-- simd module
+
+  simd0 : simd
+    generic map (32,8,5)
+    port map (clk, rstn, holdnx,sdi.ra, sdi.rb, sdi.op, sdi.sign, sdi.rc_we, sdi.rc_addr,
+             sdo.rc_data, sdo.rc_we, sdo.rc_addr);
 
 -- multiply and divide units
 

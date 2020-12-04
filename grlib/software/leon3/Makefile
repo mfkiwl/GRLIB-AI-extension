@@ -1,13 +1,13 @@
 VPATH=$(GRLIB)/software/leon3
 XINC=-I$(GRLIB)/software/leon3 -I$(GRLIB)/software/l2c
-XCC=sparc-gaisler-elf-gcc $(XINC) $(BOPT)
-XAS=sparc-gaisler-elf-gcc -c -I. $(XINC) $(BOPT)
-XAR=sparc-gaisler-elf-ar
+XCC=sparc-elf-gcc $(XINC) $(BOPT)
+XAS=sparc-elf-gcc -c -I. $(XINC) $(BOPT)
+XAR=sparc-elf-ar
 XCFLAGS=-O2 -g -msoft-float
 ifeq ("$(LDFLAGS)","")
 LDFLAGS=-qnoambapp
 endif
-XLDFLAGS=-L./ lib3tests.a $(LDFLAGS)
+XLDFLAGS=-L./lib3tests.a $(LDFLAGS)
 
 PROGS = apbuart divtest multest regtest \
 	cache gpio ramfill ramtest irqmp leon3_test gptimer \
@@ -91,13 +91,13 @@ prom.exe: prom.o
 	$(XCC) -nostdlib -Tlinkprom -N -L./ -nostartfiles -o prom.exe $<
 
 prom.srec: prom.exe
-	sparc-gaisler-elf-objcopy -O srec $(EXTRA_PROM) prom.exe prom.srec
+	sparc-elf-objcopy -O srec $(EXTRA_PROM) prom.exe prom.srec
 
 systest.exe: systest.o report_device.o lib3tests.a
 	$(XCC) $(XCFLAGS) systest.o report_device.o $(XLDFLAGS) -o systest.exe
 
 ram.srec: systest.exe
-	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 systest.exe ram.srec
+	sparc-elf-objcopy -O srec --gap-fill 0 systest.exe ram.srec
 
 soft-clean:
 	-rm -rf *.o *.exe *.a

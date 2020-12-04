@@ -130,6 +130,8 @@ LIBFILE ..\..\lib\eth\core\greth_rx.vhd eth vhdl
 LIBFILE ..\..\lib\eth\core\grethc.vhd eth vhdl
 LIBFILE ..\..\lib\eth\wrapper\greth_gen.vhd eth vhdl
 SUBLIB opencores VhdlLibrary vhdl
+LIBFILE ..\..\lib\opencores\can\cancomp.vhd opencores vhdl
+LIBFILE ..\..\lib\opencores\can\can_top.vhd opencores vhdl
 LIBFILE ..\..\lib\opencores\i2c\i2c_master_bit_ctrl.vhd opencores vhdl
 LIBFILE ..\..\lib\opencores\i2c\i2c_master_byte_ctrl.vhd opencores vhdl
 LIBFILE ..\..\lib\opencores\i2c\i2coc.vhd opencores vhdl
@@ -198,6 +200,12 @@ LIBFILE ..\..\lib\gaisler\irqmp\irqmp.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\irqmp\irqamp.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\irqmp\irqmp_bmode.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\l2cache\pkg\l2cache.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\can.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\can_mod.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\can_oc.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\can_mc.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\canmux.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\can\can_rd.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\axi\axi.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\axi\ahbm2axi.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\axi\ahbm2axi3.vhd gaisler vhdl
@@ -233,6 +241,15 @@ LIBFILE ..\..\lib\gaisler\misc\ahbsmux.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\misc\ahbmmux.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\misc\grtachom.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\net\net.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\pci.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\pcipads.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\pcilib2.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\grpci2_ahb_mst.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\grpci2_phy.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\grpci2_phy_wrapper.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\grpci2_cdc_gate.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\grpci2.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\pci\grpci2\wrapper\grpci2_gen.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\uart\uart.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\uart\libdcom.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\uart\apbuart.vhd gaisler vhdl
@@ -267,6 +284,7 @@ LIBFILE ..\..\lib\gaisler\greth\adapters\sgmii.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\greth\adapters\elastic_buffer.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\greth\adapters\gmii_to_mii.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\greth\adapters\word_aligner.vhd gaisler vhdl
+LIBFILE ..\..\lib\gaisler\spacewire\spacewire.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\spacefibre\spacefibre.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\ddr\ddrpkg.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\ddr\ddrintpkg.vhd gaisler vhdl
@@ -360,9 +378,16 @@ LIBFILE ..\..\lib\gaisler\leon5v0\tbufmem5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\dbgmod5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\irqmp5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\leon5sys.vhd gaisler vhdl
+SUBLIB marcmod VhdlLibrary vhdl
+LIBFILE ..\..\lib\marcmod\simd\simdmod.vhd marcmod vhdl
+LIBFILE ..\..\lib\marcmod\simd\simd.vhd marcmod vhdl
 SUBLIB esa VhdlLibrary vhdl
 LIBFILE ..\..\lib\esa\memoryctrl\memoryctrl.vhd esa vhdl
 LIBFILE ..\..\lib\esa\memoryctrl\mctrl.vhd esa vhdl
+LIBFILE ..\..\lib\esa\pci\pcicomp.vhd esa vhdl
+LIBFILE ..\..\lib\esa\pci\pci_arb_pkg.vhd esa vhdl
+LIBFILE ..\..\lib\esa\pci\pci_arb.vhd esa vhdl
+LIBFILE ..\..\lib\esa\pci\pciarb.vhd esa vhdl
 SUBLIB fmf VhdlLibrary vhdl
 SUBLIB work VhdlLibrary vhdl
 DEPASSOC leon3mp ..\..\boards\xilinx-ac701-xc7a200t\leon3mp.ucf

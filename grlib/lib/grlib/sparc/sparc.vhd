@@ -61,6 +61,7 @@ constant ANDN     : op3_type := "000101";
 constant ORN      : op3_type := "000110";
 constant IXNOR    : op3_type := "000111";
 constant ADDX     : op3_type := "001000";
+constant SIMD     : op3_type := "001001";
 constant UMUL     : op3_type := "001010";
 constant SMUL     : op3_type := "001011";
 constant SUBX     : op3_type := "001100";

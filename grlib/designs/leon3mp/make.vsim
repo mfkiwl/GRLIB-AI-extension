@@ -125,6 +125,8 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work eth ../../lib/eth/core/greth_rx.vhd
 	vcom -quiet -explicit -O0  -93 -work eth ../../lib/eth/core/grethc.vhd
 	vcom -quiet -explicit -O0  -93 -work eth ../../lib/eth/wrapper/greth_gen.vhd
+	vcom -quiet -explicit -O0  -93 -work opencores ../../lib/opencores/can/cancomp.vhd
+	vcom -quiet -explicit -O0  -93 -work opencores ../../lib/opencores/can/can_top.vhd
 	vcom -quiet -explicit -O0  -93 -work opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 	vcom -quiet -explicit -O0  -93 -work opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 	vcom -quiet -explicit -O0  -93 -work opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -192,6 +194,12 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/can.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/can_mod.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/can_oc.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/can_mc.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/canmux.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/can/can_rd.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/axi/axi.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -227,6 +235,19 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/misc/grtachom.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/net/net.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/pci.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/pcipads.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pkg.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_master.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_target.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/pci/ptf/pt_pci_arb.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/uart/uart.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/uart/libdcom.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -282,6 +303,7 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -377,8 +399,14 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	vcom -quiet -explicit -O0  -93 -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	vcom -quiet -explicit -O0  -93 -work marcmod ../../lib/marcmod/simd/simd.vhd
 	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/memoryctrl/mctrl.vhd
+	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/pci/pcicomp.vhd
+	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/pci/pci_arb_pkg.vhd
+	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/pci/pci_arb.vhd
+	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/pci/pciarb.vhd
 	vcom -quiet -explicit -O0  -93 -work fmf ../../lib/fmf/utilities/conversions.vhd
 	vcom -quiet -explicit -O0  -93 -work fmf ../../lib/fmf/utilities/gen_utils.vhd
 	vcom -quiet -explicit -O0  -93 -work fmf ../../lib/fmf/flash/flash.vhd

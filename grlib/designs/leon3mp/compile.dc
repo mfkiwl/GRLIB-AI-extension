@@ -122,6 +122,8 @@ analyze -f VHDL -library eth ../../lib/eth/core/grethc.vhd
 analyze -f VHDL -library eth ../../lib/eth/wrapper/greth_gen.vhd
 catch {sh mkdir synopsys/opencores} 
 define_design_lib opencores -path synopsys/opencores 
+analyze -f VHDL -library opencores ../../lib/opencores/can/cancomp.vhd
+analyze -f VHDL -library opencores ../../lib/opencores/can/can_top.vhd
 analyze -f VHDL -library opencores ../../lib/opencores/i2c/i2c_master_bit_ctrl.vhd
 analyze -f VHDL -library opencores ../../lib/opencores/i2c/i2c_master_byte_ctrl.vhd
 analyze -f VHDL -library opencores ../../lib/opencores/i2c/i2coc.vhd
@@ -191,6 +193,12 @@ analyze -f VHDL -library gaisler ../../lib/gaisler/irqmp/irqmp.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/irqmp/irqamp.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/irqmp/irqmp_bmode.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/l2cache/pkg/l2cache.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/can.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/can_mod.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/can_oc.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/can_mc.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/canmux.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/can/can_rd.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/axi/axi.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/axi/ahbm2axi.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/axi/ahbm2axi3.vhd
@@ -226,6 +234,15 @@ analyze -f VHDL -library gaisler ../../lib/gaisler/misc/ahbsmux.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/misc/ahbmmux.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/misc/grtachom.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/net/net.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/pci.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/pcipads.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/pcilib2.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_ahb_mst.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_phy_wrapper.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/grpci2_cdc_gate.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/grpci2.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/pci/grpci2/wrapper/grpci2_gen.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/uart/uart.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/uart/libdcom.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/uart/apbuart.vhd
@@ -260,6 +277,7 @@ analyze -f VHDL -library gaisler ../../lib/gaisler/greth/adapters/sgmii.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/greth/adapters/elastic_buffer.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/greth/adapters/gmii_to_mii.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/greth/adapters/word_aligner.vhd
+analyze -f VHDL -library gaisler ../../lib/gaisler/spacewire/spacewire.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/spacefibre/spacefibre.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/ddr/ddrpkg.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/ddr/ddrintpkg.vhd
@@ -353,10 +371,18 @@ analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+catch {sh mkdir synopsys/marcmod} 
+define_design_lib marcmod -path synopsys/marcmod 
+analyze -f VHDL -library marcmod ../../lib/marcmod/simd/simdmod.vhd
+analyze -f VHDL -library marcmod ../../lib/marcmod/simd/simd.vhd
 catch {sh mkdir synopsys/esa} 
 define_design_lib esa -path synopsys/esa 
 analyze -f VHDL -library esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 analyze -f VHDL -library esa ../../lib/esa/memoryctrl/mctrl.vhd
+analyze -f VHDL -library esa ../../lib/esa/pci/pcicomp.vhd
+analyze -f VHDL -library esa ../../lib/esa/pci/pci_arb_pkg.vhd
+analyze -f VHDL -library esa ../../lib/esa/pci/pci_arb.vhd
+analyze -f VHDL -library esa ../../lib/esa/pci/pciarb.vhd
 catch {sh mkdir synopsys/fmf} 
 define_design_lib fmf -path synopsys/fmf 
 catch {sh mkdir synopsys/micron} 

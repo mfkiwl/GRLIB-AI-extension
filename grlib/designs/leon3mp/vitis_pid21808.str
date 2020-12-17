@@ -1,0 +1,81 @@
+/*
+
+Xilinx Vitis v2020.1.0 (64-bit) [Major: 2020, Minor: 1]
+SW Build 2902540 on Wed May 27 19:55:13 MDT 2020
+
+Process ID (PID): 21808
+License: Customer
+
+Current time: 	Fri Dec 11 02:19:31 UTC 2020
+Time zone: 	Coordinated Universal Time (UTC)
+
+OS: Linux
+OS Version: 5.9.2-arch1-1
+OS Architecture: amd64
+Available processors (cores): 6
+
+Display: :0.0
+Screen size: 1920x1080
+Available screens: 1
+Available disk space: 1 GB
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/march/.config/Xilinx/Vitis/Vitis/2020.1/tps/lnx64/jre9.0.4
+Java executable location: 	/home/march/.config/Xilinx/Vitis/Vitis/2020.1/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	64 MB
+Java maximum memory (-Xmx):	 4 GB
+
+Java library paths: /home/march/.config/Xilinx/Vitis/Vitis/2020.1/lib/lnx64.o/Default:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/lib/lnx64.o:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/tps/lnx64/jre9.0.4/lib/:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/tps/lnx64/jre9.0.4/lib//server:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/lib/lnx64.o:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/lib/lnx64.o/Default:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/lib/lnx64.o:/home/march/.config/Xilinx/Vitis/Vivado/2020.1/bin/../lnx64/tools/dot/lib:/home/march/.config/Xilinx/Vitis/Vitis/2020.1/bin/../lnx64/tools/dot/lib:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+
+Java class paths: /home/march/.config/Xilinx/Vitis/Vitis/2020.1/eclipse/lnx64.o//plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar
+LD_LIBRARY_PATH: /home/march/.config/Xilinx/Vitis/Vitis
+
+User name: 	march
+User home directory: /home/march
+User working directory: /home/march/pd_project/grlib/designs/leon3mp
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/march/.config/Xilinx/Vitis/Vitis
+HDI_APPROOT: /home/march/.config/Xilinx/Vitis/Vitis/2020.1
+RDI_DATADIR: /home/march/.config/Xilinx/Vitis/Vitis/2020.1/data
+RDI_BINDIR: /home/march/.config/Xilinx/Vitis/Vitis/2020.1/bin
+
+Vitis preferences directory: /home/march/.Xilinx/Vitis/2020.1/
+Vitis workspace directory: /home/march/tfm/workspace
+Vitis workspace log file location: /home/march/tfm/workspace/.metadata/.log
+Engine tmp dir: 	
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_HLS: /home/march/.config/Xilinx/Vitis/Vitis/2020.1
+XILINX_PLANAHEAD: /home/march/.config/Xilinx/Vitis/Vitis/2020.1
+XILINX_SDK: /home/march/.config/Xilinx/Vitis/Vitis/2020.1
+XILINX_VITIS: /home/march/.config/Xilinx/Vitis/Vitis/2020.1
+XILINX_VIVADO: /home/march/.config/Xilinx/Vitis/Vivado/2020.1
+XILINX_VIVADO_HLS: /home/march/.config/Xilinx/Vitis/Vivado/2020.1
+_RDI_DONT_SET_XILINX_AS_PATH: True
+
+
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+selectMenuItem("File", "WorkbenchWindow", "MenuItem.FILE");
+selectMenuItem("Import", "WorkbenchWindow", "MenuItem.IMPORT");
+selectButton("Cancel", "Import Projects (Import Type)", "SdxArchiveImportWizard", "Button.CANCEL");
+selectMenuItem("File", "WorkbenchWindow", "MenuItem.FILE");
+selectMenuItem("New", "WorkbenchWindow", "MenuItem.NEW");
+selectMenuItem("Platform Project", "WorkbenchWindow", "MenuItem.PLATFORM_PROJECT");
+setTextField("tst", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Text.PLATFORM_PROJECT_NAME");
+selectButton("Next", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Button.NEXT");
+selectCombo("zc702", "New Platform Project (Platform)", "NewPlatformProjectWizard", "ComboViewer.XSA_FILE");
+selectButton("Finish", "New Platform Project (Platform)", "NewPlatformProjectWizard", "Button.FINISH");
+selectMenuItem("Xilinx", "tst", "WorkbenchWindow", "MenuItem.XILINX");
+selectMenuItem("Start/Stop Emulator", "tst", "WorkbenchWindow", "MenuItem.START_STOP_EMULATOR");
+selectButton("Exit", "Confirm Exit", "MessageDialogWithToggle", "Button.EXIT");
+// Exiting Xilinx Vitis with a status code '0' at 12/11/20, 2:28:01 AM UTC
+// Elapsed time: 00:08:30
+

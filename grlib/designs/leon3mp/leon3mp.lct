@@ -1,8 +1,0 @@
-[Device]
-Family = ;
-PartNumber = xc7a200t2fbg676;
-Package = ;
-PartType = xc7a200t;
-Speed = 2;
-Operating_condition = COM;
-Status = Production;

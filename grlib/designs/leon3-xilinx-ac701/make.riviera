@@ -58,6 +58,7 @@ all:
 	vcom -quiet -explicit -O0 -93 -work gaisler  ../../lib/gaisler/noelv/subsys/noelvsys.vhd
 	vcom -quiet -explicit -O0 -93 -work gaisler  ../../lib/gaisler/leon5/leon5.vhd
 	vcom -quiet -explicit -O0 -93 -work gaisler  ../../lib/gaisler/leon5v0/leon5int.vhd ../../lib/gaisler/leon5v0/itbufmem5.vhd ../../lib/gaisler/leon5v0/bht_pap.vhd ../../lib/gaisler/leon5v0/btb.vhd ../../lib/gaisler/leon5v0/inst_text.vhd ../../lib/gaisler/leon5v0/iu5.vhd ../../lib/gaisler/leon5v0/cctrl5.vhd ../../lib/gaisler/leon5v0/cachemem5.vhd ../../lib/gaisler/leon5v0/regfile5_ram.vhd ../../lib/gaisler/leon5v0/regfile5_dff.vhd ../../lib/gaisler/leon5v0/nanofpu.vhd ../../lib/gaisler/leon5v0/cpucore5.vhd ../../lib/gaisler/leon5v0/tbufmem5.vhd ../../lib/gaisler/leon5v0/dbgmod5.vhd ../../lib/gaisler/leon5v0/irqmp5.vhd ../../lib/gaisler/leon5v0/leon5sys.vhd
+	vcom -quiet -explicit -O0 -93 -work marcmod  ../../lib/marcmod/simd/simdmod.vhd ../../lib/marcmod/simd/simd.vhd
 	vcom -quiet -explicit -O0 -93 -work esa  ../../lib/esa/memoryctrl/memoryctrl.vhd ../../lib/esa/memoryctrl/mctrl.vhd
 	vcom -quiet -explicit -O0 -93 -work fmf  ../../lib/fmf/utilities/conversions.vhd ../../lib/fmf/utilities/gen_utils.vhd
 	vcom -quiet -explicit -O0 -93 -work fmf  ../../lib/fmf/flash/flash.vhd ../../lib/fmf/flash/s25fl064a.vhd ../../lib/fmf/flash/m25p80.vhd

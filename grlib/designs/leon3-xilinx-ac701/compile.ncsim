@@ -410,6 +410,9 @@
 	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	mkdir xncsim/marcmod
+	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  marcmod ../../lib/marcmod/simd/simdmod.vhd
+	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  marcmod ../../lib/marcmod/simd/simd.vhd
 	mkdir xncsim/esa
 	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	ncvhdl -nowarn DLCPTH -NOVITALCHECK -linedebug -v93 -nocopyright -work  esa ../../lib/esa/memoryctrl/mctrl.vhd

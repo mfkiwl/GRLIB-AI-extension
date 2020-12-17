@@ -366,6 +366,8 @@ set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/tbufmem5.vhd -li
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/dbgmod5.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/irqmp5.vhd -library gaisler
 set_global_assignment -name VHDL_FILE ../../lib/gaisler/leon5v0/leon5sys.vhd -library gaisler
+set_global_assignment -name VHDL_FILE ../../lib/marcmod/simd/simdmod.vhd -library marcmod
+set_global_assignment -name VHDL_FILE ../../lib/marcmod/simd/simd.vhd -library marcmod
 set_global_assignment -name VHDL_FILE ../../lib/esa/memoryctrl/memoryctrl.vhd -library esa
 set_global_assignment -name VHDL_FILE ../../lib/esa/memoryctrl/mctrl.vhd -library esa
 set_global_assignment -name VHDL_FILE config.vhd

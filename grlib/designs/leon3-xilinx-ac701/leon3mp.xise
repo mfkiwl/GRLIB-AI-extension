@@ -2001,6 +2001,16 @@
       <association xil_pn:name="Implementation"/>
       <library xil_pn:name="gaisler"/>
     </file>
+    <file xil_pn:name="../../lib/marcmod/simd/simdmod.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="marcmod"/>
+    </file>
+    <file xil_pn:name="../../lib/marcmod/simd/simd.vhd" xil_pn:type="FILE_VHDL">
+      <association xil_pn:name="BehavioralSimulation"/>
+      <association xil_pn:name="Implementation"/>
+      <library xil_pn:name="marcmod"/>
+    </file>
     <file xil_pn:name="../../lib/esa/memoryctrl/memoryctrl.vhd" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation"/>
       <association xil_pn:name="Implementation"/>
@@ -2115,6 +2125,7 @@
     <library xil_pn:name="eth"/>
     <library xil_pn:name="opencores"/>
     <library xil_pn:name="gaisler"/>
+    <library xil_pn:name="marcmod"/>
     <library xil_pn:name="esa"/>
     <library xil_pn:name="fmf"/>
     <library xil_pn:name="micron"/>

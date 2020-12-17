@@ -370,6 +370,8 @@ vhdl gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 vhdl gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 vhdl gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 vhdl gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+vhdl marcmod ../../lib/marcmod/simd/simdmod.vhd
+vhdl marcmod ../../lib/marcmod/simd/simd.vhd
 vhdl esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 vhdl esa ../../lib/esa/memoryctrl/mctrl.vhd
 vhdl work config.vhd

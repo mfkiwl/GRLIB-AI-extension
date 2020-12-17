@@ -1,1 +1,0 @@
--wto "520d3faf8f814237b1a762b780bd6575" --incr --debug "typical" --relax --mt "8" -L "grlib" -L "techmap" -L "gaisler" -L "work" -L "secureip" --snapshot "testbench_behav" "work.testbench" -log "elaborate.log" 

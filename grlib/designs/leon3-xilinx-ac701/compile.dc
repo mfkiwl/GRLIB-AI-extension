@@ -368,6 +368,10 @@ analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 analyze -f VHDL -library gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+catch {sh mkdir synopsys/marcmod} 
+define_design_lib marcmod -path synopsys/marcmod 
+analyze -f VHDL -library marcmod ../../lib/marcmod/simd/simdmod.vhd
+analyze -f VHDL -library marcmod ../../lib/marcmod/simd/simd.vhd
 catch {sh mkdir synopsys/esa} 
 define_design_lib esa -path synopsys/esa 
 analyze -f VHDL -library esa ../../lib/esa/memoryctrl/memoryctrl.vhd

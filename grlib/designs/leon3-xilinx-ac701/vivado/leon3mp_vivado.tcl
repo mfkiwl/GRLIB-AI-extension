@@ -447,6 +447,8 @@ read_vhdl -library gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 read_vhdl -library gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+read_vhdl -library marcmod ../../lib/marcmod/simd/simdmod.vhd
+read_vhdl -library marcmod ../../lib/marcmod/simd/simd.vhd
 read_vhdl -library esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 read_vhdl -library esa ../../lib/esa/memoryctrl/mctrl.vhd
 read_vhdl -library fmf ../../lib/fmf/utilities/conversions.vhd

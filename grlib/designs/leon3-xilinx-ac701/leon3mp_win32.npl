@@ -388,6 +388,9 @@ LIBFILE ..\..\lib\gaisler\leon5v0\tbufmem5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\dbgmod5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\irqmp5.vhd gaisler vhdl
 LIBFILE ..\..\lib\gaisler\leon5v0\leon5sys.vhd gaisler vhdl
+SUBLIB marcmod VhdlLibrary vhdl
+LIBFILE ..\..\lib\marcmod\simd\simdmod.vhd marcmod vhdl
+LIBFILE ..\..\lib\marcmod\simd\simd.vhd marcmod vhdl
 SUBLIB esa VhdlLibrary vhdl
 LIBFILE ..\..\lib\esa\memoryctrl\memoryctrl.vhd esa vhdl
 LIBFILE ..\..\lib\esa\memoryctrl\mctrl.vhd esa vhdl

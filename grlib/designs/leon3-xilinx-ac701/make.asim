@@ -404,6 +404,8 @@
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	acom -quiet   -93 -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	acom -quiet   -93 -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	acom -quiet   -93 -work marcmod ../../lib/marcmod/simd/simd.vhd
 	acom -quiet   -93 -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	acom -quiet   -93 -work esa ../../lib/esa/memoryctrl/mctrl.vhd
 	acom -quiet   -93 -work fmf ../../lib/fmf/utilities/conversions.vhd

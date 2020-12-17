@@ -1176,6 +1176,12 @@
         <Source name="../../lib/gaisler/leon5v0/leon5sys.vhd" type="VHDL" type_short="VHDL">
             <Options lib="gaisler"/>
         </Source>
+        <Source name="../../lib/marcmod/simd/simdmod.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="marcmod"/>
+        </Source>
+        <Source name="../../lib/marcmod/simd/simd.vhd" type="VHDL" type_short="VHDL">
+            <Options lib="marcmod"/>
+        </Source>
         <Source name="../../lib/esa/memoryctrl/memoryctrl.vhd" type="VHDL" type_short="VHDL">
             <Options lib="esa"/>
         </Source>

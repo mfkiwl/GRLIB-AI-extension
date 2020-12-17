@@ -751,6 +751,11 @@ xfile add "../../lib/gaisler/leon5v0/irqmp5.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/leon5v0/irqmp5.vhd"
 xfile add "../../lib/gaisler/leon5v0/leon5sys.vhd" -lib_vhdl gaisler
 puts "../../lib/gaisler/leon5v0/leon5sys.vhd"
+lib_vhdl new marcmod
+xfile add "../../lib/marcmod/simd/simdmod.vhd" -lib_vhdl marcmod
+puts "../../lib/marcmod/simd/simdmod.vhd"
+xfile add "../../lib/marcmod/simd/simd.vhd" -lib_vhdl marcmod
+puts "../../lib/marcmod/simd/simd.vhd"
 lib_vhdl new esa
 xfile add "../../lib/esa/memoryctrl/memoryctrl.vhd" -lib_vhdl esa
 puts "../../lib/esa/memoryctrl/memoryctrl.vhd"

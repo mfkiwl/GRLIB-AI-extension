@@ -405,6 +405,8 @@ vsim:
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	vcom -quiet -explicit -O0  -93 -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	vcom -quiet -explicit -O0  -93 -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	vcom -quiet -explicit -O0  -93 -work marcmod ../../lib/marcmod/simd/simd.vhd
 	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	vcom -quiet -explicit -O0  -93 -work esa ../../lib/esa/memoryctrl/mctrl.vhd
 	vcom -quiet -explicit -O0  -93 -work fmf ../../lib/fmf/utilities/conversions.vhd

@@ -4,6 +4,7 @@ mkdir -p vcs/techmap
 mkdir -p vcs/eth 
 mkdir -p vcs/opencores 
 mkdir -p vcs/gaisler 
+mkdir -p vcs/marcmod 
 mkdir -p vcs/esa 
 mkdir -p vcs/fmf 
 mkdir -p vcs/micron 

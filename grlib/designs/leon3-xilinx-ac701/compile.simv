@@ -404,6 +404,8 @@
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 	vhdlan -nc  -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+	vhdlan -nc  -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+	vhdlan -nc  -work marcmod ../../lib/marcmod/simd/simd.vhd
 	vhdlan -nc  -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 	vhdlan -nc  -work esa ../../lib/esa/memoryctrl/mctrl.vhd
 	vhdlan -nc  -work fmf ../../lib/fmf/utilities/conversions.vhd

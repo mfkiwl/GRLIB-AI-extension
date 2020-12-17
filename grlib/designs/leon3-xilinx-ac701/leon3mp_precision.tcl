@@ -372,6 +372,8 @@ add_input_file -format VHDL -work gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 add_input_file -format VHDL -work gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 add_input_file -format VHDL -work gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 add_input_file -format VHDL -work gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+add_input_file -format VHDL -work marcmod ../../lib/marcmod/simd/simdmod.vhd
+add_input_file -format VHDL -work marcmod ../../lib/marcmod/simd/simd.vhd
 add_input_file -format VHDL -work esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 add_input_file -format VHDL -work esa ../../lib/esa/memoryctrl/mctrl.vhd
 add_input_file -format VHDL -work work config.vhd

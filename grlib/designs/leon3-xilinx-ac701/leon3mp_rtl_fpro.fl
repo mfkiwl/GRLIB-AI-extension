@@ -47,6 +47,7 @@
 	-work gaisler  ../../lib/gaisler/noelv/subsys/noelvsys.vhd
 	-work gaisler  ../../lib/gaisler/leon5/leon5.vhd
 	-work gaisler  ../../lib/gaisler/leon5v0/leon5int.vhd ../../lib/gaisler/leon5v0/itbufmem5.vhd ../../lib/gaisler/leon5v0/bht_pap.vhd ../../lib/gaisler/leon5v0/btb.vhd ../../lib/gaisler/leon5v0/inst_text.vhd ../../lib/gaisler/leon5v0/iu5.vhd ../../lib/gaisler/leon5v0/cctrl5.vhd ../../lib/gaisler/leon5v0/cachemem5.vhd ../../lib/gaisler/leon5v0/regfile5_ram.vhd ../../lib/gaisler/leon5v0/regfile5_dff.vhd ../../lib/gaisler/leon5v0/nanofpu.vhd ../../lib/gaisler/leon5v0/cpucore5.vhd ../../lib/gaisler/leon5v0/tbufmem5.vhd ../../lib/gaisler/leon5v0/dbgmod5.vhd ../../lib/gaisler/leon5v0/irqmp5.vhd ../../lib/gaisler/leon5v0/leon5sys.vhd
+	-work marcmod  ../../lib/marcmod/simd/simdmod.vhd ../../lib/marcmod/simd/simd.vhd
 	-work esa  ../../lib/esa/memoryctrl/memoryctrl.vhd ../../lib/esa/memoryctrl/mctrl.vhd
 	-work work config.vhd
 	-work work ahbrom.vhd

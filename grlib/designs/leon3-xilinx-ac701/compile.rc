@@ -358,5 +358,7 @@ read_hdl -vhdl -lib gaisler ../../lib/gaisler/leon5v0/tbufmem5.vhd
 read_hdl -vhdl -lib gaisler ../../lib/gaisler/leon5v0/dbgmod5.vhd
 read_hdl -vhdl -lib gaisler ../../lib/gaisler/leon5v0/irqmp5.vhd
 read_hdl -vhdl -lib gaisler ../../lib/gaisler/leon5v0/leon5sys.vhd
+read_hdl -vhdl -lib marcmod ../../lib/marcmod/simd/simdmod.vhd
+read_hdl -vhdl -lib marcmod ../../lib/marcmod/simd/simd.vhd
 read_hdl -vhdl -lib esa ../../lib/esa/memoryctrl/memoryctrl.vhd
 read_hdl -vhdl -lib esa ../../lib/esa/memoryctrl/mctrl.vhd

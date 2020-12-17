@@ -4,6 +4,7 @@ DEFINE techmap xncsim/techmap
 DEFINE eth xncsim/eth 
 DEFINE opencores xncsim/opencores 
 DEFINE gaisler xncsim/gaisler 
+DEFINE marcmod xncsim/marcmod 
 DEFINE esa xncsim/esa 
 DEFINE fmf xncsim/fmf 
 DEFINE micron xncsim/micron 

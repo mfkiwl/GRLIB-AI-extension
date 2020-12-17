@@ -369,5 +369,7 @@ elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/tbufmem5.v
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/dbgmod5.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/irqmp5.vhd
 elaborate -ifmt vhdl -work_lib gaisler -ifn ../../lib/gaisler/leon5v0/leon5sys.vhd
+elaborate -ifmt vhdl -work_lib marcmod -ifn ../../lib/marcmod/simd/simdmod.vhd
+elaborate -ifmt vhdl -work_lib marcmod -ifn ../../lib/marcmod/simd/simd.vhd
 elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/memoryctrl/memoryctrl.vhd
 elaborate -ifmt vhdl -work_lib esa -ifn ../../lib/esa/memoryctrl/mctrl.vhd

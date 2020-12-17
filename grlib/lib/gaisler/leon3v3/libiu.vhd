@@ -46,10 +46,10 @@ package libiu is
   type cbwmasktype is array (0 to 3) of cbwmaskword;
 
   type simd_in_type is record
+     inst        : std_logic_vector (31 downto 0); -- inst
      ra          : std_logic_vector (31 downto 0); -- operand 1 data
      rb          : std_logic_vector (31 downto 0); -- operand 2 data
      op          : std_logic_vector (7 downto 0);  -- operation code
-     sign        : std_logic;                      -- signed
      rc_we       : std_logic;                      -- we on destination (work)
      rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
   end record;

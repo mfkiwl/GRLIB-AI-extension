@@ -88,13 +88,22 @@ function "+" (d : std_logic_vector; i : std_ulogic) return std_logic_vector;
 function "-" (a, b : std_logic_vector) return std_logic_vector;
 function "+" (a, b : std_logic_vector) return std_logic_vector;
 function "*" (a, b : std_logic_vector) return std_logic_vector;
+function unsigned_max (a, b : std_logic_vector) return std_logic_vector;
+function unsigned_min (a, b : std_logic_vector) return std_logic_vector;
+function signed_max (a, b : std_logic_vector) return std_logic_vector;
+function signed_min (a, b : std_logic_vector) return std_logic_vector;
 function add (d : std_logic_vector; i : integer) return std_logic_vector;
 function add (a, b : std_logic_vector) return std_logic_vector;
+function saturate_add(a,b : std_logic_vector; sign : std_logic) return std_logic_vector;
 function sub (d : std_logic_vector; i : integer) return std_logic_vector;
 function sub (a, b : std_logic_vector) return std_logic_vector;
+function saturate_sub(a,b : std_logic_vector; sign : std_logic) return std_logic_vector;
 function unsigned_mul (a, b : std_logic_vector) return std_logic_vector;
 function signed_mul (a, b : std_logic_vector) return std_logic_vector;
 function mixed_mul (a, b : std_logic_vector; sign : std_logic) return std_logic_vector;
+function saturate_mul(a,b : std_logic_vector; sign : std_logic) return std_logic_vector;
+function unsigned_div (a, b : std_logic_vector) return std_logic_vector;
+function signed_div (a, b : std_logic_vector) return std_logic_vector;
 --function ">" (a, b : std_logic_vector) return boolean;
 function "<" (i : integer; b : std_logic_vector) return boolean;
 function conv_integer(v : std_logic_vector) return integer;
@@ -301,6 +310,182 @@ begin
 -- pragma translate_on
 end;
 
+-- saturate multiplication
+function saturate_mul(a,b : std_logic_vector; sign : std_logic) return std_logic_vector is
+begin
+    return a;
+--variable a1 : std_logic_vector(a'left*2 downto 0) := (a'left*2 downto a'left+1 => (sign and a(a'left))) & a;
+--variable b1 : std_logic_vector(b'left*2 downto 0) := (b'left*2 downto b'left+1 => (sign and b(b'left))) & b;
+--constant U_MAX : std_logic_vector(a'left   downto 0) := (others => '1');
+--constant S_MAX : std_logic_vector(a'left*2 downto 0) :=  (a'left*2 downto a'left => '0') & (a'left-1 downto 0 => '1');
+--constant S_MIN : std_logic_vector(a'left*2 downto 0) :=  (a'left*2 downto a'left => '1') & (a'left-1 downto 0 => '0');
+--begin
+--    if sign = '0' then
+--        a1 := unsigned_mul(a1,b1)(a1'left downto 0);
+--        return unsigned_min(a1,U_MAX)(a'left downto 0);
+--    else 
+--        a1 := signed_mul(a1,b1)(a1'left downto 0);
+--        return signed_max(signed_min(S_MAX, a1), S_MIN)(a'left downto 0);
+--    end if;
+end;
+
+--signed division
+
+--https://vhdlguru.blogspot.com/2010/03/vhdl-function-for-division-two-signed.html
+function signed_div(a, b : std_logic_vector) return std_logic_vector is
+    variable a1 : unsigned(a'length-1 downto 0);
+    variable b1 : unsigned(b'length-1 downto 0);
+    variable p1 : unsigned(a'length downto 0) := (others => '0');
+    variable z : std_logic_vector(a'length+b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+    a1 := unsigned(abs(signed(a)));
+    b1 := unsigned(abs(signed(b)));
+    for i in 0 to a'length-1 loop
+        p1(a'length-1 downto 1) := p1(a'length-2 downto 0);
+        p1(0) := a1(a'length-1);
+        a1(a'length-1 downto 1) := a1(a'length-2 downto 0);
+        p1 := p1-b1;
+        if p1(a'length) = '1' then
+            a1(0) := '0';
+            p1 := p1 + b1;
+        else 
+            a1(0) := '1';
+        end if;
+    end loop;
+    if ((b(b'left) = '0') and (a(a'left) = '1')) or ((b(b'left) = '1') and (a(a'left) = '0')) then
+        return std_logic_vector(not(a1)+1);
+    else return std_logic_vector(a1);
+    end if;
+-- pragma translate_off
+  else
+     z := (others =>'X'); return(z);
+  end if;
+-- pragma translate_on
+end;
+
+--unsigned div
+function unsigned_div(a, b : std_logic_vector) return std_logic_vector is
+    variable a1 : unsigned(a'length-1 downto 0);
+    variable b1 : unsigned(b'length-1 downto 0);
+    variable p1 : unsigned(a'length downto 0) := (others => '0');
+    variable z : std_logic_vector(a'length+b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+    a1 := unsigned(abs(signed(a)));
+    b1 := unsigned(abs(signed(b)));
+    for i in 0 to a'length-1 loop
+        p1(a'length-1 downto 1) := p1(a'length-2 downto 0);
+        p1(0) := a1(a'length-1);
+        a1(a'length-1 downto 1) := a1(a'length-2 downto 0);
+        p1 := p1-b1;
+        if p1(a'length) = '1' then
+            a1(0) := '0';
+            p1 := p1 + b1;
+        else 
+            a1(0) := '1';
+        end if;
+    end loop;
+    return std_logic_vector(a1);
+-- pragma translate_off
+  else
+     z := (others =>'X'); return(z);
+  end if;
+-- pragma translate_on
+end;
+
+-- maximum 
+
+function signed_max (a, b : std_logic_vector) return std_logic_vector is
+variable x : std_logic_vector(a'length-1 downto 0);
+variable y : std_logic_vector(b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+      if signed(a)>signed(b) then 
+          return a;
+      else 
+          return b;
+      end if;
+-- pragma translate_off
+  else
+     x := (others =>'X'); y := (others =>'X');
+     if (x'length > y'length) then return(x); else return(y); end if;
+  end if;
+-- pragma translate_on
+end;
+
+-- unsigned maximum
+
+function unsigned_max (a, b : std_logic_vector) return std_logic_vector is
+variable x : std_logic_vector(a'length-1 downto 0);
+variable y : std_logic_vector(b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+      if unsigned(a)>unsigned(b) then 
+          return a;
+      else 
+          return b;
+      end if;
+-- pragma translate_off
+  else
+     x := (others =>'X'); y := (others =>'X');
+     if (x'length > y'length) then return(x); else return(y); end if;
+  end if;
+-- pragma translate_on
+end;
+
+-- minimum 
+
+function signed_min (a, b : std_logic_vector) return std_logic_vector is
+variable x : std_logic_vector(a'length-1 downto 0);
+variable y : std_logic_vector(b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+      if signed(a)<signed(b) then 
+          return a;
+      else 
+          return b;
+      end if;
+-- pragma translate_off
+  else
+     x := (others =>'X'); y := (others =>'X');
+     if (x'length > y'length) then return(x); else return(y); end if;
+  end if;
+-- pragma translate_on
+end;
+
+-- unsigned minimum
+
+function unsigned_min (a, b : std_logic_vector) return std_logic_vector is
+variable x : std_logic_vector(a'length-1 downto 0);
+variable y : std_logic_vector(b'length-1 downto 0);
+begin
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+      if unsigned(a)<unsigned(b) then 
+          return a;
+      else 
+          return b;
+      end if;
+-- pragma translate_off
+  else
+     x := (others =>'X'); y := (others =>'X');
+     if (x'length > y'length) then return(x); else return(y); end if;
+  end if;
+-- pragma translate_on
+end;
+
 -- unsigned addition
 
 function "+" (a, b : std_logic_vector) return std_logic_vector is
@@ -387,6 +572,44 @@ begin
   else x := (others =>'X'); return(x); 
   end if;
 -- pragma translate_on
+end;
+
+-- saturate addition 
+
+function saturate_add(a,b : std_logic_vector; sign : std_logic) return std_logic_vector is
+variable a1 : std_logic_vector(a'length downto 0) := (sign and a(a'left)) & a;
+variable b1 : std_logic_vector(b'length downto 0):= (sign and b(b'left)) & b;
+constant U_MAX : std_logic_vector(a'length-1 downto 0) := (others => '1');
+constant S_MAX : std_logic_vector(a'length downto 0) :=  "00" & (a1'left-2 downto 0 => '1');
+constant S_MIN : std_logic_vector(a'length downto 0) :=  "11" & (a1'left-2 downto 0 => '0');
+begin
+    a1 := add(a1,b1);
+    if sign = '0' then
+        if a1(a1'left) = '0' then 
+            return a1(a1'left-1 downto 0);
+        else return U_MAX;
+        end if;
+    else 
+        return signed_max(signed_min(S_MAX, a1), S_MIN)(a'length-1 downto 0);
+    end if;
+end;
+
+-- saturate subtraction
+function saturate_sub(a,b : std_logic_vector; sign : std_logic) return std_logic_vector is
+variable a1 : std_logic_vector(a'length downto 0) := (sign and a(a'left)) & a;
+variable b1 : std_logic_vector(b'length downto 0):= (sign and b(b'left)) & b;
+constant U_MIN : std_logic_vector(a'length-1 downto 0) := (others => '0');
+constant S_MAX : std_logic_vector(a'length downto 0) :=  "00" & (a1'left-2 downto 0 => '1');
+constant S_MIN : std_logic_vector(a'length downto 0) :=  "11" & (a1'left-2 downto 0 => '0');
+begin
+    a1 := sub(a1,b1);
+    if sign = '0' then
+        if a1(a1'left) = '0' then return a1(a1'left-1 downto 0);
+        else return U_MIN;
+        end if;
+    else 
+        return signed_max(signed_min(S_MAX, a1), S_MIN)(a'length-1 downto 0);
+    end if;
 end;
 
 -- unsigned subtraction

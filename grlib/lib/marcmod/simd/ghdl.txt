@@ -1,4 +1,4 @@
-ghdl -a simd_test.vhd simd.vhd
+ghdl -a -P../../ simd_test.vhd simd.vhd
 ghdl -e simd_test
 ghdl -r simd_test --vcd=simd.vcd --assert-level=note
 gtkwave simd.vcd &

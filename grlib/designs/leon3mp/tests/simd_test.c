@@ -234,6 +234,28 @@ int main()
     __asm__("st %g1, [ %fp + -12 ]");
     printf("dot product2: c=%#010x, expected result 0xfffffffc\n", c);
     
+    //test saturated mul
+    a=0x7f7ffdff;
+    b=0x7fff7f80;
+  //c=0x7f81807f
+    __asm__("ld [%fp + -4], %g2");
+    __asm__("ld [%fp + -8], %g1");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("sll %g2, %g1, %g1");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("nop");
+    __asm__("st %g1, [ %fp + -12 ]");
+    printf("saturate mul: c=%#010x, expected result 0x7f81807f\n",c);
+    
     //test div
     a=0x40404040;
     b=0x01020040;

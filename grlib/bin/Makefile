@@ -498,10 +498,19 @@ $(SIMTOP): gnu
 # Run testbench SIMTOP
 .PHONY: ghdl-run
 ghdl-run: $(SIMTOP)
-	./$(SIMTOP) $(GHDLRUNOPT)
+	./$(SIMTOP) $(GHDLRUNOPT) 
+
+ghdl-wave: $(SIMTOP)
+	./$(SIMTOP) $(GHDLRUNOPT) --wave=$(SIMTOP).ghw
+
+ghdl-vcd: $(SIMTOP)
+	./$(SIMTOP) $(GHDLRUNOPT) --vcd=$(SIMTOP).vcd
+
+ghdl-time: $(SIMTOP)
+	./$(SIMTOP) $(GHDLRUNOPT) 
 
 ghdl-clean:
-	-rm -rf gnu $(SIMTOP) make.ghdl
+	-rm -rf gnu $(SIMTOP) make.ghdl *.ghw *.vcd
 
 #########   NcSim targets   ############
 

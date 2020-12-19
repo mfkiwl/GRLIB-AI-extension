@@ -217,12 +217,12 @@ architecture rtl of simd is
             when S1_SMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'1');
+                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'1')(VLEN-1 downto 0);
                 end loop;  
             when S1_USMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0');
+                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0')(VLEN-1 downto 0);
                 end loop;  
             when S1_UMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop

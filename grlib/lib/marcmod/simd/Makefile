@@ -17,13 +17,13 @@ build:
 	ghdl -m -fexplicit --ieee=synopsys --mb-comments -O2 --workdir=gnu/work --work=work -Pgnu -Pgnu/grlib -Pgnu/marcmod -Pgnu/work simd_test
 
 sim:
-	./simd_test --vcd=simd.vcd --assert-level=error
+	./simd_test --wave=simd.ghw --assert-level=error
 
 
 view:
-	gtkwave simd.vcd &
+	gtkwave simd.ghw &
 
 clean:
-	rm -f *.o *.vcd *.cf 
+	rm -f *.o *.ghw *.cf 
 	rm -rf gnu/
     

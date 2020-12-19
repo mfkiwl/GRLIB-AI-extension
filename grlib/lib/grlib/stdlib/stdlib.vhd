@@ -312,21 +312,26 @@ end;
 
 -- saturate multiplication
 function saturate_mul(a,b : std_logic_vector; sign : std_logic) return std_logic_vector is
+variable z : std_logic_vector(a'length+b'length-1 downto 0);
+constant U_MAX : integer := 2**(a'length)-1;
+constant S_MAX : integer := 2**(a'length-1)-1;
+constant S_MIN : integer := -2**(a'length-1);
 begin
-    return a;
---variable a1 : std_logic_vector(a'left*2 downto 0) := (a'left*2 downto a'left+1 => (sign and a(a'left))) & a;
---variable b1 : std_logic_vector(b'left*2 downto 0) := (b'left*2 downto b'left+1 => (sign and b(b'left))) & b;
---constant U_MAX : std_logic_vector(a'left   downto 0) := (others => '1');
---constant S_MAX : std_logic_vector(a'left*2 downto 0) :=  (a'left*2 downto a'left => '0') & (a'left-1 downto 0 => '1');
---constant S_MIN : std_logic_vector(a'left*2 downto 0) :=  (a'left*2 downto a'left => '1') & (a'left-1 downto 0 => '0');
---begin
---    if sign = '0' then
---        a1 := unsigned_mul(a1,b1)(a1'left downto 0);
---        return unsigned_min(a1,U_MAX)(a'left downto 0);
---    else 
---        a1 := signed_mul(a1,b1)(a1'left downto 0);
---        return signed_max(signed_min(S_MAX, a1), S_MIN)(a'left downto 0);
---    end if;
+-- pragma translate_off
+  if notx(a&b) then
+-- pragma translate_on
+    if sign = '0' then
+        z := unsigned_mul(a,b)(z'left downto 0);
+        return unsigned_min(std_logic_vector(to_unsigned(U_MAX, z'length)), z);
+    else
+        z := signed_mul(a,b)(z'left downto 0);
+        return signed_max(std_logic_vector(to_signed(S_MIN, z'length)), signed_min(std_logic_vector(to_signed(S_MAX,z'length)), z));
+    end if;
+-- pragma translate_off
+  else
+     z := (others =>'X'); return(z);
+  end if;
+-- pragma translate_on
 end;
 
 --signed division

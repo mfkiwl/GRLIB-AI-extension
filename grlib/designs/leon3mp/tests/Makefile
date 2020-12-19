@@ -12,6 +12,8 @@ XCFLAGS0=-O0 -g -msoft-float -mcpu=v8
 
 bin_change:
 	g++ -o bin_change bin_change.cc
+make.x:
+	g++ -o make.x make_simd_op.cc
 systest: 
 	cp systest.srec test.srec
 
@@ -35,4 +37,4 @@ mat_mul: mat_mul.o
 	cp mat_mul.srec test.srec
 
 clean:
-	rm -f *.exe *.o *.dump
+	rm -f *.exe *.o *.dump bin_change make.x

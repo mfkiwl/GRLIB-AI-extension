@@ -1,5 +1,0 @@
--- to compile the program 
-make prog_name 
--- this compiles and moves the file data to test.srec
--- which is used by the testbench
-

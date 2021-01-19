@@ -75,6 +75,7 @@ architecture rtl of simd is
     ---------------------------------------------------------------
     -- REGISTER TYPES DEFINITION --
     --------------------------------------------------------------
+
     -- Result register type 
     type result_reg_type is record
         data : std_logic_vector (XLEN-1 downto 0);
@@ -88,6 +89,9 @@ architecture rtl of simd is
         data : std_logic_vector (XLEN-1 downto 0);
     end record;
 
+    -- mask registers (predicate)
+    subtype pred_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
+
     -- Stage1 entry register
     type s1_reg_type is record
         ra : operand_reg_type;
@@ -96,6 +100,7 @@ architecture rtl of simd is
         op2: std_logic_vector(2 downto 0);
         rc_addr : std_logic_vector (RSIZE-1 downto 0);
         we : std_logic;
+        p  : pred_reg_type;
     end record; 
     
     -- Stage2 entry register
@@ -109,12 +114,14 @@ architecture rtl of simd is
         rc : result_reg_type;
     end record;
 
+
     -- Group of pipeline registers
     type registers is record
         s1 : s1_reg_type;
         s2 : s2_reg_type;
         s3 : s3_reg_type;
     end record;
+
 
 
     ---------------------------------------------------------------
@@ -137,7 +144,8 @@ architecture rtl of simd is
         op1 => (others => '0'),
         op2 => (others => '0'),
         rc_addr => (others => '0'),
-        we => '0'
+        we => '0',
+        p  => (others => '0')
     );
 
     -- set the 2nd stage registers reset
@@ -173,12 +181,15 @@ architecture rtl of simd is
     procedure stage1_ops(signal op : in std_logic_vector (4 downto 0);
                          signal ra : in operand_reg_type;
                          signal rb : in operand_reg_type;
+                         signal p  : in pred_reg_type; 
 						 --exceptions or errors
                          signal rc : out result_reg_type) is
     begin
         case op is
             when S1_NOP =>
                 rc.data <= ra.data;
+
+            --addition and saturated addition
             when S1_ADD => 
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
@@ -194,6 +205,8 @@ architecture rtl of simd is
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
                                                                          rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0');
                 end loop;  
+
+            --subtraction and saturated subtraction
             when S1_SUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
@@ -209,6 +222,8 @@ architecture rtl of simd is
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
                                                                          rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0');
                 end loop;  
+
+            --multiplication and saturated multiplication
             when S1_MUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
@@ -229,6 +244,8 @@ architecture rtl of simd is
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
                                                                          rb.data(VLEN*i+VLEN-1 downto VLEN*i))(VLEN-1 downto 0);
                 end loop;  
+
+            -- division
             when S1_DIV => 
                 for i in 0 to (XLEN/VLEN)-1 loop
                     if rb.data(VLEN*i+VLEN-1 downto VLEN*i) = (VLEN => '0') then
@@ -249,6 +266,8 @@ architecture rtl of simd is
                                                                              rb.data(VLEN*i+VLEN-1 downto VLEN*i));
                     end if;
                 end loop;  
+
+            -- Maximum and minimum 
             when S1_MAX => 
                 for i in 0 to (XLEN/VLEN)-1 loop
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_max(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
@@ -269,6 +288,8 @@ architecture rtl of simd is
                     rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_min(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
                                                                          rb.data(VLEN*i+VLEN-1 downto VLEN*i));
                 end loop;  
+
+            --bitwise operations have no carry so no need to loop
             when S1_AND => 
 				rc.data <= ra.data and rb.data;
             when S1_OR  => 
@@ -281,8 +302,17 @@ architecture rtl of simd is
 				rc.data <= ra.data nor rb.data;
             when S1_XNOR  => 
 				rc.data <= ra.data xnor rb.data;
-			when others =>
+
+            when others => -- only error case
+                rc.data <= ra.data;
         end case;
+
+        for i in 0 to (XLEN/VLEN)-1 loop
+            if p(i)='0' then
+                rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*i+VLEN-1 downto VLEN*i);
+            end if;
+        end loop;
+
     end procedure stage1_ops;
 
     ---------------------------------------------------------------
@@ -355,7 +385,7 @@ architecture rtl of simd is
                           signal r_s2 : out s2_reg_type) is
     begin
         --operation stage1 
-        stage1_ops(r_s1.op1, r_s1.ra, r_s1.rb, r_s2.ra);
+        stage1_ops(r_s1.op1, r_s1.ra, r_s1.rb, r_s1.p, r_s2.ra);
         r_s2.op2 <= r_s1.op2;
         r_s2.ra.we <= r_s1.we;
         r_s2.ra.addr <= r_s1.rc_addr;

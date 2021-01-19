@@ -26,4 +26,5 @@ view:
 clean:
 	rm -f *.o *.ghw *.cf 
 	rm -rf gnu/
+	rm -f simd_test
     

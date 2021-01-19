@@ -14,15 +14,26 @@ entity simd is
             RSIZE: integer := 5
            );
     port(
+            -- general inputs
             clk   : in  std_ulogic;
             rstn  : in  std_ulogic;
             holdn : in  std_ulogic;
+            
+            -- inst for debug 
             inst  : in  std_logic_vector(31 downto 0);
+
+            -- vector operations inputs
             ra_i  : in  std_logic_vector (XLEN-1 downto 0);
             rb_i  : in  std_logic_vector (XLEN-1 downto 0);
             op_i  : in  std_logic_vector (7 downto 0);
             rc_we_i   : in std_logic;
             rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
+
+            -- mask modification inputs
+            mask_we_i : in std_logic;
+            mask_value_i : in std_logic_vector ((XLEN/VLEN)-1 downto 0);
+
+            -- outputs
             rc_data_o : out std_logic_vector (XLEN-1 downto 0);           
             rc_we_o   : out std_logic;
             rc_addr_o : out std_logic_vector (RSIZE-1 downto 0)
@@ -100,7 +111,6 @@ architecture rtl of simd is
         op2: std_logic_vector(2 downto 0);
         rc_addr : std_logic_vector (RSIZE-1 downto 0);
         we : std_logic;
-        p  : pred_reg_type;
     end record; 
     
     -- Stage2 entry register
@@ -120,6 +130,7 @@ architecture rtl of simd is
         s1 : s1_reg_type;
         s2 : s2_reg_type;
         s3 : s3_reg_type;
+        p  : pred_reg_type;
     end record;
 
 
@@ -144,8 +155,7 @@ architecture rtl of simd is
         op1 => (others => '0'),
         op2 => (others => '0'),
         rc_addr => (others => '0'),
-        we => '0',
-        p  => (others => '0')
+        we => '0'
     );
 
     -- set the 2nd stage registers reset
@@ -163,14 +173,15 @@ architecture rtl of simd is
     constant RRES : registers := (
         s1 => s1_reg_res,
         s2 => s2_reg_res,
-        s3 => s3_reg_res
+        s3 => s3_reg_res,
+        p => (others => '1')
     );
 
     ---------------------------------------------------------------
     -- SIGNALS DEFINITIONS
     --------------------------------------------------------------
     --signals for the registers r -> current, rin -> next
-    signal r, rin : registers;
+    signal r, rin: registers;
 
 
     
@@ -382,10 +393,11 @@ architecture rtl of simd is
     -- STAGE TO STAGE PROCEDURES --
     --------------------------------------------------------------
     procedure stage1_to_2(signal r_s1 : in s1_reg_type;
+                          signal r_p  : in pred_reg_type;
                           signal r_s2 : out s2_reg_type) is
     begin
         --operation stage1 
-        stage1_ops(r_s1.op1, r_s1.ra, r_s1.rb, r_s1.p, r_s2.ra);
+        stage1_ops(r_s1.op1, r_s1.ra, r_s1.rb, r_p, r_s2.ra);
         r_s2.op2 <= r_s1.op2;
         r_s2.ra.we <= r_s1.we;
         r_s2.ra.addr <= r_s1.rc_addr;
@@ -430,16 +442,28 @@ architecture rtl of simd is
         rc_we   <= r_s3.rc.we;
         rc_addr <= r_s3.rc.addr;
     end procedure stage3_to_output;
+
+    -- END OF PROCEDURES --
 begin
+    ---------------------------------------------------------------
+    -- MAIN BODY --
+    --------------------------------------------------------------
     --fill stage1 register with input
     input_to_stage1(ra_i, rb_i, op_i, rc_we_i, rc_addr_i, rin.s1);
     --stage 1 to stage 2
-    stage1_to_2(r.s1, rin.s2);
+    stage1_to_2(r.s1, r.p, rin.s2);
     --stage 2 to stage 3
     stage2_to_3(r.s2, rin.s3);
     --fill output signals
     stage3_to_output(r.s3, rc_data_o, rc_we_o, rc_addr_o);
 
+    -- update mask
+    rin.p <= mask_value_i when mask_we_i = '1' else
+             r.p;
+
+    ---------------------------------------------------------------
+    -- REGISTER UPDATING --
+    --------------------------------------------------------------
     reg : process (clk) 
     begin
         if rising_edge(clk) then

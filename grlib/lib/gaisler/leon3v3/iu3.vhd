@@ -135,6 +135,7 @@ architecture rtl of iu3 is
         conv_std_logic_vector(NWIN, NWINLOG2);
   constant FPEN   : boolean := (fpu /= 0);
   constant CPEN   : boolean := (cp = 1);
+  constant SIMDEN : boolean := true; --marcmod: SIMD is enabled (simdmod = 1);
   constant MULEN  : boolean := (v8 /= 0);
   constant MULTYPE: integer := (v8 / 16);
   constant DIVEN  : boolean := (v8 /= 0);
@@ -1590,11 +1591,13 @@ begin
       when IAND | ANDCC | ANDN | ANDNCC | IOR | ORCC | ORN | ORNCC | IXOR |
         XORCC | IXNOR | XNORCC | ISLL | ISRL | ISRA | MULSCC | IADD | ADDX |
         ADDCC | ADDXCC | ISUB | SUBX | SUBCC | SUBXCC | FLUSH | JMPL | TICC | 
-        SAVE | RESTORE | RDY | SIMD => null;
+        SAVE | RESTORE | RDY  => null;
       when TADDCC | TADDCCTV | TSUBCC | TSUBCCTV => 
         if notag = 1 then illegal_inst := '1'; end if;
       when UMAC | SMAC => 
         if not MACEN then illegal_inst := '1'; end if;
+    when SIMD | WRMSK => -- marcmod: add SIMD and WRMSK to nonillegal instruction if SIMD enabled
+        if not SIMDEN then illegal_inst := '1'; end if;
       when UMUL | SMUL | UMULCC | SMULCC => 
         if not MULEN then illegal_inst := '1'; end if;
       when UDIV | SDIV | UDIVCC | SDIVCC => 
@@ -1902,8 +1905,8 @@ end;
           if DIVEN then y_check := '1'; nobp := op3(4); end if; -- no BP on divcc
         when FPOP1 | FPOP2 => ldcheck1:= '0'; ldcheck2 := '0'; fins := BPRED;
         when JMPL => call_hold := '1'; nobp := BPRED;
-        --marcmod
-        when SIMD =>
+        when SIMD => --marcmod: handle SIMD data bypass
+            -- no need to bypass data for WRMSK
             insimd := '1';
             ldchkra := '0'; ldchkex := '0';
         when others => 
@@ -4105,7 +4108,7 @@ begin
       end if;
     elsif MACEN and MACPIPE and ((not r.x.ctrl.annul and r.x.mac) = '1') then
       xc_result := mulo.result(31 downto 0);
-    --marcmod
+    --marcmod: get result from the SIMD module
     elsif (r.x.ctrl.simd and (not r.x.ctrl.annul)) = '1'  then
         xc_result := sdo.rc_data;
     else xc_result := r.x.result; end if;
@@ -4526,13 +4529,19 @@ begin
            v.e.aluop, v.e.alusel, v.e.aluadd, v.e.shcnt, v.e.sari, v.e.shleft,
            v.e.ymsb, v.e.mul, ra_div, v.e.mulstep, v.e.mac, v.e.ldbp2, v.e.invop2
     );
-    --marcmod
+    --marcmod: configure SIMD module input
     sdi.inst <= r.a.ctrl.inst;
     sdi.ra <= ra_op1;
     sdi.rb <= ra_op2;
     sdi.op <= r.a.ctrl.inst(12 downto 5);
     sdi.rc_we <= r.a.ctrl.simd;
     sdi.rc_addr <= r.a.ctrl.inst(29 downto 25);
+
+    if r.a.ctrl.inst(24 downto 19) = WRMSK then
+        sdi.mask_we <= '1';
+    else sdi.mask_we <= '0';
+    end if;
+    sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
 
     cin_gen(r, v.m.icc(0), v.e.alucin);
     bp_miss_ra(r, ra_bpmiss, de_bpannul);
@@ -4625,8 +4634,8 @@ begin
 
     v.a.bp := v.a.bp and not v.a.ctrl.annul;
     v.a.nobp := v.a.nobp and not v.a.ctrl.annul;
-    --marcmod
-    v.a.ctrl.simd := v.a.ctrl.simd and not v.a.ctrl.annul;
+   
+    v.a.ctrl.simd := v.a.ctrl.simd and not v.a.ctrl.annul; --marcmod
 
     v.a.ctrl.inst := de_inst;
 

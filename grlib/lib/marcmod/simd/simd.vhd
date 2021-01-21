@@ -62,6 +62,7 @@ architecture rtl of simd is
     constant S1_SADD : std_logic_vector (4 downto 0) :="01101";
     constant S1_SSUB : std_logic_vector (4 downto 0) :="01110";
     constant S1_SMUL : std_logic_vector (4 downto 0) :="01111";
+    constant S1_MOVB : std_logic_vector (4 downto 0) :="10000";
 
     constant S1_UMUL : std_logic_vector (4 downto 0) :="10011";
     constant S1_UDIV : std_logic_vector (4 downto 0) :="10100";
@@ -199,6 +200,9 @@ architecture rtl of simd is
         case op is
             when S1_NOP =>
                 rc.data <= ra.data;
+
+            when S1_MOVB =>
+                rc.data <= rb.data;
 
             --addition and saturated addition
             when S1_ADD => 

@@ -52,6 +52,8 @@ package libiu is
      op          : std_logic_vector (7 downto 0);  -- operation code
      rc_we       : std_logic;                      -- we on destination (work)
      rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
+     mask_we     : std_logic;                      -- we on the mask register
+     mask_value  : std_logic_vector (3 downto 0);  -- new value for the mask
   end record;
 
   type simd_out_type is record

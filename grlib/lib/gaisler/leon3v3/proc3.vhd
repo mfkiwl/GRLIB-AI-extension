@@ -173,8 +173,8 @@ begin
 
   simd0 : simd
     generic map (32,8,5)
-    port map (clk, rstn, holdnx, sdi.inst, sdi.ra, sdi.rb, sdi.op, sdi.rc_we, sdi.rc_addr,
-             sdi.mask_we, sdi.mask_value, sdo.rc_data, sdo.rc_we, sdo.rc_addr);
+    port map (clk, rstn, holdnx, sdi.inst, sdi.rc_we, sdi.rc_addr, sdi.ra, sdi.rb, sdi.op,
+             sdi.ldbpa, sdi.ldra, sdi.ldbpb, sdi.ldrb, sdi.mask_we, sdi.mask_value, sdo.rc_data, sdo.s1bp, sdo.s2bp);
 
 -- multiply and divide units
 

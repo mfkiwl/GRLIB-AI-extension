@@ -19,24 +19,30 @@ entity simd is
             rstn  : in  std_ulogic;
             holdn : in  std_ulogic;
             
-            -- inst for debug 
+            -- signals for debug 
             inst  : in  std_logic_vector(31 downto 0);
+            rc_we_i   : in std_logic;
+            rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
 
             -- vector operations inputs
             ra_i  : in  std_logic_vector (XLEN-1 downto 0);
             rb_i  : in  std_logic_vector (XLEN-1 downto 0);
             op_i  : in  std_logic_vector (7 downto 0);
-            rc_we_i   : in std_logic;
-            rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
+
+            -- memory bypass input
+            ldbpa_i : in std_logic;
+            ldra_i  : in  std_logic_vector (XLEN-1 downto 0);
+            ldbpb_i : in std_logic;
+            ldrb_i  : in  std_logic_vector (XLEN-1 downto 0);
 
             -- mask modification inputs
             mask_we_i : in std_logic;
             mask_value_i : in std_logic_vector ((XLEN/VLEN)-1 downto 0);
 
             -- outputs
-            rc_data_o : out std_logic_vector (XLEN-1 downto 0);           
-            rc_we_o   : out std_logic;
-            rc_addr_o : out std_logic_vector (RSIZE-1 downto 0)
+            rc_data_o : out std_logic_vector (XLEN-1 downto 0);
+            s1bp_o : out std_logic_vector (XLEN-1 downto 0); -- data from stage 1 to bypass if needed
+            s2bp_o : out std_logic_vector (XLEN-1 downto 0) -- data from stage 2 to bypass if needed
             --exceptions out 
         );
 end;
@@ -91,8 +97,6 @@ architecture rtl of simd is
     -- Result register type 
     type result_reg_type is record
         data : std_logic_vector (XLEN-1 downto 0);
-        we   : std_logic;
-        addr : std_logic_vector (RSIZE-1 downto 0);
 		--error
     end record;
 
@@ -110,8 +114,6 @@ architecture rtl of simd is
         rb : operand_reg_type;
         op1: std_logic_vector(4 downto 0);
         op2: std_logic_vector(2 downto 0);
-        rc_addr : std_logic_vector (RSIZE-1 downto 0);
-        we : std_logic;
     end record; 
     
     -- Stage2 entry register
@@ -144,9 +146,7 @@ architecture rtl of simd is
     );
 
     constant res_reg_res : result_reg_type := (
-        data => (others => '0'),
-        we => '0',
-        addr => (others => '0')
+        data => (others => '0')
     );
 
     -- set the 1st stage registers reset
@@ -154,9 +154,7 @@ architecture rtl of simd is
         ra => op_reg_res,
         rb => op_reg_res,
         op1 => (others => '0'),
-        op2 => (others => '0'),
-        rc_addr => (others => '0'),
-        we => '0'
+        op2 => (others => '0')
     );
 
     -- set the 2nd stage registers reset
@@ -183,6 +181,7 @@ architecture rtl of simd is
     --------------------------------------------------------------
     --signals for the registers r -> current, rin -> next
     signal r, rin: registers;
+    signal rs1, rs2 : operand_reg_type;
 
 
     
@@ -390,21 +389,19 @@ architecture rtl of simd is
 			when others =>
 		end case;
         rc.data <= acc;
-        rc.we <= ra.we;
     end procedure stage2_ops;
 
     ---------------------------------------------------------------
     -- STAGE TO STAGE PROCEDURES --
     --------------------------------------------------------------
     procedure stage1_to_2(signal r_s1 : in s1_reg_type;
+                          signal rs1, rs2 : in operand_reg_type;
                           signal r_p  : in pred_reg_type;
                           signal r_s2 : out s2_reg_type) is
     begin
         --operation stage1 
-        stage1_ops(r_s1.op1, r_s1.ra, r_s1.rb, r_p, r_s2.ra);
+        stage1_ops(r_s1.op1, rs1, rs2, r_p, r_s2.ra);
         r_s2.op2 <= r_s1.op2;
-        r_s2.ra.we <= r_s1.we;
-        r_s2.ra.addr <= r_s1.rc_addr;
     end procedure stage1_to_2;
 
     procedure stage2_to_3(signal r_s2 : in s2_reg_type;
@@ -412,39 +409,25 @@ architecture rtl of simd is
     begin
         --operation stage2 
         stage2_ops(r_s2.op2, r_s2.ra, r_s3.rc);
-        r_s3.rc.addr <= r_s2.ra.addr;
     end procedure stage2_to_3;
 
     procedure input_to_stage1( signal ra  : in  std_logic_vector (XLEN-1 downto 0);
                                signal rb  : in  std_logic_vector (XLEN-1 downto 0);
                                signal op  : in  std_logic_vector (7 downto 0);
-                               signal rc_we   : in std_logic;
-                               signal rc_addr : in std_logic_vector (RSIZE-1 downto 0);
                                signal r_s1 : out s1_reg_type) is
     begin
         r_s1.ra.data <= ra;
         r_s1.rb.data <= rb;
-        r_s1.we <= rc_we;
         
-        if rc_we='1' then 
-            r_s1.op1 <= op(4 downto 0);
-            r_s1.op2 <= op(7 downto 5);
-        else 
-            r_s1.op1 <= S1_NOP;
-            r_s1.op2 <= S2_NOP;
-        end if;
+        r_s1.op1 <= op(4 downto 0);
+        r_s1.op2 <= op(7 downto 5);
 
-        r_s1.rc_addr <= rc_addr;
     end procedure input_to_stage1;
 
     procedure stage3_to_output(signal r_s3 : in s3_reg_type;
-                               signal rc_data : out std_logic_vector (XLEN-1 downto 0);           
-                               signal rc_we   : out std_logic;
-                               signal rc_addr : out std_logic_vector (RSIZE-1 downto 0)) is 
+                               signal rc_data : out std_logic_vector (XLEN-1 downto 0)) is 
     begin
         rc_data <= r_s3.rc.data;
-        rc_we   <= r_s3.rc.we;
-        rc_addr <= r_s3.rc.addr;
     end procedure stage3_to_output;
 
     -- END OF PROCEDURES --
@@ -453,13 +436,21 @@ begin
     -- MAIN BODY --
     --------------------------------------------------------------
     --fill stage1 register with input
-    input_to_stage1(ra_i, rb_i, op_i, rc_we_i, rc_addr_i, rin.s1);
+    input_to_stage1(ra_i, rb_i, op_i, rin.s1);
     --stage 1 to stage 2
-    stage1_to_2(r.s1, r.p, rin.s2);
+    -- mux 
+    rs1.data <= r.s1.ra.data when ldbpa_i = '0' else ldra_i;
+    rs2.data <= r.s1.rb.data when ldbpb_i = '0' else ldrb_i;
+
+    stage1_to_2(r.s1, rs1, rs2, r.p, rin.s2);
+
     --stage 2 to stage 3
     stage2_to_3(r.s2, rin.s3);
     --fill output signals
-    stage3_to_output(r.s3, rc_data_o, rc_we_o, rc_addr_o);
+    stage3_to_output(r.s3, rc_data_o);
+    s1bp_o <= rin.s2.ra.data;
+    s2bp_o <= rin.s3.rc.data;
+
 
     -- update mask
     rin.p <= mask_value_i when mask_we_i = '1' else

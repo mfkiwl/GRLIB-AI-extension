@@ -50,6 +50,10 @@ package libiu is
      ra          : std_logic_vector (31 downto 0); -- operand 1 data
      rb          : std_logic_vector (31 downto 0); -- operand 2 data
      op          : std_logic_vector (7 downto 0);  -- operation code
+     ldbpa       : std_logic;                      -- load produced data for operand a
+     ldra        : std_logic_vector (31 downto 0); -- data from load operand a
+     ldbpb       : std_logic;                      -- load produced data for operand b
+     ldrb        : std_logic_vector (31 downto 0); -- data from load operand b
      rc_we       : std_logic;                      -- we on destination (work)
      rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
      mask_we     : std_logic;                      -- we on the mask register
@@ -58,8 +62,8 @@ package libiu is
 
   type simd_out_type is record
      rc_data     : std_logic_vector(31 downto 0); -- output data
-     rc_we       : std_logic;                     -- we on destination
-     rc_addr     : std_logic_vector(4 downto 0);  -- addr of destination
+     s1bp        :std_logic_vector(31 downto 0); -- s1 bypass output data
+     s2bp        :std_logic_vector(31 downto 0); -- s2 bp output data
   end record;
 
 

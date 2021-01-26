@@ -9,12 +9,12 @@ int main(){
     const bitset<1> imm ("0");
     int input;
     
-    cout<<"Use default addresses?(1/0)\n";
-    cin>>input;
-    bitset<5> rd(1);
-    bitset<5> rs1(2);
-    bitset<5> rs2(1);
-    if(!input){
+    //cout<<"Use default addresses?(1/0)\n";
+    //cin>>input;
+    //bitset<5> rd(1);
+    //bitset<5> rs1(2);
+    //bitset<5> rs2(1);
+    //if(!input){
         cout<<"Input destination register:\n";
         cin>>input;
         bitset<5> rd(input);
@@ -24,7 +24,7 @@ int main(){
         cout<<"Input source2 register:\n";
         cin>>input;
         bitset<5> rs2(input);
-    }
+    //}
     cout<<"Input stage1 op:\n";
     cin>>input;
     bitset<5> op1(input);

@@ -123,8 +123,7 @@ architecture rtl of iu3 is
     end if; 
   end function get_tbuf;
   
-  constant ISETMSB : integer := log2x(isets)-1;
-  constant DSETMSB : integer := log2x(dsets)-1;
+  constant ISETMSB : integer := log2x(isets)-1; constant DSETMSB : integer := log2x(dsets)-1;
   constant RFBITS : integer range 6 to 10 := log2(NWIN+1) + 4;
   constant NWINLOG2   : integer range 1 to 5 := log2(NWIN);
   constant CWPOPT : boolean := (NWIN = (2**NWINLOG2));
@@ -169,6 +168,7 @@ architecture rtl of iu3 is
   --debug
 
   signal d_a_simd : std_ulogic;
+  signal d_d_ldlock : std_ulogic;
   signal d_e_simd : std_ulogic;
   signal d_m_simd : std_ulogic;
   signal d_x_simd : std_ulogic;
@@ -214,6 +214,7 @@ architecture rtl of iu3 is
     wicc  : std_ulogic;
     wy    : std_ulogic;
     simd  : std_ulogic;
+    wmask : std_ulogic;
     ld    : std_ulogic;
     pv    : std_ulogic;
     rett  : std_ulogic;
@@ -279,10 +280,10 @@ architecture rtl of iu3 is
     aw    : std_ulogic;
     paw   : std_ulogic;
     imm   : word;
-    ldcheck1 : std_ulogic;
+    ldcheck1 : std_ulogic; --
     ldcheck2 : std_ulogic;
-    ldchkra : std_ulogic; 
-    ldchkex : std_ulogic;
+    ldchkra : std_ulogic; -- check for operands in register access stage
+    ldchkex : std_ulogic; -- check for operands in execute stage
     su : std_ulogic;
     et : std_ulogic;
     wovf : std_ulogic;
@@ -1078,6 +1079,7 @@ architecture rtl of iu3 is
     wicc  => '0',
     wy    => '0',
     simd  => '0',
+    wmask => '0',
     ld    => '0',
     pv    => '0',
     rett  => '0',
@@ -1596,7 +1598,7 @@ begin
         if notag = 1 then illegal_inst := '1'; end if;
       when UMAC | SMAC => 
         if not MACEN then illegal_inst := '1'; end if;
-    when SIMD | WRMSK => -- marcmod: add SIMD and WRMSK to nonillegal instruction if SIMD enabled
+      when SIMD | WRMSK => -- marcmod: add SIMD and WRMSK to legal instruction if SIMD enabled
         if not SIMDEN then illegal_inst := '1'; end if;
       when UMUL | SMUL | UMULCC | SMULCC => 
         if not MULEN then illegal_inst := '1'; end if;
@@ -1858,7 +1860,7 @@ end;
 
   procedure lock_gen(r : registers; rs2, rd : std_logic_vector(4 downto 0);
         rfa1, rfa2, rfrd : rfatype; inst : word; fpc_lock, mulinsn, divinsn, de_wcwp : std_ulogic;
-        lldcheck1, lldcheck2, lldlock, lldchkra, lldchkex, insimd, bp, nobp, de_fins_hold : out std_ulogic;
+        lldcheck1, lldcheck2, lldlock, lldchkra, lldchkex, bp, nobp, de_fins_hold : out std_ulogic;
         iperr : std_logic; icbpmiss: std_ulogic) is
   variable op : std_logic_vector(1 downto 0);
   variable op2 : std_logic_vector(2 downto 0);
@@ -1869,13 +1871,18 @@ end;
   variable ldlock, icc_check, bicc_hold, chkmul, y_check : std_logic;
   variable icc_check_bp, y_hold, mul_hold, bicc_hold_bp, fins, call_hold  : std_ulogic;
   variable de_fins_holdx : std_ulogic;
+  variable simd_op1 : std_logic_vector(4 downto 0);
+  variable simd_op2 : std_logic_vector(2 downto 0);
   begin
     op := inst(31 downto 30); op3 := inst(24 downto 19); 
     op2 := inst(24 downto 22); cond := inst(28 downto 25); 
     rs1 := inst(18 downto 14); i := inst(13);
+    simd_op2 := r.a.ctrl.inst(12 downto 10);
+    simd_op1 := r.a.ctrl.inst(9 downto 5);
+
     ldcheck1 := '0'; ldcheck2 := '0'; ldcheck3 := '0'; ldlock := '0';
     ldchkra := '1'; ldchkex := '1'; icc_check := '0'; bicc_hold := '0';
-    y_check := '0'; y_hold := '0'; insimd := '0'; bp := '0'; mul_hold := '0';
+    y_check := '0'; y_hold := '0'; bp := '0'; mul_hold := '0';
     icc_check_bp := '0'; nobp := '0'; fins := '0'; call_hold := '0';
 
     if (r.d.annul = '0') and (icbpmiss='0')
@@ -1905,10 +1912,6 @@ end;
           if DIVEN then y_check := '1'; nobp := op3(4); end if; -- no BP on divcc
         when FPOP1 | FPOP2 => ldcheck1:= '0'; ldcheck2 := '0'; fins := BPRED;
         when JMPL => call_hold := '1'; nobp := BPRED;
-        when SIMD => --marcmod: handle SIMD data bypass
-            -- no need to bypass data for WRMSK
-            insimd := '1';
-            ldchkra := '0'; ldchkex := '0';
         when others => 
         end case;
       when LDST =>
@@ -1961,30 +1964,14 @@ end;
         (MACPIPE and r.e.mac='1' and ldcheck3='1' and r.e.ctrl.rd=rfrd)
         )
     then ldlock := '1'; end if;
-    --marcmod
-    --if previous operation is simd and I need operands
-    if ((r.a.ctrl.simd and r.a.ctrl.wreg) = '1') and
-       (((ldcheck1 = '1') and (r.a.ctrl.rd = rfa1)) or
-        ((ldcheck2 = '1') and (r.a.ctrl.rd = rfa2)))
+
+    --marcmod: bypass between stages only possible if second stage is nop
+    -- then if not nop we hold pc to use the bypass
+    if (r.a.ctrl.simd and r.a.ctrl.wreg and ldchkra) = '1' and simd_op2 /= "000" and
+        (((ldcheck1 = '1') and (r.a.ctrl.rd = rfa1)) or
+        ((ldcheck2 = '1') and (r.a.ctrl.rd = rfa2))) 
     then ldlock := '1'; end if;
-    --if two previous operation is simd and I need operands
-    if ((r.e.ctrl.simd and r.e.ctrl.wreg) = '1') and
-       (((ldcheck1 = '1') and (r.e.ctrl.rd = rfa1)) or
-        ((ldcheck2 = '1') and (r.e.ctrl.rd = rfa2)))
-    then ldlock := '1'; end if;
-    --if three previous operation is simd and I need operands
-    if ((r.m.ctrl.simd and r.m.ctrl.wreg) = '1') and
-       (((ldcheck1 = '1') and (r.m.ctrl.rd = rfa1)) or
-        ((ldcheck2 = '1') and (r.m.ctrl.rd = rfa2)))
-    then ldlock := '1'; end if;
-    if ((r.x.ctrl.simd and r.x.ctrl.wreg) = '1') and
-       (((ldcheck1 = '1') and (r.x.ctrl.rd = rfa1)) or
-        ((ldcheck2 = '1') and (r.x.ctrl.rd = rfa2)))
-    then ldlock := '1'; end if;
-    if ((r.w.simd and r.w.wreg) = '1') and
-       (((ldcheck1 = '1') and (r.w.wa = rfa1)) or
-        ((ldcheck2 = '1') and (r.w.wa = rfa2)))
-    then ldlock := '1'; end if;
+
 
     de_fins_holdx := BPRED and fins and (r.a.bp or r.e.bp); -- skip BP on FPU inst in branch target address
     de_fins_hold := de_fins_holdx;
@@ -2205,8 +2192,35 @@ end;
 
   end;
 
--- register write address generation
 
+  --SIMD control signals generation
+  procedure simd_gen(inst : word; simden, wmask : out std_ulogic) is
+  variable write_msk : std_ulogic;
+  variable enable_simd : std_ulogic;
+  variable op : std_logic_vector(1 downto 0);
+  variable op3 : std_logic_vector(5 downto 0);
+  begin
+    op  := inst(31 downto 30);
+    op3 := inst(24 downto 19);
+
+    write_msk := '0'; enable_simd := '0';
+
+    case op is 
+    when FMT3 =>
+        case op3 is
+        when SIMD =>
+            enable_simd := '1';
+        when WRMSK =>
+            enable_simd := '1';
+            write_msk := '1';
+        when others =>
+        end case;
+    when others => 
+    end case;
+    wmask := write_msk; simden := enable_simd;
+  end;
+
+-- register write address generation
   procedure rd_gen(r : registers; inst : word; wreg, ld : out std_ulogic; 
         rdo : out std_logic_vector(4 downto 0); rexen: out std_ulogic) is
   variable write_reg : std_ulogic;
@@ -2251,6 +2265,7 @@ end;
           if REX /= 0 and inst(13)='0' and inst(12)='1' then
             vrexen := '1';
           end if;
+        when WRMSK => null; --no write register for WRMSK
         when others => write_reg := '1';
         end case;
       when others =>   -- LDST
@@ -3982,7 +3997,7 @@ begin
   variable npc  : std_logic_vector(31 downto PCLOW);
   variable de_raddr1, de_raddr2 : std_logic_vector(9 downto 0);
   variable de_rs2, de_rd : std_logic_vector(4 downto 0);
-  variable de_hold_pc, de_branch, de_ldlock : std_ulogic;
+  variable de_hold_pc, de_branch, de_ldlock : std_ulogic; -- de_hold_pc: no pc+4, de_ldlock: operands not ready hold pc
   variable de_cwp, de_rcwp : cwptype;
   variable de_inull : std_ulogic;
   variable de_ren1, de_ren2 : std_ulogic;
@@ -4015,7 +4030,7 @@ begin
   variable ex_edata, ex_edata2 : word;
   variable ex_dci : dc_in_type;
   variable ex_force_a2, ex_load, ex_ymsb : std_ulogic;
-  variable ex_op1, ex_op2, ex_result, ex_result2, ex_result3, mul_op2 : word;
+  variable ex_op1, ex_op2, ex_result, ex_result2, ex_result3, ex_result4, mul_op2 : word;
   variable ex_shcnt : std_logic_vector(4 downto 0);
   variable ex_dsuen : std_ulogic;
   variable ex_ldbp2 : std_ulogic;
@@ -4277,7 +4292,6 @@ begin
     v.w.except := xc_exception; v.w.result := xc_result;
     if (r.x.rstate = dsu2) then v.w.except := '0'; end if;
     v.w.wa := xc_waddr(RFBITS-1 downto 0); v.w.wreg := xc_wreg and holdn;
-    --simd triar output modul
 
 
     if RFPART then
@@ -4447,6 +4461,12 @@ begin
       end if;
     end if;
 
+    --marcmod: bypass data from memory
+    sdi.ldbpa <= r.e.ldbp1;
+    sdi.ldra  <= ex_op1;
+    sdi.ldbpb <= r.e.ldbp2;
+    sdi.ldrb  <= ex_op2;
+
 
     ex_add_res := (ex_op1 & '1') + (ex_op2 & r.e.alucin);
 
@@ -4521,9 +4541,21 @@ begin
     
     exception_detect(r, wpr, dbgi, r.a.ctrl.trap, r.a.ctrl.tt, 
                      pccomp, v.e.ctrl.trap, v.e.ctrl.tt);
-    op_mux(r, rfo.data1, ex_result3, v.x.result, xc_df_result, zero32, 
+
+    --marcmod: bypass data from module
+    if r.e.ctrl.simd = '1' then 
+        ex_result4 := sdo.s1bp;
+    else ex_result4 := ex_result3;
+    end if;
+
+    if r.m.ctrl.simd = '1' then
+        me_bp_res := sdo.s2bp;
+    else me_bp_res := v.x.result;
+    end if;
+
+    op_mux(r, rfo.data1, ex_result4, me_bp_res, xc_df_result, zero32, 
         r.a.rsel1, v.e.ldbp1, ra_op1, '0');
-    op_mux(r, rfo.data2,  ex_result3, v.x.result, xc_df_result, r.a.imm, 
+    op_mux(r, rfo.data2,  ex_result4, me_bp_res, xc_df_result, r.a.imm, 
         r.a.rsel2, ex_ldbp2, ra_op2, '1');
     alu_op(r, ra_op1, ra_op2, v.m.icc, v.m.y(0), ex_ldbp2, v.e.op1, v.e.op2,
            v.e.aluop, v.e.alusel, v.e.aluadd, v.e.shcnt, v.e.sari, v.e.shleft,
@@ -4534,13 +4566,9 @@ begin
     sdi.ra <= ra_op1;
     sdi.rb <= ra_op2;
     sdi.op <= r.a.ctrl.inst(12 downto 5);
-    sdi.rc_we <= r.a.ctrl.simd;
+    sdi.rc_we <= r.a.ctrl.simd and r.a.ctrl.wreg;
     sdi.rc_addr <= r.a.ctrl.inst(29 downto 25);
-
-    if r.a.ctrl.inst(24 downto 19) = WRMSK then
-        sdi.mask_we <= '1';
-    else sdi.mask_we <= '0';
-    end if;
+    sdi.mask_we <= r.a.ctrl.wmask;
     sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
 
     cin_gen(r, v.m.icc(0), v.e.alucin);
@@ -4615,6 +4643,10 @@ begin
     v.a.rfa2 := de_raddr2(RFBITS-1 downto 0); 
 
     rd_gen(r, de_inst, v.a.ctrl.wreg, v.a.ctrl.ld, de_rd, de_rexen);
+    
+    --marcmod: call to simd_gen
+    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.wmask);
+
     if r.d.annul='1' then de_rexen:='0'; end if;
     regaddr(de_cwp, de_rd, r.d.stwin, r.d.cwpmax, v.a.ctrl.rd);
     
@@ -4624,7 +4656,7 @@ begin
       de_iperr := '0';
     lock_gen(r, de_rs2, de_rd, v.a.rfa1, v.a.rfa2, v.a.ctrl.rd, de_inst, 
         fpo.ldlock, v.e.mul, ra_div, de_wcwp, v.a.ldcheck1, v.a.ldcheck2, de_ldlock, 
-        v.a.ldchkra, v.a.ldchkex, v.a.ctrl.simd, v.a.bp, v.a.nobp, de_fins_hold, de_iperr, ico.bpmiss);
+        v.a.ldchkra, v.a.ldchkex, v.a.bp, v.a.nobp, de_fins_hold, de_iperr, ico.bpmiss);
     ic_ctrl(r, de_inst, v.x.annul_all, de_ldlock, de_rexhold, de_rexbubble, de_rexmaskpv, de_rexillinst, branch_true(de_icc, de_inst),
         de_fbranch, de_cbranch, fpo.ccv, cpo.ccv, v.d.cnt, v.d.pc, de_branch,
         v.a.ctrl.annul, v.d.annul, v.a.jmpl, de_inull, v.d.pv, v.a.ctrl.pv,
@@ -5119,6 +5151,7 @@ begin
   end generate;
   --debug
   d_a_simd<=r.a.ctrl.simd;
+  d_d_ldlock <= r.d.pcheld;
   d_e_simd<=r.e.ctrl.simd;
   d_m_simd<=r.m.ctrl.simd;
   d_x_simd<=r.x.ctrl.simd;

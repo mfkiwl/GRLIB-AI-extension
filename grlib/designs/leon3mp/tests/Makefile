@@ -45,9 +45,10 @@ mat_mul: mat_mul.o
 	cp mat_mul.srec test.srec
 	sparc-gaisler-elf-objdump -d mat_mul.o > mat_mul.dump
 
-mat_mul_simd: mat_mul_simd.o
+mat_mul_simd: mat_mul_simd.o bin_change
 	$(XCC) $(XCFLAGS) mat_mul_simd.o $(XLDFLAGS)-o mat_mul_simd.exe
-	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_simd.exe mat_mul_simd.srec
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_simd.exe tmp.mat_mul_simd.srec
+	./bin_change tmp.mat_mul_simd.srec mat_mul_simd.list mat_mul_simd.srec 83288001
 	cp mat_mul_simd.srec test.srec
 	sparc-gaisler-elf-objdump -d mat_mul_simd.o > mat_mul_simd.dump
 

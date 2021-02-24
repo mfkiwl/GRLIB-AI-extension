@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Project presentation}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Motivation}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Objectives}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Module description}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Main characteristics}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.2}{Additional features}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Masking/Predication}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Swizzling}{subsection.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Design decisions}{section.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Second stage saturation}{subsection.2.3}% 10
+\BOOKMARK [1][-]{section*.2}{References}{}% 11

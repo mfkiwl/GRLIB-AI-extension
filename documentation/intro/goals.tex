@@ -1,0 +1,54 @@
+\headsection{Project presentation}
+
+\subsection{Motivation}
+
+This project begun the previous semester during the Processor Design course.
+I decided that the project for said course could be the initial steps for my
+master thesis, and after discussing it with the professor we agreed on a topic
+that could be developed within the expected course but that might be further 
+expanded as my thesis. 
+
+\medbreak
+I was conflicted weather to do my thesis about hardware architecture or about
+compilers. Taking into account the discussed before I decided to mix both. I 
+have always enjoyed the hardware design courses during my degree and later in
+the master, but I also felt a great deal of interest in compilers as they are 
+the \textit{interpreters} of human intentions to the computers. Therefore, 
+being able to work in both fields for my project felt like the most appropriate 
+direction. 
+
+\medbreak
+My first take on the project was to add predication to an existing processor
+and then add the compiler support for this feature. However, after consulting
+the RISC-V specification I realized that doing so would not add any significant
+improvement \cite{RVSpec}. On the other hand, I was aware of the increasing 
+interest in implementing efficient machine learning in space processors, and 
+decided to turn on this area but keep my original idea of predication as an 
+additional feature. 
+
+\medbreak
+With the main topic decided, the selection of the base processor was a natural 
+given it had to be an space processor which was available under a public license
+and written in a language I know. With this conditions in mind, I selected the
+LEON3 \cite{L3} processor designed by Cobham Gaisler. However, recently they have
+released the NOEL-V \cite{NV} which follows the RISC-V standard, because of this,
+I decided to work using both processors.
+
+\subsection{Objectives}
+
+As introduced in the previous section the main goal for this project is to add 
+additional support for efficient machine learning in the space processors LEON3
+and NOEL-V. To do so I will follow two different approaches. The first one is to
+add a SIMD module that performs vector operations aimed at improving performance
+in artificial intelligence applications. By checking the most common instructions
+and characteristics in said applications the hardware will be optimized for an
+improved performance. 
+
+\medbreak
+The second approach is to turn both processors into static 
+superscalars with a dual issue pipeline. Furthermore, the integer pipeline will 
+be extended with predication support allowing to execute or not instructions 
+depending on a predicate value, thus turning control dependencies into data 
+dependencies.  Finally, to properly take advantage of the modifications the 
+compiler will be modified to use the new instructions in the SIMD module and the
+predication characteristics that will now be available. 

@@ -1,0 +1,76 @@
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm}
+\usepackage[utf8]{inputenc}
+
+%colors del document
+\usepackage[immediate]{silence}
+\WarningFilter[temp]{latex}{Command} % silence the warning
+\usepackage{sectsty}
+\DeactivateWarningFilters[temp]
+\sectionfont{\color{pantone3005}}
+\subsectionfont{\color{gray40}}
+\subsubsectionfont{\color{gray60}}
+
+\usepackage{helvet}
+
+\usepackage{longtable}
+
+%evitar trencar paragrafs
+\usepackage[defaultlines=10,all]{nowidow}
+%colors pel text
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\definecolor{pantone3005}{RGB}{0 119 200}
+\definecolor{gray40}{gray}{0.4}
+\definecolor{gray60}{gray}{0.6}
+
+
+%fila de la pagina sense columnes amb colors de la fib
+\newcommand{\allrow}[2]{
+ \rowcolor{gray60}\multicolumn{#1}{|c|}{\textcolor{white}{#2}} \\
+ }
+
+\usepackage{pdflscape}
+\usepackage{eurosym}
+\usepackage{blindtext}
+
+%annexos
+\usepackage[toc,page]{appendix}
+
+%format dels index
+\usepackage{tocloft}
+
+%color index
+\renewcommand{\cfttoctitlefont}{\bf\LARGE\color{pantone3005}}
+\renewcommand{\cftloftitlefont}{\bf\LARGE\color{pantone3005}}
+\renewcommand{\cftlottitlefont}{\bf\LARGE\color{pantone3005}}
+\renewcommand\cftsecfont{\large\color{pantone3005}}
+
+%macro que crea una secció sense numero de pagina en l'Índex
+\newcommand{\headsection}[1]{
+\addtocontents{toc}{\cftpagenumbersoff{section}}
+\section{#1}
+\addtocontents{toc}{\cftpagenumberson{section}}
+}
+
+\renewcommand{\contentsname}{Table of Contents}
+
+
+%format url en la bibliografia
+\usepackage[hyphens]{url}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true}
+
+%indentar primer paràgraf de la secció
+\usepackage{indentfirst}
+
+%format de la descripció de figures i taules 
+\usepackage[font=footnotesize,labelfont={bf, color = pantone3005},textfont=it]{caption}
+
+%referencies format [n] en el text i ordre d'aparicio
+\usepackage[square,numbers]{natbib}
+\bibliographystyle{unsrtnat}
+
+%pagina en blanc
+\newcommand{\blankpage}{\clearpage\mbox{}\thispagestyle{nonum}\clearpage}
+\usepackage{graphicx}

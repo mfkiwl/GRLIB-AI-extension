@@ -1,0 +1,52 @@
+\subsection{Design decisions}
+\subsubsection{Second stage saturation} \label{satdiscus}
+Initially there wasn't supposed to be saturation in the second stage,
+the reason being that since in it reduction operations were performed,
+there was no need to be concerned on the overflow in the result. However,
+this produced inconsistencies regarding the input and output data types,
+therefore, I decided to add saturation in the second stage.
+
+\medbreak
+However, there were no available bits in the instruction to extend the 
+second operand code to add saturation support. Thus, I considered three
+different approaches to solve this issue. 
+
+\begin{itemize}
+    \item At this point of the project it hadn't been considered to add
+        the possibility to operate using an immediate, and the bit that 
+        identifies the operand as such was kept in regards of coherence 
+        with the rest of the ISA.
+        
+        \medbreak
+        Therefore, I first thought of using the immediate bit as a \textit{saturation}
+        bit, that for indicated for both stages weather the operation 
+        should use saturation or not. However, this meant a loss of many
+        bit combinations as there are operations incompatible with 
+        saturation. 
+
+    \item Similarly, taking advantage of the immediate bit I considered to
+        increase the size of the second opcode to include the immediate bit 
+        as well. But this altered the coherence of the instruction and 
+        blocked to use in the future of immediate operands and thus the
+        idea was also discarded.
+
+    \item Finally, I opted for the final approach, which is the one that
+        was finally implemented, that links the saturation of the second
+        stage with the first stage. This means that if the instruction on
+        the first stage used saturation so will the second stage.
+
+        \medbreak
+        There were some considerations to make before deciding for this 
+        last option. It may seem that with this approach if there is no
+        instruction in the first stage we can't have saturation in the 
+        second. However, if in the first stage we do a saturated addition
+        with zero there is no issue. 
+
+        \medbreak
+        The only drawback, which happens also in the first approach, is 
+        that we cannot have saturation in only one stage. Nonetheless, the
+        result of said operation can still be achieved by using two consecutive
+        instructions. And we also have to consider that when using saturation
+        in a data value all consecutive operations will likely also use 
+        saturation.
+\end{itemize}

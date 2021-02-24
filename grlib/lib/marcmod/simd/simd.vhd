@@ -11,7 +11,8 @@ entity simd is
     generic(
             XLEN : integer := 32;
             VLEN : integer range 0 to 32 := 8;
-            RSIZE: integer := 5
+            RSIZE: integer := 5;
+            LOGSZ: integer := 2 --integer(ceil(log2(real(XLEN/VLEN))))
            );
     port(
             -- general inputs
@@ -38,6 +39,8 @@ entity simd is
             -- mask modification inputs
             mask_we_i : in std_logic;
             mask_value_i : in std_logic_vector ((XLEN/VLEN)-1 downto 0);
+            swiz_veca_i : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
+            swiz_vecb_i : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
 
             -- outputs
             rc_data_o : out std_logic_vector (XLEN-1 downto 0);
@@ -97,6 +100,7 @@ architecture rtl of simd is
     -- Result register type 
     type result_reg_type is record
         data : std_logic_vector (XLEN-1 downto 0);
+        sat: std_logic; -- is the result saturated
 		--error
     end record;
 
@@ -107,6 +111,10 @@ architecture rtl of simd is
 
     -- mask registers (predicate)
     subtype pred_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
+
+    -- swizling registers (reordering)
+    subtype log_length is integer range 0 to (XLEN/VLEN)-1;
+    type swizling_reg_type is array (0 to (XLEN/VLEN)-1) of log_length;
 
     -- Stage1 entry register
     type s1_reg_type is record
@@ -134,6 +142,8 @@ architecture rtl of simd is
         s2 : s2_reg_type;
         s3 : s3_reg_type;
         p  : pred_reg_type;
+        sa : swizling_reg_type;
+        sb : swizling_reg_type;
     end record;
 
 
@@ -146,7 +156,8 @@ architecture rtl of simd is
     );
 
     constant res_reg_res : result_reg_type := (
-        data => (others => '0')
+        data => (others => '0'),
+        sat => '0'
     );
 
     -- set the 1st stage registers reset
@@ -168,12 +179,34 @@ architecture rtl of simd is
         rc => res_reg_res
     );
 
+    function swizling_init return swizling_reg_type is
+        variable res_val : swizling_reg_type;
+    begin
+        for i in 0 to (XLEN/VLEN)-1 loop
+            res_val(i) := i;
+        end loop;
+        return res_val;
+    end function swizling_init;
+
+    function swizling_set(signal sz_i : std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0)) return swizling_reg_type is
+        variable res_val : swizling_reg_type;
+    begin
+        for i in 0 to (XLEN/VLEN)-1 loop
+            res_val(i) := to_integer(unsigned(sz_i(i*LOGSZ+LOGSZ-1 downto i*LOGSZ)));
+        end loop;
+        return res_val;
+    end function swizling_set;
+
+
+
     -- reset all registers
     constant RRES : registers := (
         s1 => s1_reg_res,
         s2 => s2_reg_res,
         s3 => s3_reg_res,
-        p => (others => '1')
+        p => (others => '1'),
+        sa => swizling_init,
+        sb => swizling_init
     );
 
     ---------------------------------------------------------------
@@ -193,70 +226,85 @@ architecture rtl of simd is
                          signal ra : in operand_reg_type;
                          signal rb : in operand_reg_type;
                          signal p  : in pred_reg_type; 
+                         signal sa : in swizling_reg_type;
+                         signal sb : in swizling_reg_type;
 						 --exceptions or errors
                          signal rc : out result_reg_type) is
     begin
+        rc.sat <= '0';
         case op is
             when S1_NOP =>
-                rc.data <= ra.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)); 
+                                                            
+                end loop;  
 
             when S1_MOVB =>
-                rc.data <= rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)); 
+                                                            
+                end loop;  
 
             --addition and saturated addition
             when S1_ADD => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)), 
+                                                                rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
             when S1_SADD => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'1');
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'1');
                 end loop;  
+                rc.sat <= '1';
             when S1_USADD => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0');
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'0');
                 end loop;  
+                rc.sat <= '1';
 
             --subtraction and saturated subtraction
             when S1_SUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
             when S1_SSUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'1');
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'1');
                 end loop;  
+                rc.sat <= '1';
             when S1_USSUB => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0');
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'0');
                 end loop;  
+                rc.sat <= '1';
 
             --multiplication and saturated multiplication
             when S1_MUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                       rb.data(VLEN*i+VLEN-1 downto VLEN*i))(VLEN-1 downto 0);
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_mul(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                       rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)))(VLEN-1 downto 0);
                 end loop;  
             when S1_SMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'1')(VLEN-1 downto 0);
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'1')(VLEN-1 downto 0);
                 end loop;  
+                rc.sat <= '1';
             when S1_USMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i),'0')(VLEN-1 downto 0);
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)),'0')(VLEN-1 downto 0);
                 end loop;  
+                rc.sat <= '1';
             when S1_UMUL =>
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_mul(ra.data(VLEN*i+VLEN-1 downto VLEN*i), 
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i))(VLEN-1 downto 0);
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_mul(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)))(VLEN-1 downto 0);
                 end loop;  
 
             -- division
@@ -266,8 +314,8 @@ architecture rtl of simd is
                         rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
                             -- Error of some kind?
                     else 
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_div(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                           rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_div(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                           rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)))(VLEN-1 downto 0);
                     end if;
                 end loop;  
             when S1_UDIV => 
@@ -276,46 +324,64 @@ architecture rtl of simd is
                         rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
                             -- Error of some kind?
                     else 
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_div(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                             rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_div(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                             rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)))(VLEN-1 downto 0);
                     end if;
                 end loop;  
 
             -- Maximum and minimum 
             when S1_MAX => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_max(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                       rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_max(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                       rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
             when S1_MIN => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_min(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                       rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_min(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                       rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
             when S1_UMAX => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_max(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_max(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
             when S1_UMIN => 
                 for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_min(ra.data(VLEN*i+VLEN-1 downto VLEN*i),
-                                                                         rb.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_min(ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)),
+                                                                         rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i)));
                 end loop;  
 
             --bitwise operations have no carry so no need to loop
             when S1_AND => 
-				rc.data <= ra.data and rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) and
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
             when S1_OR  => 
-				rc.data <= ra.data or rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) or
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
             when S1_XOR  => 
-				rc.data <= ra.data xor rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) xor
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
             when S1_NAND => 
-				rc.data <= ra.data nand rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) nand
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
             when S1_NOR  => 
-				rc.data <= ra.data nor rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) nor
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
             when S1_XNOR  => 
-				rc.data <= ra.data xnor rb.data;
+                for i in 0 to (XLEN/VLEN)-1 loop
+                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*sa(i)+VLEN-1 downto VLEN*sa(i)) xnor
+                                                            rb.data(VLEN*sb(i)+VLEN-1 downto VLEN*sb(i));
+                end loop;  
 
             when others => -- only error case
                 rc.data <= ra.data;
@@ -337,6 +403,7 @@ architecture rtl of simd is
 						 signal rc : out result_reg_type) is 
 	variable acc : std_logic_vector (XLEN-1 downto 0);
     begin
+		rc.sat <= ra.sat;
 		case op is 
 			when S2_NOP => 
 				acc := ra.data;
@@ -344,13 +411,22 @@ architecture rtl of simd is
                 acc(XLEN-1 downto VLEN) := (others => (ra.data(VLEN-1)));
                 acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 				for i in 1 to (XLEN/VLEN)-1 loop
-					acc := add(acc, (XLEN-1 downto VLEN => (ra.data(VLEN*i+VLEN-1))) & ra.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    if ra.sat = '1' then
+					    acc(VLEN-1 downto 0) := saturate_add(acc(VLEN-1 downto 0), ra.data(VLEN*i+VLEN-1 downto VLEN*i), '1');
+                        acc(XLEN-1 downto VLEN) := (others => (acc(VLEN-1)));
+                    else 
+					    acc := add(acc, (XLEN-1 downto VLEN => (ra.data(VLEN*i+VLEN-1))) & ra.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    end if;
 				end loop;
 			when S2_USUM =>
                 acc(XLEN-1 downto VLEN) := (others => '0');
                 acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
 				for i in 1 to (XLEN/VLEN)-1 loop
-					acc := add(acc, ra.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    if ra.sat = '1' then
+                        acc(VLEN-1 downto 0) := saturate_add(acc(VLEN-1 downto 0), ra.data(VLEN*i+VLEN-1 downto VLEN*i), '0');
+                    else 
+					    acc := add(acc, ra.data(VLEN*i+VLEN-1 downto VLEN*i));
+                    end if;
 				end loop;
 			when S2_MAX =>
                 acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
@@ -397,10 +473,12 @@ architecture rtl of simd is
     procedure stage1_to_2(signal r_s1 : in s1_reg_type;
                           signal rs1, rs2 : in operand_reg_type;
                           signal r_p  : in pred_reg_type;
+                          signal r_sa : in swizling_reg_type;
+                          signal r_sb : in swizling_reg_type;
                           signal r_s2 : out s2_reg_type) is
     begin
         --operation stage1 
-        stage1_ops(r_s1.op1, rs1, rs2, r_p, r_s2.ra);
+        stage1_ops(r_s1.op1, rs1, rs2, r_p, r_sa, r_sb, r_s2.ra);
         r_s2.op2 <= r_s1.op2;
     end procedure stage1_to_2;
 
@@ -442,7 +520,7 @@ begin
     rs1.data <= r.s1.ra.data when ldbpa_i = '0' else ldra_i;
     rs2.data <= r.s1.rb.data when ldbpb_i = '0' else ldrb_i;
 
-    stage1_to_2(r.s1, rs1, rs2, r.p, rin.s2);
+    stage1_to_2(r.s1, rs1, rs2, r.p, r.sa, r.sb, rin.s2);
 
     --stage 2 to stage 3
     stage2_to_3(r.s2, rin.s3);
@@ -455,6 +533,13 @@ begin
     -- update mask
     rin.p <= mask_value_i when mask_we_i = '1' else
              r.p;
+
+    rin.sa <= swizling_set(swiz_veca_i) when mask_we_i = '1' else
+              r.sa;
+
+    rin.sb <= swizling_set(swiz_vecb_i) when mask_we_i = '1' else
+              r.sb;
+
 
     ---------------------------------------------------------------
     -- REGISTER UPDATING --

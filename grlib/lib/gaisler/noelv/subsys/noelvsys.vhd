@@ -127,6 +127,7 @@ architecture hier of noelvsys is
   signal nolock         : ahb2ahb_ctrl_type;
   signal noifctrl       : ahb2ahb_ifctrl_type;
 
+
   constant scantest : integer := 0;
 begin
 
@@ -370,7 +371,8 @@ begin
     debug_bridge: ahb2ahb
       generic map (
         memtech     => inferred,
-        hsindex     => 2,
+--        hsindex     => 2,
+        hsindex  => 2+(nodbus*(nextslv+1+2)),
         hmindex     => ncpu+nextmst,
         slv         => 1,
         dir         => 1,

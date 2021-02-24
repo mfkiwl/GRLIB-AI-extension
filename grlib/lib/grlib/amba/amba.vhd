@@ -35,6 +35,7 @@ library grlib;
 use grlib.config_types.all;
 use grlib.config.all;
 use grlib.stdlib.all;
+use work.config.all;
 
 package amba is
 

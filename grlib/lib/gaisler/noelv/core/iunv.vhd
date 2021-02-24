@@ -8359,7 +8359,7 @@ architecture rtl of iunv is
   begin
     -- Return-address prediction stacks are a common feature of high-performance instruction-fetch
     -- units, but require accurate detection of instructions used for procedure calls and returns
-    -- to be effective. For RISC-V, hints as to the instructions’ usage are encoded implicitly via
+    -- to be effective. For RISC-V, hints as to the instructions' usage are encoded implicitly via
     -- the register numbers used. A JAL instruction should push the return address onto a
     -- return-address stack (RAS) only when rd=x1/x5. JALR instructions should push/pop a RAS
     -- as shown in the Table 2.1.
@@ -8450,7 +8450,7 @@ architecture rtl of iunv is
   begin
     -- Return-address prediction stacks are a common feature of high-performance instruction-fetch
     -- units, but require accurate detection of instructions used for procedure calls and returns
-    -- to be effective. For RISC-V, hints as to the instructions’ usage are encoded implicitly via
+    -- to be effective. For RISC-V, hints as to the instructions' usage are encoded implicitly via
     -- the register numbers used. A JAL instruction should push the return address onto a
     -- return-address stack (RAS) only when rd=x1/x5. JALR instructions should push/pop a RAS
     -- as shown in the Table 2.1.
@@ -10062,10 +10062,10 @@ begin
 
     -- An interrupt i will be taken if bit i is set in both mip and mie,
     -- and if interrupts are globally enabled. By default, M-mode interrupts are globally
-    -- enabled if the hart’s current privilege mode is less than M, or if the current privilege
+    -- enabled if the hart's current privilege mode is less than M, or if the current privilege
     -- mode is M and the MIE bit in the mstatus register is set. If bit i in mideleg is set,
-    -- however, interrupts are considered to be globally enabled if the hart’s
-    -- current privilege mode equals the delegated privilege mode (S or U) and that mode’s interrupt
+    -- however, interrupts are considered to be globally enabled if the hart's
+    -- current privilege mode equals the delegated privilege mode (S or U) and that mode's interrupt
     -- enable bit (SIE or UIE in mstatus) is set, or if the current privilege mode is less than
     -- the delegated privilege mode.
 
@@ -10105,6 +10105,7 @@ begin
       end if;
     end if;
     v.x.irqcause   := me_irqcause;
+
 
      -- To Exception Stage ------------------------------------------------
     for i in lanes'range loop
@@ -11931,7 +11932,7 @@ begin
               r.d.pc(r.d.pc'high downto 12) <= RST_VEC(RST_VEC'high downto 12);
             end if;
           else
-            -- Upon reset, a hart’s privilege mode is set to M. The mstatus fields MIE and MPRV
+            -- Upon reset, a hart's privilege mode is set to M. The mstatus fields MIE and MPRV
             -- are reset to 0. The pc is set to an implementation-defined reset vector. The mcause
             -- register is set to a value indicating the cause of the reset. All other hart state
             -- is undefined.
@@ -12140,10 +12141,8 @@ begin
     trap_taken(0)  <= r.wb.trap_taken(0) when r.wb.swap = '0' else r.wb.trap_taken(1);
     trap_taken(1)  <= r.wb.trap_taken(1) when r.wb.swap = '0' else r.wb.trap_taken(0);
 
-    iw0 : entity grlib.cpu_disas
-      generic map(
-        disasg => disas
-        )
+    iw0 :entity grlib.cpu_disas_riscv
+      generic map( disasg => disas )
       port map(
         clk             => clk,
         rstn            => rstn,
@@ -12171,10 +12170,8 @@ begin
         disas           => disas_en
         );
 
-    iw1 : entity grlib.cpu_disas
-      generic map(
-        disasg => disas
-        )
+    iw1 : entity grlib.cpu_disas_riscv
+      generic map( disasg => disas)
       port map(
         clk             => clk,
         rstn            => rstn,

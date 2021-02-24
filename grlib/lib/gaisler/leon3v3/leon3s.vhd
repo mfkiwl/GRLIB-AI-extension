@@ -65,8 +65,7 @@ entity leon3s is
     ilramstart :     integer range 0 to 255   := 16#8e#;
     dlram      :     integer range 0 to 1     := 0;
     dlramsize  :     integer range 1 to 512   := 1;
-    dlramstart :     integer range 0 to 255   := 16#8f#;
-    mmuen      :     integer range 0 to 2     := 0;
+    dlramstart :     integer range 0 to 255   := 16#8f#; mmuen      :     integer range 0 to 2     := 0;
     itlbnum    :     integer range 2 to 64    := 8;
     dtlbnum    :     integer range 2 to 64    := 8;
     tlb_type   :     integer range 0 to 3     := 1;

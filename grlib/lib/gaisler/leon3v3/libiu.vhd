@@ -58,12 +58,14 @@ package libiu is
      rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
      mask_we     : std_logic;                      -- we on the mask register
      mask_value  : std_logic_vector (3 downto 0);  -- new value for the mask
+     swiz_veca   : std_logic_vector (7 downto 0);  -- swizling for operand a
+     swiz_vecb   : std_logic_vector (7 downto 0);  -- swizling for operand b
   end record;
 
   type simd_out_type is record
      rc_data     : std_logic_vector(31 downto 0); -- output data
-     s1bp        :std_logic_vector(31 downto 0); -- s1 bypass output data
-     s2bp        :std_logic_vector(31 downto 0); -- s2 bp output data
+     s1bp        : std_logic_vector(31 downto 0); -- s1 bypass output data
+     s2bp        : std_logic_vector(31 downto 0); -- s2 bp output data
   end record;
 
 

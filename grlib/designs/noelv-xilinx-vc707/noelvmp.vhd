@@ -49,8 +49,6 @@ use gaisler.riscv.all;
 use gaisler.noelv.all;
 -- pragma translate_off
 use gaisler.sim.all;
-library unisim;
-use unisim.all;
 -- pragma translate_on
 
 use work.config.all;

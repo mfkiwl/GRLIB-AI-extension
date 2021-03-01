@@ -93,6 +93,7 @@ package config is
   constant CFG_AHBIO : integer := 16#FFF#;
   constant CFG_APBADDR : integer := 16#800#;
   constant CFG_AHB_MON : integer := 0;
+  constant CFG_AHBDW : integer := 32;
   constant CFG_AHB_MONERR : integer := 0;
   constant CFG_AHB_MONWAR : integer := 0;
   constant CFG_AHB_DTRACE : integer := 0;

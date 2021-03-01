@@ -1,0 +1,38 @@
+\subsection{Main characteristics}
+The Single Instruction Multiple Data (SIMD) module, was initially 
+conceived as a SIMD within a register (SWAR), this means that it 
+will use the same registers as the integer pipeline but will do 
+the operations in smaller subsets. 
+
+\medbreak
+This characteristic has the advantage of not requiring an additional 
+register file to store the larger registers, which is ideal for a 
+module with minimal impact on space and power consumption. Also, is 
+important to note that artificial intelligence applications work with 
+small values of data *CITATION NEEDED*. Therefore, I decided that each
+component of the vector register would be 8 bits long. 
+
+\medbreak
+The functions implemented were decided through an analysis of which 
+operations are used in artificial intelligence applications, and it was seen
+that the dot product, is a pivotal operation in machine learning\cite{MLanalysis}.
+This gave the conclusion that it would be beneficial to implement in 
+a single instruction the multiplication and addition. 
+
+\medbreak
+It can be seen that there are also other situations in which it may 
+be interesting to perform two operations consecutively. And in many
+cases the second part would be a reduction performed on the result of
+the first computation. With this in mind I divided the module in two 
+stages. Since there is no need for the module to access memory, as it
+works using the same registers as the integer pipeline, the second stage 
+of the module can match with the memory access stage with no drawback.
+
+\medbreak
+The module has also support for saturated instructions, this means that
+for those operations the result will not overflow over the data type 
+representation. The saturation of the operation is given in the opcode
+for the first stage, and in case there is saturation, the same is done
+in the second stage. In section \ref{satdiscus} the justification for 
+this characteristic is explained in more detail.
+ 

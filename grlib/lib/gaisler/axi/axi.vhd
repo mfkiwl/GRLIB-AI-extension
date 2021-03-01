@@ -34,7 +34,6 @@ use grlib.amba.all;
 use grlib.devices.all;
 use grlib.stdlib.all;
 
-
 package axi is
 
   

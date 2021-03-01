@@ -1,0 +1,22 @@
+#
+# An unexpected error has occurred (6)
+#
+Stack:
+/usr/lib/libc.so.6(+0x3d6a0) [0x7f30852db6a0]
+/usr/lib/libc.so.6(gsignal+0x145) [0x7f30852db615]
+/usr/lib/libc.so.6(abort+0x116) [0x7f30852c4862]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/Default/libstdc++.so.6(_ZN9__gnu_cxx27__verbose_terminate_handlerEv+0x15d) [0x7f308572633d]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/Default/libstdc++.so.6(+0x8e316) [0x7f3085724316]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/Default/libstdc++.so.6(+0x8e361) [0x7f3085724361]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/Default/libstdc++.so.6(__cxa_rethrow+0x46) [0x7f30857245c6]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/Default/libstdc++.so.6(_ZNSo5writeEPKcl+0x13d) [0x7f30857a1fcd]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(+0x5218d) [0x7f303c13c18d]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbScalarBTree::addValue(long long, unsigned char)+0x1a1) [0x7f303c15ebb1]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::storeEvent(long long, long long, unsigned char)+0x168) [0x7f303c134be8]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(+0x51013) [0x7f303c13b013]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManagerImp::addLiveEvent(SimBridge::WdbLiveEvent const*, std::function<void (long long, long long, unsigned char)> const&)+0xb1) [0x7f303c135701]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbAddressBTreeManager::addEventBuffered(SimBridge::WdbLiveEvent const*)+0x68) [0x7f303c1357a8]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/librdi_simbridge_kernel.so(SimBridge::WdbSharedMemReader::runReadThread(SimBridge::WdbIEventBlockDatabase*)+0x7d) [0x7f303c162dbd]
+/home/march/Xilinx/Vivado/Vivado/2020.1/lib/lnx64.o/libboost_thread.so(+0xfa0d) [0x7f3083bb1a0d]
+/usr/lib/libpthread.so.0(+0x93e9) [0x7f30852853e9]
+/usr/lib/libc.so.6(clone+0x43) [0x7f308539e293]

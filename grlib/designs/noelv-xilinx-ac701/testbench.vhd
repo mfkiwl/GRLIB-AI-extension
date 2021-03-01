@@ -1,7 +1,4 @@
 ------------------------------------------------------------------------------
---  LEON3 Demonstration design test bench
---  Copyright (C) 2004 Jiri Gaisler, Gaisler Research
-------------------------------------------------------------------------------
 --  This file is a part of the GRLIB VHDL IP LIBRARY
 --  Copyright (C) 2003 - 2008, Gaisler Research
 --  Copyright (C) 2008 - 2014, Aeroflex Gaisler
@@ -20,505 +17,507 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; if not, write to the Free Software
 --  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
-------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
-library grlib;
-use grlib.stdlib.all;
+use ieee.numeric_std.all;
+use std.textio.all;
 library gaisler;
 use gaisler.libdcom.all;
 use gaisler.sim.all;
-use gaisler.jtagtst.all;
+
+library grlib;
+use grlib.amba.all;
+use grlib.stdlib.all;
+use grlib.stdio.all;
+use grlib.devices.all;
 library techmap;
 use techmap.gencomp.all;
-library micron;
-use micron.components.all;
+library work;
 use work.debug.all;
-
-use work.config.all;	-- configuration
+use work.config.all;
 
 entity testbench is
-  generic (
-    fabtech   : integer := CFG_FABTECH;
-    memtech   : integer := CFG_MEMTECH;
-    padtech   : integer := CFG_PADTECH;
-    clktech   : integer := CFG_CLKTECH;
-    ncpu      : integer := CFG_NCPU;
-    disas     : integer := CFG_DISAS;	-- Enable disassembly to console
-    pclow     : integer := CFG_PCLOW;
-
-    clkperiod : integer := 20;		-- system clock period
-    romwidth  : integer := 32;		-- rom data width (8/32)
-    romdepth  : integer := 16;		-- rom address depth
-    sramwidth  : integer := 32;		-- ram data width (8/16/32)
-    sramdepth  : integer := 21;		-- ram address depth
-    srambanks  : integer := 2		-- number of ram banks
-  );
-  port (
-    pci_rst     : inout std_logic;	-- PCI bus
-    pci_clk 	: in std_ulogic;
-    pci_gnt     : in std_ulogic;
-    pci_idsel   : in std_ulogic;
-    pci_lock    : inout std_ulogic;
-    pci_ad 	: inout std_logic_vector(31 downto 0);
-    pci_cbe 	: inout std_logic_vector(3 downto 0);
-    pci_frame   : inout std_ulogic;
-    pci_irdy 	: inout std_ulogic;
-    pci_trdy 	: inout std_ulogic;
-    pci_devsel  : inout std_ulogic;
-    pci_stop 	: inout std_ulogic;
-    pci_perr 	: inout std_ulogic;
-    pci_par 	: inout std_ulogic;
-    pci_req 	: inout std_ulogic;
-    pci_serr    : inout std_ulogic;
-    pci_host   	: in std_ulogic;
-    pci_66	: in std_ulogic
-  );
+  generic(
+    fabtech : integer := CFG_FABTECH;
+    memtech : integer := CFG_MEMTECH;
+    padtech : integer := CFG_PADTECH;
+    clktech : integer := CFG_CLKTECH;
+    USE_MIG_INTERFACE_MODEL : boolean := false 
+  -- True       - Use an AHBRAM as main memory located at 16#400#
+  -- False      - Use the MIG simulation model
+    );
 end;
 
 architecture behav of testbench is
 
-constant promfile  : string := "hello.srec";  -- rom contents
-constant sramfile  : string := "ram.srec";  -- ram contents
-constant sdramfile : string := "ram.srec"; -- sdram contents
+  -----------------------------------------------------
+  -- Components ---------------------------------------
+  -----------------------------------------------------
 
-component noelvmp
-  generic (
-    fabtech  : integer := CFG_FABTECH;
-    memtech  : integer := CFG_MEMTECH;
-    padtech  : integer := CFG_PADTECH;
-    clktech  : integer := CFG_CLKTECH;
-    disas     : integer := CFG_DISAS;	-- Enable disassembly to console
-    pclow     : integer := CFG_PCLOW
-  );
-  port (
-    resetn	: in  std_ulogic;
-    clk		: in  std_ulogic;
-    pllref 	: in  std_ulogic;
-    errorn	: out std_ulogic;
-    address 	: out std_logic_vector(27 downto 0);
-    data	: inout std_logic_vector(31 downto 0);
-    sa      	: out std_logic_vector(14 downto 0);
-    sd   	: inout std_logic_vector(63 downto 0);
-    sdclk  	: out std_ulogic;
-    sdcke  	: out std_logic_vector (1 downto 0);    -- sdram clock enable
-    sdcsn  	: out std_logic_vector (1 downto 0);    -- sdram chip select
-    sdwen  	: out std_ulogic;                       -- sdram write enable
-    sdrasn  	: out std_ulogic;                       -- sdram ras
-    sdcasn  	: out std_ulogic;                       -- sdram cas
-    sddqm   	: out std_logic_vector (7 downto 0);    -- sdram dqm
-    dsutx  	: out std_ulogic; 			-- DSU tx data
-    dsurx  	: in  std_ulogic;  			-- DSU rx data
-    dsuen   	: in std_ulogic;
-    dsubre  	: in std_ulogic;
-    dsuact  	: out std_ulogic;
-    txd1   	: out std_ulogic; 			-- UART1 tx data
-    rxd1   	: in  std_ulogic;  			-- UART1 rx data
-    txd2   	: out std_ulogic; 			-- UART1 tx data
-    rxd2   	: in  std_ulogic;  			-- UART1 rx data
-    ramsn  	: out std_logic_vector (4 downto 0);
-    ramoen 	: out std_logic_vector (4 downto 0);
-    rwen   	: out std_logic_vector (3 downto 0);
-    oen    	: out std_ulogic;
-    writen 	: out std_ulogic;
-    read   	: out std_ulogic;
-    iosn   	: out std_ulogic;
-    romsn  	: out std_logic_vector (1 downto 0);
-    gpio        : inout std_logic_vector(CFG_GRGPIO_WIDTH-1 downto 0); 	-- I/O port
+  component ddr4ram
+    generic(
+      dq_bits             : natural := 8
+      );
+    port(
+      ddr4_ck             : in    std_logic_vector(1 downto 0);
+      ddr4_addr           : in    std_logic_vector(13 downto 0);
+      ddr4_we_n           : in    std_logic;
+      ddr4_cas_n          : in    std_logic;
+      ddr4_ras_n          : in    std_logic;
+      ddr4_alert_n        : out   std_logic;
+      ddr4_parity         : in    std_logic;
+      ddr4_reset_n        : in    std_logic;
+      ddr4_ten            : in    std_logic;
+      ddr4_ba             : in    std_logic_vector(1 downto 0);
+      ddr4_cke            : in    std_logic;
+      ddr4_cs_n           : in    std_logic;
+      ddr4_dm_n           : inout std_logic_vector(7 downto 0);
+      ddr4_dq             : inout std_logic_vector(63 downto 0);
+      ddr4_dqs_c          : inout std_logic_vector(7 downto 0);
+      ddr4_dqs_t          : inout std_logic_vector(7 downto 0);
+      ddr4_odt            : in    std_logic;
+      ddr4_bg             : in    std_logic_vector(0 downto 0);
+      ddr4_act_n          : in    std_logic
+      );
+  end component ddr4ram; 
 
-    emdio     	: inout std_logic;		-- ethernet PHY interface
-    etx_clk 	: in std_logic;
-    erx_clk 	: in std_logic;
-    erxd    	: in std_logic_vector(3 downto 0);
-    erx_dv  	: in std_logic;
-    erx_er  	: in std_logic;
-    erx_col 	: in std_logic;
-    erx_crs 	: in std_logic;
-    etxd 	: out std_logic_vector(3 downto 0);
-    etx_en 	: out std_logic;
-    etx_er 	: out std_logic;
-    emdc 	: out std_logic;
+  -----------------------------------------------------
+  -- Constant -----------------------------------------
+  -----------------------------------------------------
 
-    emddis 	: out std_logic;
-    epwrdwn 	: out std_logic;
-    ereset 	: out std_logic;
-    esleep 	: out std_logic;
-    epause 	: out std_logic;
+  constant promfile  : string := "prom.srec"; -- rom contents
+  constant ramfile   : string := "ram.srec"; -- ram contents
 
-    pci_rst     : inout std_logic;		-- PCI bus
-    pci_clk 	: in std_ulogic;
-    pci_gnt     : in std_ulogic;
-    pci_idsel   : in std_ulogic;
-    pci_lock    : inout std_ulogic;
-    pci_ad 	: inout std_logic_vector(31 downto 0);
-    pci_cbe 	: inout std_logic_vector(3 downto 0);
-    pci_frame   : inout std_ulogic;
-    pci_irdy 	: inout std_ulogic;
-    pci_trdy 	: inout std_ulogic;
-    pci_devsel  : inout std_ulogic;
-    pci_stop 	: inout std_ulogic;
-    pci_perr 	: inout std_ulogic;
-    pci_par 	: inout std_ulogic;
-    pci_req 	: inout std_ulogic;
-    pci_serr    : inout std_ulogic;
-    pci_host   	: in std_ulogic;
-    pci_66	: in std_ulogic;
-    pci_arb_req	: in  std_logic_vector(0 to 3);
-    pci_arb_gnt	: out std_logic_vector(0 to 3);
+  -----------------------------------------------------
+  -- Signals ------------------------------------------
+  -----------------------------------------------------
 
-    can_txd	: out std_ulogic;
-    can_rxd	: in  std_ulogic;
-    can_stb	: out std_ulogic;
+  signal clk            : std_logic := '0';
+  signal system_rst     : std_ulogic;
 
-    spw_clk	: in  std_ulogic;
-    spw_rxd     : in  std_logic_vector(0 to 2);
-    spw_rxdn    : in  std_logic_vector(0 to 2);
-    spw_rxs     : in  std_logic_vector(0 to 2);
-    spw_rxsn    : in  std_logic_vector(0 to 2);
-    spw_txd     : out std_logic_vector(0 to 2);
-    spw_txdn    : out std_logic_vector(0 to 2);
-    spw_txs     : out std_logic_vector(0 to 2);
-    spw_txsn    : out std_logic_vector(0 to 2);
-    tck, tms, tdi : in std_ulogic;
-    tdo         : out std_ulogic
+  signal gnd            : std_ulogic := '0';
+  signal vcc            : std_ulogic := '1';
+  signal nc             : std_ulogic := 'Z';
 
-	);
-end component;
+  signal clk300p        : std_ulogic := '0';
+  signal clk300n        : std_ulogic := '1';
+  signal clk125p        : std_ulogic := '0';
+  signal clk125n        : std_ulogic := '1';
 
-signal clk : std_logic := '0';
-signal Rst    : std_logic := '0';			-- Reset
-constant ct : integer := clkperiod/2;
+  signal txd1           : std_ulogic;
+  signal rxd1           : std_ulogic;
+  signal ctsn1          : std_ulogic;
+  signal rtsn1          : std_ulogic;
 
-signal address  : std_logic_vector(27 downto 0);
-signal data     : std_logic_vector(31 downto 0);
+  signal iic_scl        : std_ulogic;
+  signal iic_sda        : std_ulogic;
+  signal iic_mreset     : std_ulogic;
 
-signal ramsn    : std_logic_vector(4 downto 0);
-signal ramoen   : std_logic_vector(4 downto 0);
-signal rwen     : std_logic_vector(3 downto 0);
-signal rwenx    : std_logic_vector(3 downto 0);
-signal romsn    : std_logic_vector(1 downto 0);
-signal iosn     : std_ulogic;
-signal oen      : std_ulogic;
-signal read     : std_ulogic;
-signal writen   : std_ulogic;
-signal brdyn    : std_ulogic;
-signal bexcn    : std_ulogic;
-signal wdog     : std_ulogic;
-signal dsuen, dsutx, dsurx, dsubre, dsuact : std_ulogic;
-signal dsurst   : std_ulogic;
-signal test     : std_ulogic;
-signal error    : std_logic;
-signal gpio	: std_logic_vector(CFG_GRGPIO_WIDTH-1 downto 0);
-signal GND      : std_ulogic := '0';
-signal VCC      : std_ulogic := '1';
-signal NC       : std_ulogic := 'Z';
-signal clk2     : std_ulogic := '1';
+  signal switch         : std_logic_vector(3 downto 0);
+  signal gpio           : std_logic_vector(15 downto 0);
+  signal led            : std_logic_vector(7 downto 0);
+  signal button         : std_logic_vector(4 downto 0);
 
-signal sdcke    : std_logic_vector ( 1 downto 0);  -- clk en
-signal sdcsn    : std_logic_vector ( 1 downto 0);  -- chip sel
-signal sdwen    : std_ulogic;                       -- write en
-signal sdrasn   : std_ulogic;                       -- row addr stb
-signal sdcasn   : std_ulogic;                       -- col addr stb
-signal sddqm    : std_logic_vector ( 7 downto 0);  -- data i/o mask
-signal sdclk    : std_ulogic;
-signal plllock    : std_ulogic;
-signal txd1, rxd1 : std_ulogic;
-signal txd2, rxd2 : std_ulogic;
+  signal phy_mii_data   : std_logic;
+  signal phy_tx_clk     : std_ulogic;
+  signal phy_rx_clk     : std_ulogic;
+  signal phy_rx_data    : std_logic_vector(7 downto 0);
+  signal phy_dv         : std_ulogic;
+  signal phy_rx_er      : std_ulogic;
+  signal phy_col        : std_ulogic;
+  signal phy_crs        : std_ulogic;
+  signal phy_tx_data    : std_logic_vector(7 downto 0);
+  signal phy_tx_en      : std_ulogic;
+  signal phy_tx_er      : std_ulogic;
+  signal phy_mii_clk    : std_ulogic;
+  signal phy_rst_n      : std_ulogic;
+  signal phy_gtx_clk    : std_ulogic;
+  signal phy_mii_int_n  : std_ulogic;
 
-signal etx_clk, erx_clk, erx_dv, erx_er, erx_col, erx_crs, etx_en, etx_er : std_logic:='0';
-signal erxd, etxd: std_logic_vector(3 downto 0):=(others=>'0');
-signal erxdt, etxdt: std_logic_vector(7 downto 0):=(others=>'0');
-signal emdc, emdio: std_logic;
-signal gtx_clk : std_ulogic;
+  signal txp_eth        : std_ulogic;
+  signal txn_eth        : std_ulogic;
+  signal phy_mdio       : std_logic;
+  signal phy_mdc        : std_ulogic;
 
-signal emddis 	: std_logic;
-signal epwrdwn 	: std_logic;
-signal ereset 	: std_logic;
-signal esleep 	: std_logic;
-signal epause 	: std_logic;
+  signal dsutx          : std_ulogic;
+  signal dsurx          : std_ulogic;
+  signal dsuctsn        : std_ulogic;
+  signal dsurtsn        : std_ulogic;
 
-constant lresp : boolean := false;
+  signal ddr4_ck        : std_logic_vector(1 downto 0);
+  signal ddr4_dq        : std_logic_vector(63 downto 0);
+  signal ddr4_dqs_c     : std_logic_vector(7 downto 0);
+  signal ddr4_dqs_t     : std_logic_vector(7 downto 0);
+  signal ddr4_addr      : std_logic_vector(13 downto 0);
+  signal ddr4_ras_n     : std_logic;
+  signal ddr4_cas_n     : std_logic;
+  signal ddr4_we_n      : std_logic;
+  signal ddr4_ba        : std_logic_vector(1 downto 0);
+  signal ddr4_bg        : std_logic_vector(0 downto 0);
+  signal ddr4_dm_n      : std_logic_vector(7 downto 0);
+  signal ddr4_ck_c      : std_logic_vector(0 downto 0);
+  signal ddr4_ck_t      : std_logic_vector(0 downto 0);
+  signal ddr4_cke       : std_logic_vector(0 downto 0);
+  signal ddr4_act_n     : std_logic;
+  signal ddr4_alert_n   : std_logic;
+  signal ddr4_odt       : std_logic_vector(0 downto 0);
+  signal ddr4_par       : std_logic;
+  signal ddr4_ten       : std_logic;
+  signal ddr4_cs_n      : std_logic_vector(0 downto 0);
+  signal ddr4_reset_n   : std_logic;
 
-signal sa      	: std_logic_vector(14 downto 0);
-signal sd   	: std_logic_vector(63 downto 0);
+  -- Testbench Related Signals
+  signal dsurst         : std_ulogic;
+  signal errorn         : std_logic;
 
-signal pci_arb_req, pci_arb_gnt : std_logic_vector(0 to 3);
-
-signal can_txd	: std_ulogic;
-signal can_rxd	: std_ulogic;
-signal can_stb	: std_ulogic;
-
-signal spw_clk	: std_ulogic := '0';
-signal spw_rxd  : std_logic_vector(0 to 2) := "000";
-signal spw_rxdn : std_logic_vector(0 to 2) := "000";
-signal spw_rxs  : std_logic_vector(0 to 2) := "000";
-signal spw_rxsn : std_logic_vector(0 to 2) := "000";
-signal spw_txd  : std_logic_vector(0 to 2);
-signal spw_txdn : std_logic_vector(0 to 2);
-signal spw_txs  : std_logic_vector(0 to 2);
-signal spw_txsn : std_logic_vector(0 to 2);
-
-signal tck, tms, tdi, tdo : std_ulogic;
-
-constant CFG_SDEN : integer := CFG_SDCTRL + CFG_MCTRL_SDEN ;
-constant CFG_SD64 : integer := CFG_SDCTRL_SD64 + CFG_MCTRL_SD64;
 
 begin
 
--- clock and reset
+  -----------------------------------------------------
+  -- Clocks and Reset ---------------------------------
+  -----------------------------------------------------
 
-  spw_clk <= not spw_clk after 20 ns;
-  spw_rxd(0) <= spw_txd(0); spw_rxdn(0) <= spw_txdn(0);
-  spw_rxs(0) <= spw_txs(0); spw_rxsn(0) <= spw_txsn(0);
-  spw_rxd(1) <= spw_txd(1); spw_rxdn(1) <= spw_txdn(1);
-  spw_rxs(1) <= spw_txs(1); spw_rxsn(1) <= spw_txsn(1);
-  spw_rxd(2) <= spw_txd(0); spw_rxdn(2) <= spw_txdn(2);
-  spw_rxs(2) <= spw_txs(0); spw_rxsn(2) <= spw_txsn(2);
-  clk <= not clk after ct * 1 ns;
-  rst <= dsurst;
-  dsuen <= '1'; dsubre <= '0'; rxd1 <= '1';
-  --## can_rxd <= '1';
-  can_rxd <= can_txd; -- CAN LOOP BACK ##
+  clk300p <= not clk300p after 1.666 ns;
+  clk300n <= not clk300n after 1.666 ns;
+  clk125p <= not clk125p after 4 ns; -- clkethp
+  clk125n <= not clk125p after 4 ns; -- clkethn
 
-  d3 : leon3mp
-        generic map ( fabtech, memtech, padtech, clktech,
-	disas, pclow )
-        port map (rst, clk, sdclk,  error, address(27 downto 0), data,
-	sa, sd, sdclk, sdcke, sdcsn, sdwen, sdrasn, sdcasn, sddqm,
-	dsutx, dsurx, dsuen, dsubre, dsuact, txd1, rxd1, txd2, rxd2,
-	ramsn, ramoen, rwen, oen, writen, read, iosn, romsn, gpio,
-        emdio, etx_clk, erx_clk, erxd, erx_dv, erx_er, erx_col, erx_crs,
-        etxd, etx_en, etx_er, emdc, emddis, epwrdwn, ereset, esleep, epause,
-    	pci_rst, pci_clk, pci_gnt, pci_idsel, pci_lock, pci_ad, pci_cbe,
-    	pci_frame, pci_irdy, pci_trdy, pci_devsel, pci_stop, pci_perr, pci_par,
-    	pci_req, pci_serr, pci_host, pci_66, pci_arb_req, pci_arb_gnt,
-	can_txd, can_rxd, can_stb, spw_clk, spw_rxd, spw_rxdn, spw_rxs,
-	spw_rxsn, spw_txd, spw_txdn, spw_txs, spw_txsn, tck, tms, tdi, tdo);
+  system_rst    <= not dsurst;
 
--- optional sdram
+  ddr4_ck       <= clk300n & clk300p;
 
-  sd0 : if (CFG_SDEN /= 0) and (CFG_MCTRL_SEPBUS = 0) generate
-    u0: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => data(31 downto 16), Addr => address(14 downto 2),
-            Ba => address(16 downto 15), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(3 downto 2));
-    u1: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => data(15 downto 0), Addr => address(14 downto 2),
-            Ba => address(16 downto 15), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(1 downto 0));
-    u2: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => data(31 downto 16), Addr => address(14 downto 2),
-            Ba => address(16 downto 15), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(3 downto 2));
-    u3: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => data(15 downto 0), Addr => address(14 downto 2),
-            Ba => address(16 downto 15), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(1 downto 0));
-  end generate;
+  -----------------------------------------------------
+  -- Misc ---------------------------------------------
+  -----------------------------------------------------
 
-  sd1 : if (CFG_SDEN /= 0) and (CFG_MCTRL_SEPBUS = 1) generate
-    u0: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(31 downto 16), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(3 downto 2));
-    u1: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(15 downto 0), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(1 downto 0));
-    u2: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(31 downto 16), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(3 downto 2));
-    u3: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(15 downto 0), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(1 downto 0));
-    sd64 : if (CFG_SD64 /= 0) generate
-      u4: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(63 downto 48), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(7 downto 6));
-      u5: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(47 downto 32), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(0), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(5 downto 4));
-      u6: mt48lc16m16a2 generic map (index => 0, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(63 downto 48), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(7 downto 6));
-      u7: mt48lc16m16a2 generic map (index => 16, fname => sdramfile)
-	PORT MAP(
-            Dq => sd(47 downto 32), Addr => sa(12 downto 0),
-            Ba => sa(14 downto 13), Clk => sdclk, Cke => sdcke(0),
-            Cs_n => sdcsn(1), Ras_n => sdrasn, Cas_n => sdcasn, We_n => sdwen,
-            Dqm => sddqm(5 downto 4));
-    end generate;
-  end generate;
+  errorn        <= 'H'; -- ERROR pull-up
+  switch(2 downto 0) <= (2 => '1', others => '0');
+  button        <= (others => '0');
 
-    prom0 : for i in 0 to (romwidth/8)-1 generate
-      sr0 : sram generic map (index => i, abits => romdepth, fname => promfile)
-	port map (address(romdepth+1 downto 2), data(31-i*8 downto 24-i*8), romsn(0),
-		  rwen(i), oen);
-    end generate;
+  -----------------------------------------------------
+  -- Top ----------------------------------------------
+  -----------------------------------------------------
 
-  sbanks : for k in 0 to srambanks-1 generate
-    sram0 : for i in 0 to (sramwidth/8)-1 generate
-      sr0 : sram generic map (index => i, abits => sramdepth, fname => sramfile)
-	port map (address(sramdepth+1 downto 2), data(31-i*8 downto 24-i*8),
-		ramsn(k), rwen(i), ramoen(k));
-    end generate;
-  end generate;
+  cpu : entity work.noelvmp
+    generic map(
+      fabtech                 => fabtech,
+      memtech                 => memtech,
+      padtech                 => padtech,
+      clktech                 => clktech,
+      migmodel                => USE_MIG_INTERFACE_MODEL
+      )
+    port map(
+      reset             => system_rst,
+      clk300p           => clk300p,
+      clk300n           => clk300n,
+      switch            => switch,
+      led               => led,
+      gpio              => gpio,
+      iic_scl           => iic_scl,
+      iic_sda           => iic_sda,
+      iic_mreset        => iic_mreset,
+      gtrefclk_n        => clk125n,
+      gtrefclk_p        => clk125p,
+      txp               => txp_eth,
+      txn               => txn_eth,
+      rxp               => txp_eth,
+      rxn               => txn_eth,
+      emdio             => phy_mdio,
+      emdc              => phy_mdc,
+      eint              => '0',
+      erst              => OPEN,
+      dsurx             => dsurx,
+      dsutx             => dsutx,
+      dsuctsn           => dsuctsn,
+      dsurtsn           => dsurtsn,
+      button            => button,
+      ddr4_dq           => ddr4_dq,
+      ddr4_dqs_c        => ddr4_dqs_c,
+      ddr4_dqs_t        => ddr4_dqs_t,
+      ddr4_addr         => ddr4_addr,
+      ddr4_ras_n        => ddr4_ras_n,
+      ddr4_cas_n        => ddr4_cas_n,
+      ddr4_we_n         => ddr4_we_n,
+      ddr4_ba           => ddr4_ba,
+      ddr4_bg           => ddr4_bg,
+      ddr4_dm_n         => ddr4_dm_n,
+      ddr4_ck_c         => ddr4_ck_c,
+      ddr4_ck_t         => ddr4_ck_t,
+      ddr4_cke          => ddr4_cke,
+      ddr4_act_n        => ddr4_act_n,
+      ddr4_alert_n      => ddr4_alert_n,
+      ddr4_odt          => ddr4_odt,
+      ddr4_par          => ddr4_par,
+      ddr4_ten          => ddr4_ten, 
+      ddr4_cs_n         => ddr4_cs_n, 
+      ddr4_reset_n      => ddr4_reset_n
+      );
 
   phy0 : if (CFG_GRETH = 1) generate
-    emdio <= 'H';
-    erxd <= erxdt(3 downto 0);
-    etxdt <= "0000" & etxd;
-    
-    p0: phy
-      generic map(base1000_t_fd => 0, base1000_t_hd => 0)
-      port map(rst, emdio, etx_clk, erx_clk, erxdt, erx_dv,
-      erx_er, erx_col, erx_crs, etxdt, etx_en, etx_er, emdc, gtx_clk);
+   -- Simulation model for SGMII PHY MDIO interface 
+   phy_mdio <= 'H';
+   p0: phy
+    generic map (
+             address       => 7,
+             extended_regs => 1,
+             aneg          => 1,
+             base100_t4    => 1,
+             base100_x_fd  => 1,
+             base100_x_hd  => 1,
+             fd_10         => 1,
+             hd_10         => 1,
+             base100_t2_fd => 1,
+             base100_t2_hd => 1,
+             base1000_x_fd => CFG_GRETH1G,
+             base1000_x_hd => CFG_GRETH1G,
+             base1000_t_fd => CFG_GRETH1G,
+             base1000_t_hd => CFG_GRETH1G,
+             rmii          => 0,
+             rgmii         => 1
+    )
+    port map(dsurst, phy_mdio, OPEN , OPEN , OPEN ,
+             OPEN , OPEN , OPEN , OPEN , "00000000",
+             '0', '0', phy_mdc, clk125p); 
+
   end generate;
-  error <= 'H';			  -- ERROR pull-up
 
-   iuerr : process
-   begin
-     wait for 2500 ns;
-     if to_x01(error) = '1' then wait on error; end if;
-     assert (to_x01(error) = '1')
-       report "*** IU in error mode, simulation halted ***"
-         severity failure ;
-   end process;
+  -- Memory model instantiation
+  gen_mem_model : if (USE_MIG_INTERFACE_MODEL /= true) generate
+    ddr4mem : if (CFG_MIG_7SERIES = 1) generate
+      u1 : ddr4ram
+        generic map (
+          dq_bits => 8)
+        port map (
+          ddr4_ck       => ddr4_ck,
+          ddr4_act_n    => ddr4_act_n,
+          ddr4_ras_n    => ddr4_ras_n,
+          ddr4_cas_n    => ddr4_cas_n,
+          ddr4_we_n     => ddr4_we_n,
+          ddr4_alert_n  => ddr4_alert_n,
+          ddr4_parity   => ddr4_par,
+          ddr4_reset_n  => ddr4_reset_n,
+          ddr4_ten      => ddr4_ten,
+          ddr4_cs_n     => ddr4_cs_n(0),
+          ddr4_cke      => ddr4_cke(0),
+          ddr4_odt      => ddr4_odt(0),
+          ddr4_bg       => ddr4_bg,
+          ddr4_ba       => ddr4_ba,
+          ddr4_addr     => ddr4_addr,
+          ddr4_dm_n     => ddr4_dm_n,
+          ddr4_dq       => ddr4_dq,
+          ddr4_dqs_t    => ddr4_dqs_t,
+          ddr4_dqs_c    => ddr4_dqs_c
+          );
+    end generate ddr4mem;
+  end generate gen_mem_model;
 
-  data <= buskeep(data), (others => 'H') after 250 ns;
-  sd <= buskeep(sd), (others => 'H') after 250 ns;
+  mig_mem_model : if (USE_MIG_INTERFACE_MODEL = true) generate
+    ddr4_dq    <= (others => 'Z');
+    ddr4_dqs_c <= (others => 'Z');
+    ddr4_dqs_t <= (others => 'Z');
+  end generate mig_mem_model;
 
-  test0 :  grtestmod
-    port map ( rst, clk, error, address(21 downto 2), data,
-    	       iosn, oen, writen, brdyn);
+  -----------------------------------------------------
+  -- Process ------------------------------------------
+  -----------------------------------------------------
 
-  up0: uartprint port map (txd1);
+  iuerr : process
+  begin
+    wait for 5000 ns;
+    if to_x01(errorn) = '1' then
+      wait on errorn;
+    end if;
+    assert (to_x01(errorn) = '1')
+      report "*** IU in error mode, simulation halted ***"
+      severity failure;			-- this should be a failure
+  end process;
 
   dsucom : process
     procedure dsucfg(signal dsurx : in std_ulogic; signal dsutx : out std_ulogic) is
-    variable w32 : std_logic_vector(31 downto 0);
-    variable c8  : std_logic_vector(7 downto 0);
-    constant txp : time := 160 * 1 ns;
+      variable w32        : std_logic_vector(31 downto 0);
+      variable w64        : std_logic_vector(63 downto 0);
+      variable c8         : std_logic_vector(7 downto 0);
+
+      constant txp : time := 160 * 1 ns;
+
     begin
-    dsutx <= '1';
-    dsurst <= '0';
-    wait for 500 ns;
-    dsurst <= '1';
-    wait;
-    wait for 5000 ns;
-    txc(dsutx, 16#55#, txp);		-- sync uart
 
---    txc(dsutx, 16#c0#, txp);
---    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#00#, txp);
---    txa(dsutx, 16#00#, 16#00#, 16#02#, 16#ae#, txp);
---    txc(dsutx, 16#c0#, txp);
---    txa(dsutx, 16#91#, 16#00#, 16#00#, 16#00#, txp);
---    txa(dsutx, 16#00#, 16#00#, 16#06#, 16#ae#, txp);
---    txc(dsutx, 16#c0#, txp);
---    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#24#, txp);
---    txa(dsutx, 16#00#, 16#00#, 16#06#, 16#03#, txp);
---    txc(dsutx, 16#c0#, txp);
---    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#20#, txp);
---    txa(dsutx, 16#00#, 16#00#, 16#06#, 16#fc#, txp);
+      Print("dsucom process starts here");
+      dsutx       <= '1';
+      dsurst      <= '0';
+      switch(3)   <= '0';
+      
+      if (USE_MIG_INTERFACE_MODEL /= true and CFG_MIG_7SERIES = 1) then
+        wait for 10 us; -- This is for proper DDR4 behaviour durign init phase not needed durin simulation
+      end if;
 
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#00#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#2f#, txp);
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#91#, 16#00#, 16#00#, 16#00#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#6f#, txp);
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#11#, 16#00#, 16#00#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#00#, txp);
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#40#, 16#00#, 16#04#, txp);
-    txa(dsutx, 16#00#, 16#02#, 16#20#, 16#01#, txp);
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#20#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#02#, txp);
+      wait for 1 us;
+      print("Deassert global reset here");
+      -- Deassert global reset
+      dsurst      <= '1';
+      switch(3)   <= '1';
 
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#20#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#0f#, txp);
-
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#40#, 16#00#, 16#43#, 16#10#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#0f#, txp);
-
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#91#, 16#40#, 16#00#, 16#24#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#24#, txp);
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#91#, 16#70#, 16#00#, 16#00#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#03#, txp);
-
-
-
-
-
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#20#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#ff#, 16#ff#, txp);
-
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#40#, 16#00#, 16#48#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#00#, 16#12#, txp);
-
-    txc(dsutx, 16#c0#, txp);
-    txa(dsutx, 16#90#, 16#40#, 16#00#, 16#60#, txp);
-    txa(dsutx, 16#00#, 16#00#, 16#12#, 16#10#, txp);
-
-    txc(dsutx, 16#80#, txp);
-    txa(dsutx, 16#90#, 16#00#, 16#00#, 16#00#, txp);
-    rxi(dsurx, w32, txp, lresp);
-
-    txc(dsutx, 16#a0#, txp);
-    txa(dsutx, 16#40#, 16#00#, 16#00#, 16#00#, txp);
-    rxi(dsurx, w32, txp, lresp);
+      if (USE_MIG_INTERFACE_MODEL /= true and CFG_MIG_7SERIES = 1) then
+        wait on led(7) until led(7) = '1';  -- Wait for DDR4 Memory Init ready
+      end if;
+      report "Start DSU transfer";
+      wait for 5000 ns;
+      txc(dsutx, 16#55#, txp);      -- sync uart
+      report "UART synced";
 
     end;
 
+    procedure riscvtb(signal dsurx : in std_ulogic; signal dsutx : out std_ulogic) is
+      variable w32        : std_logic_vector(31 downto 0);
+
+      -- Debug Unit Variables
+      variable halted   : std_logic := '0';
+      variable active   : std_logic := '0';
+      variable resumed  : std_logic := '0';
+      variable busy     : std_logic := '1';
+
+      -- tmp reg containers
+      variable regh     : std_logic_vector(31 downto 0);
+      variable regl     : std_logic_vector(31 downto 0);
+
+      variable status   : std_logic_vector(31 downto 0);
+      variable stop     : std_ulogic;
+
+      variable TP       : boolean := true;
+      variable Screen   : boolean := false;
+
+      constant txp      : time := 160 * 1 ns;
+      constant lresp    : boolean := false;
+
+    begin
+
+      print("-- Check AHBROM");
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#00#, 16#01#, 16#00#, 16#00#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- AHBROM @ 0001_0000: " & tost(w32));
+
+      print("-- Activate the Debug Module");
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#40#, txp);
+      txa(dsutx, 16#00#, 16#00#, 16#00#, 16#01#, txp);
+      print("-- Halt the core");
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#40#, txp);
+      txa(dsutx, 16#80#, 16#00#, 16#00#, 16#01#, txp);
+
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#44#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- DMSTATUS: " & tost(w32));
+
+      print("-- Break on ebreak");
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#5C#, txp);
+      txa(dsutx, 16#00#, 16#32#, 16#07#, 16#b0#, txp);
+      
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- Abstract Control and Status is " & tost(w32));
+
+      busy := w32(12);
+
+      while busy = '1' loop
+        txc(dsutx, 16#80#, txp);
+        txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+        rxi(dsurx, w32, txp, lresp);
+        print("-- Abstract Control and Status is " & tost(w32));
+
+        busy := w32(12);
+      end loop;
+      
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#10#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      w32(15) := '1';
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#10#, txp);
+      txa(dsutx, conv_integer(w32(31 downto 24)), conv_integer(w32(23 downto 16)),
+                 conv_integer(w32(15 downto 8)) , conv_integer(w32(7 downto 0)), txp);
+
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#5C#, txp);
+      txa(dsutx, 16#00#, 16#33#, 16#07#, 16#b0#, txp);
+
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- Abstract Control and Status is " & tost(w32));
+
+      busy := w32(12);
+
+      while busy = '1' loop
+        txc(dsutx, 16#80#, txp);
+        txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+        rxi(dsurx, w32, txp, lresp);
+        print("-- Abstract Control and Status is " & tost(w32));
+
+        busy := w32(12);
+      end loop;
+
+      print("-- Write new pc");
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#10#, txp);
+      txa(dsutx, 16#00#, 16#01#, 16#00#, 16#00#, txp);
+
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#5C#, txp);
+      txa(dsutx, 16#00#, 16#33#, 16#07#, 16#b1#, txp);
+      
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- Abstract Control and Status is " & tost(w32));
+
+      busy := w32(12);
+
+      while busy = '1' loop
+        txc(dsutx, 16#80#, txp);
+        txa(dsutx, 16#90#, 16#00#, 16#00#, 16#58#, txp);
+        rxi(dsurx, w32, txp, lresp);
+        print("-- Abstract Control and Status is " & tost(w32));
+
+        busy := w32(12);
+      end loop;
+
+      wait for 100 ns;
+      print("-- Remove halt for hart 0");
+      txc(dsutx, 16#c0#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#40#, txp);
+      txa(dsutx, 16#40#, 16#00#, 16#00#, 16#01#, txp);
+
+      txc(dsutx, 16#80#, txp);
+      txa(dsutx, 16#90#, 16#00#, 16#00#, 16#44#, txp);
+      rxi(dsurx, w32, txp, lresp);
+      print("-- Debug Module Status is " & tost(w32));
+
+      resumed := w32(10) and w32(11);
+
+      while resumed = '0' loop
+        txc(dsutx, 16#80#, txp);
+        txa(dsutx, 16#90#, 16#00#, 16#00#, 16#44#, txp);
+        rxi(dsurx, w32, txp, lresp);
+        print("-- Debug Module Status is " & tost(w32));
+
+        resumed := w32(10) and w32(11);
+      end loop;
+    end;
+
   begin
-
+    dsuctsn <= '0';
     dsucfg(dsutx, dsurx);
-
+    wait;
+    riscvtb(dsutx, dsurx);
     wait;
   end process;
-
-  jtagproc : process
-  begin
-    wait;
-    jtagcom(tdo, tck, tms, tdi, 100, 20, 16#40000000#, true);
-    wait;
-   end process;
-
+    
 end;
 

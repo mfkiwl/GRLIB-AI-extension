@@ -81,7 +81,7 @@ VSIMOPT+= $(SIMTOP)
 VHDLSYNFILES= config.vhd ahbrom.vhd noelvmp.vhd ddr_dummy.vhd sgmii_vc707.vhd
 VHDLSIMFILES=testbench.vhd
 
-TECHLIBS = unisim
+TECHLIBS = inferred
 SKIP_SIM_TECHLIBS = 1
 
 LIBSKIP = pci pci/pcif core1553bbc core1553brm srio core1553brt idt gr1553 corePCIF \

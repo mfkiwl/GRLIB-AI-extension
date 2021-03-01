@@ -1,0 +1,39 @@
+\subsection{Additional features}
+Aside from the defined characteristics the module was expanded with
+new functionalities in order to simplify some operations and allow 
+other interesting capabilities.
+
+\subsubsection{Masking/Predication}
+
+Previously, I have stated my interest in adding to the processors 
+predication, this feature is also compatible with a vector module
+but is more commonly known as masking. The idea is simply to add
+a boolean vector which determines weather the operation should modify
+the result in the corresponding vector component. 
+
+\medbreak
+To keep the design modular, it is impossible to not overwrite the 
+result register if this is not also passed to the module, but this 
+idea was discarded in favor of passing the value of the first source
+register. This is due to many times being the destination register also
+the source one, and if needed the same result could be achieved with 
+an additional instruction. 
+
+\medbreak
+The approach taken in the module is that the value of the mask vector 
+must be set by a specific instruction and will keep this value until 
+it is overwritten or the processor is reset. In the later case the value
+will go back to the default one which is no mask.
+
+\subsubsection{Swizzling}
+
+The swizzling allows to reorder and duplicate the source vector components
+to perform an operation using any combination. This is simply a multiplexor 
+which picks which of the components is used in each byte operation. 
+
+\medbreak
+Same as in the mask case, the swizzling configuration is defined by an 
+instruction and is constant until it's set again. In this case the default
+configuration does not alter the original order of the register bytes.
+
+

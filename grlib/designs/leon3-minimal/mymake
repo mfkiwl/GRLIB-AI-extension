@@ -1,0 +1,2 @@
+export CURRENT_DIR=$PWD
+cd ../../software/marcmod/leon3/ && make $1 && cd - > /dev/null

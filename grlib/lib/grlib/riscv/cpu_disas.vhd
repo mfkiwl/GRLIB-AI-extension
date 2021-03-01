@@ -37,7 +37,7 @@ use grlib.stdlib.all;
 use grlib.riscv.all;
 use grlib.riscv_disas.all;
 
-entity cpu_disas is
+entity cpu_disas_riscv is
 generic (
   disasg : in integer range 0 to 3 := 1
   );
@@ -51,24 +51,24 @@ port (
   inst          : in  std_logic_vector(31 downto 0);    -- Instruction
   cinst         : in  std_logic_vector(15 downto 0);    -- Copressed Instruction
   comp          : in  std_ulogic;                       -- Compressed Flag
-  pc            : in  std_logic_vector;                 -- PC
+  pc            : in  std_logic_vector(63 downto 0);    -- PC
   wregen        : in  std_ulogic;                       -- Regfile Write Enable
-  wregdata      : in  std_logic_vector;                 -- Regfile Write Data
+  wregdata      : in  std_logic_vector(63 downto 0);    -- Regfile Write Data
   wregen_f      : in  std_ulogic;                       -- FPU Regfile Write Enable
   wcsren        : in  std_ulogic;                       -- CSR Write Enable
-  wcsrdata      : in  std_logic_vector;                 -- CSR Write Data
+  wcsrdata      : in  std_logic_vector(63 downto 0);    -- CSR Write Data
   prv           : in  std_logic_vector(1 downto 0);     -- Privileged Level
   trap          : in  std_ulogic;                       -- Exception
   trap_taken    : in  std_ulogic;
-  cause         : in  std_logic_vector;                 -- Exception Cause
-  tval          : in  std_logic_vector;                 -- Exception Value
+  cause         : in  std_logic_vector(63 downto 0);    -- Exception Cause
+  tval          : in  std_logic_vector(63 downto 0);    -- Exception Value
   cycle         : in  std_logic_vector(63 downto 0);    -- Cycle Counter
   instret       : in  std_logic_vector(63 downto 0);    -- Inst Committed
   dual          : in  std_logic_vector(63 downto 0);    -- Dual Instruction Counter
   disas         : in  std_ulogic);                      -- Disassembly Enabled
 end;
 
-architecture behav of cpu_disas is
+architecture behav of cpu_disas_riscv is
 
   signal clk_counter    : integer := 0;
   

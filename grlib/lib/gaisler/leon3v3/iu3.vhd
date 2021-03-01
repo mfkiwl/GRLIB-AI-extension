@@ -45,6 +45,7 @@ use gaisler.arith.all;
 use grlib.sparc_disas.all;
 -- pragma translate_on
 
+
 entity iu3 is
   generic (
     nwin     : integer range 2 to 32 := 8;
@@ -151,6 +152,32 @@ architecture rtl of iu3 is
   constant RS1OPT : boolean := (is_fpga(FABTECH) /= 0);
   constant DYNRST : boolean := (rstaddr = 16#FFFFF#);
 
+  --marcmod: simd first stage opcodes
+  constant S1_NOP : std_logic_vector (4 downto 0) := "00000";
+  constant S1_ADD : std_logic_vector (4 downto 0) := "00001";
+  constant S1_SUB : std_logic_vector (4 downto 0) := "00010";
+  constant S1_MUL : std_logic_vector (4 downto 0) := "00011";
+  constant S1_DIV : std_logic_vector (4 downto 0) := "00100";
+  constant S1_MAX : std_logic_vector (4 downto 0) := "00101";
+  constant S1_MIN : std_logic_vector (4 downto 0) := "00110";
+  constant S1_AND : std_logic_vector (4 downto 0) := "00111";
+  constant S1_OR  : std_logic_vector (4 downto 0) := "01000";
+  constant S1_XOR : std_logic_vector (4 downto 0) := "01001";
+  constant S1_NAND: std_logic_vector (4 downto 0) := "01010";
+  constant S1_NOR : std_logic_vector (4 downto 0) := "01011";
+  constant S1_XNOR: std_logic_vector (4 downto 0) := "01100";
+  constant S1_SADD : std_logic_vector (4 downto 0) :="01101";
+  constant S1_SSUB : std_logic_vector (4 downto 0) :="01110";
+  constant S1_SMUL : std_logic_vector (4 downto 0) :="01111";
+  constant S1_MOVB : std_logic_vector (4 downto 0) :="10000";
+  constant S1_UMUL : std_logic_vector (4 downto 0) :="10011";
+  constant S1_UDIV : std_logic_vector (4 downto 0) :="10100";
+  constant S1_UMAX : std_logic_vector (4 downto 0) :="10101";
+  constant S1_UMIN : std_logic_vector (4 downto 0) :="10110";
+  constant S1_USADD : std_logic_vector (4 downto 0):="11101";
+  constant S1_USSUB : std_logic_vector (4 downto 0):="11110";
+  constant S1_USMUL : std_logic_vector (4 downto 0):="11111"; 
+
   constant CASAEN : boolean := (notag = 0);
   signal BPRED : std_logic;
   signal BLOCKBPMISS: std_logic;
@@ -214,7 +241,7 @@ architecture rtl of iu3 is
     wicc  : std_ulogic;
     wy    : std_ulogic;
     simd  : std_ulogic;
-    wmask : std_ulogic;
+    sdctr : std_ulogic;
     ld    : std_ulogic;
     pv    : std_ulogic;
     rett  : std_ulogic;
@@ -1079,7 +1106,7 @@ architecture rtl of iu3 is
     wicc  => '0',
     wy    => '0',
     simd  => '0',
-    wmask => '0',
+    sdctr => '0',
     ld    => '0',
     pv    => '0',
     rett  => '0',
@@ -2194,8 +2221,8 @@ end;
 
 
   --SIMD control signals generation
-  procedure simd_gen(inst : word; simden, wmask : out std_ulogic) is
-  variable write_msk : std_ulogic;
+  procedure simd_gen(inst : word; simden, sdctr : out std_ulogic) is
+  variable write_ctrl : std_ulogic;
   variable enable_simd : std_ulogic;
   variable op : std_logic_vector(1 downto 0);
   variable op3 : std_logic_vector(5 downto 0);
@@ -2203,7 +2230,7 @@ end;
     op  := inst(31 downto 30);
     op3 := inst(24 downto 19);
 
-    write_msk := '0'; enable_simd := '0';
+    write_ctrl := '0'; enable_simd := '0';
 
     case op is 
     when FMT3 =>
@@ -2212,12 +2239,12 @@ end;
             enable_simd := '1';
         when WRMSK =>
             enable_simd := '1';
-            write_msk := '1';
+            write_ctrl := '1';
         when others =>
         end case;
     when others => 
     end case;
-    wmask := write_msk; simden := enable_simd;
+    sdctr := write_ctrl; simden := enable_simd;
   end;
 
 -- register write address generation
@@ -2290,6 +2317,39 @@ end;
   end;
 
 -- immediate data generation
+
+  --marcmod
+  function imm_simd (insn : word) return word is
+  variable inst : word;
+  variable immediate_data : std_logic_vector(7 downto 0);
+  variable rhzeros : integer range 0 to 8;
+  begin
+      immediate_data := (others => '0'); inst := insn;
+      rhzeros := to_integer(unsigned(inst(3 downto 1))); --number of right hand 0s, for pow2
+
+      case inst(9 downto 5) is -- custom immediate depending on operation
+          -- for additions/subtractions value in inst(4 downto 0) is operand
+          when S1_ADD | S1_SADD | S1_USADD | S1_SUB | S1_SSUB | S1_USSUB => -- no need for negative values we can use sub or add
+              immediate_data := "000" & inst(4 downto 0);
+          -- for multiplications/division signed first bit is sign, 3 next indicate 2^(1+inst(3 downto 1)) 
+          -- and inst(0) adds one (allows for 3, 5, 9, -1, -3, -7...)
+          when S1_MUL | S1_SMUL | S1_DIV  => 
+              immediate_data(rhzeros + 1) := '1';
+              if inst(4) = '1' then
+                  immediate_data := not(immediate_data) + "00000001";
+              end if;
+              immediate_data(0) := inst(0);
+          -- same as for signed multiplication division 
+              -- adds inst(4)inst(0) (allowing 3, 5, 6, 7, 9, 10, 11...)
+          when S1_UMUL | S1_USMUL | S1_UDIV => 
+              immediate_data(rhzeros + 1) := '1';
+              immediate_data(1 downto 0) := inst(4) & inst(0);
+          when others =>
+              immediate_data := "000" & inst(4 downto 0);
+      end case;
+      return immediate_data & immediate_data & immediate_data & immediate_data;
+  end;
+
 
   function imm_data (r : registers; insn : word; de_reximmexp: std_ulogic; de_reximmval: std_logic_vector(31 downto 13))
         return word is
@@ -4568,8 +4628,11 @@ begin
     sdi.op <= r.a.ctrl.inst(12 downto 5);
     sdi.rc_we <= r.a.ctrl.simd and r.a.ctrl.wreg;
     sdi.rc_addr <= r.a.ctrl.inst(29 downto 25);
-    sdi.mask_we <= r.a.ctrl.wmask;
+    sdi.ctrl_reg_we <= r.a.ctrl.sdctr;
     sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
+    sdi.res_byte_en <= r.a.ctrl.inst(7 downto 4);
+    sdi.swiz_veca <= r.a.ctrl.inst(29 downto 25) & r.a.ctrl.inst(18 downto 16);
+    sdi.swiz_vecb <= r.a.ctrl.inst(15 downto 8);
 
     cin_gen(r, v.m.icc(0), v.e.alucin);
     bp_miss_ra(r, ra_bpmiss, de_bpannul);
@@ -4645,15 +4708,23 @@ begin
     rd_gen(r, de_inst, v.a.ctrl.wreg, v.a.ctrl.ld, de_rd, de_rexen);
     
     --marcmod: call to simd_gen
-    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.wmask);
+    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.sdctr);
 
     if r.d.annul='1' then de_rexen:='0'; end if;
     regaddr(de_cwp, de_rd, r.d.stwin, r.d.cwpmax, v.a.ctrl.rd);
     
     fpbranch(de_inst, fpo.cc, de_fbranch);
     fpbranch(de_inst, cpo.cc, de_cbranch);
-    v.a.imm := imm_data(r, de_inst, de_reximmexp, de_reximmval);
+
+    -- marcmod: choose normal immediate or simd one
+    if v.a.ctrl.simd = '1' then 
+        v.a.imm := imm_simd(de_inst);
+    else 
+        v.a.imm := imm_data(r, de_inst, de_reximmexp, de_reximmval);
+    end if;
+
       de_iperr := '0';
+
     lock_gen(r, de_rs2, de_rd, v.a.rfa1, v.a.rfa2, v.a.ctrl.rd, de_inst, 
         fpo.ldlock, v.e.mul, ra_div, de_wcwp, v.a.ldcheck1, v.a.ldcheck2, de_ldlock, 
         v.a.ldchkra, v.a.ldchkex, v.a.bp, v.a.nobp, de_fins_hold, de_iperr, ico.bpmiss);

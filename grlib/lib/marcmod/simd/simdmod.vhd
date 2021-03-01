@@ -10,7 +10,8 @@ package simdmod is
     generic(
             XLEN : integer := 32;
             VLEN : integer range 0 to 32 := 8;
-            RSIZE: integer := 5
+            RSIZE: integer := 5;
+            LOGSZ: integer := 2 --integer(ceil(ieee.math_real.log2(real(XLEN/VLEN))))
            );
     port(
             -- general inputs
@@ -35,8 +36,11 @@ package simdmod is
             ldrb_i  : in  std_logic_vector (XLEN-1 downto 0);
 
             -- mask modification inputs
-            mask_we_i : in std_logic;
-            mask_value_i : in std_logic_vector ((XLEN/VLEN)-1 downto 0);
+            ctrl_reg_we_i : in std_logic;
+            mask_value_i  : in std_logic_vector((XLEN/VLEN)-1 downto 0);
+            res_byte_en_i : in std_logic_vector((XLEN/VLEN)-1 downto 0);
+            swiz_veca_i   : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
+            swiz_vecb_i   : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
 
             -- outputs
             rc_data_o : out std_logic_vector (XLEN-1 downto 0);

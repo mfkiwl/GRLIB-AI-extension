@@ -1,6 +1,0 @@
-
-addfile -vhdl rtl/ddr4ram.vhd
-addfile -vhdl config.vhd
-addfile -vhdl ahbrom.vhd
-addfile -vhdl noelvmp.vhd
-addfile -vhdl testbench.vhd

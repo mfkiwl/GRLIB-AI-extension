@@ -111,7 +111,8 @@ package body libdcom is
 		txperiod : time) is
     variable rxdata : std_logic_vector(7 downto 0);
   begin
-    wait until rxd = '0'; wait for TXPERIOD/2;
+    wait until rxd = '0';
+    wait for TXPERIOD/2;
     for i in 0 to 7 loop wait for TXPERIOD; rxdata(i):= rxd; end loop;
     wait for TXPERIOD ; 
     d := rxdata;
@@ -128,7 +129,7 @@ package body libdcom is
     d := rxdata;
     if LRESP then 
       rxc(rxd, resp, txperiod);
---      print("RESP   : 0x" & tosth(resp));
+--      print("RESP   : 0x" & tost(resp));
     end if;
   end;
 

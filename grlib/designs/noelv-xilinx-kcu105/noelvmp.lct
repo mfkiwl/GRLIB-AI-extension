@@ -1,8 +1,0 @@
-[Device]
-Family = ;
-PartNumber = xcku0402-effva1156;
-Package = ;
-PartType = xcku040;
-Speed = 2-e;
-Operating_condition = COM;
-Status = Production;

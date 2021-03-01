@@ -1,8 +1,0 @@
-
-addfile -vhdl rtl/ddr4ram.vhd
-addfile -vhdl rtl/axi_mig4_7series.vhd
-addfile -vhdl rtl/sgmii_kcu105.vhd
-addfile -vhdl config.vhd
-addfile -vhdl ahbrom.vhd
-addfile -vhdl noelvmp.vhd
-addfile -vhdl testbench.vhd

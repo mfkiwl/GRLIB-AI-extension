@@ -1976,9 +1976,11 @@ begin
     if r.irdbufen = '1' then
       -- Mux out buffer data
       oico.set := "00";
+
       for x in 0 to LINESZMAX / 2 - 1 loop
         if (r.imisspend = '1' and u2i(r.i2pc(BUF_HIGH downto 3)) = x) or
            (r.imisspend = '0' and u2i(r.i1pc(BUF_HIGH downto 3)) = x) then
+
           if not ENDIAN then
             oico.data(0) := get(r.ahb3_rdbuf, (LINESZMAX / 2 - x) * 64 - 64, 64);
           else
@@ -3838,6 +3840,7 @@ begin
         v.irdbufvaddr := r.d2vaddr(r.irdbufvaddr'range);
         v.iramaddr    := r.d2vaddr(r.iramaddr'range);
         -- Get fake way hit vectors.
+
         vtmp4i        := decwrap(get(r.d2vaddr, DOFFSET_HIGH + 1, 2), DSETS);
         v.d2hitv      := vtmp4i(d_ways'range);
         vtmp4i        := decwrap(get(r.d2vaddr, DOFFSET_HIGH + 1, 2), ISETS);

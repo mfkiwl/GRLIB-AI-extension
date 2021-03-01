@@ -1,7 +1,0 @@
-JDF B
-PROJECT noelvmp
-DESIGN noelvmp Normal
-DEVKIT xc7a200t2fbg676
-ENTRY EDIF
-MODULE ./synplify/noelvmp.edf
-MODSTYLE noelvmp Normal

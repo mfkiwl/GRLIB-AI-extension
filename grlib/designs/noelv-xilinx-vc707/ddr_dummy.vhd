@@ -14,8 +14,6 @@ use ieee.std_logic_1164.all;
 library techmap;
 use techmap.gencomp.all;
 -- pragma translate_off
-library unisim;
-use unisim.IBUF;
 -- pragma translate_on
 
 library work;

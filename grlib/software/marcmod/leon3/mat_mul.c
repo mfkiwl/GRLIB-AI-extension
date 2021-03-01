@@ -3,7 +3,19 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define N 10
+#define N 4
+int computeCell(int a, int b){
+
+    int r;
+
+    asm("smul %1, %0, %0" 
+            : "=r"(r) 
+            : "r"(a), "0"(b));
+
+    //printf("a: %d\nb: %d\nr: %d\n",a,b,r);
+    return r;
+}
+
 int main()
 {
     char string[3*(3+(6*N*N+N))];
@@ -21,7 +33,7 @@ int main()
     for(int i=0; i<N; i++)
         for(int j=0; j<N; j++){
             for(int k=0; k<N; k++){
-                sum=sum+A[i][k]*B[k][j];
+                sum += computeCell(A[i][k],B[k][j]);
             }
             C[i][j] = sum;
             sum = 0;

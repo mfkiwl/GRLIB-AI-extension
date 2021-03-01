@@ -6,14 +6,14 @@ library techmap;
 use techmap.gencomp.all;
 package config is
 -- Technology and synthesis options
-  constant CFG_FABTECH : integer := virtex7;
-  constant CFG_MEMTECH : integer := virtex7;
-  constant CFG_PADTECH : integer := virtex7;
+  constant CFG_FABTECH : integer := inferred;
+  constant CFG_MEMTECH : integer := inferred;
+  constant CFG_PADTECH : integer := inferred;
   constant CFG_TRANSTECH : integer := TT_XGTP0;
   constant CFG_NOASYNC : integer := 0;
   constant CFG_SCAN : integer := 0;
 -- Clock generator
-  constant CFG_CLKTECH : integer := virtex7;
+  constant CFG_CLKTECH : integer := inferred;
   constant CFG_CLKMUL : integer := (4);
   constant CFG_CLKDIV : integer := (8);
   constant CFG_OCLKDIV : integer := 1;

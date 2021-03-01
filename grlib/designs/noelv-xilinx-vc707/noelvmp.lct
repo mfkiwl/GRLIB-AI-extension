@@ -1,8 +1,0 @@
-[Device]
-Family = ;
-PartNumber = XC7VX485T2ffg1761;
-Package = ;
-PartType = XC7VX485T;
-Speed = 2;
-Operating_condition = COM;
-Status = Production;

@@ -95,9 +95,6 @@ use techmap.allclkgen.all;
 library eth;
 use eth.grethpkg.all;
 
-library unisim;
-use unisim.vcomponents.all;
-
 --------------------------------------------------------------------------------
 -- The entity declaration for the example design
 --------------------------------------------------------------------------------

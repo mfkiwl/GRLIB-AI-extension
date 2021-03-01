@@ -241,7 +241,7 @@ architecture rtl of iu3 is
     wicc  : std_ulogic;
     wy    : std_ulogic;
     simd  : std_ulogic;
-    wmask : std_ulogic;
+    sdctr : std_ulogic;
     ld    : std_ulogic;
     pv    : std_ulogic;
     rett  : std_ulogic;
@@ -1106,7 +1106,7 @@ architecture rtl of iu3 is
     wicc  => '0',
     wy    => '0',
     simd  => '0',
-    wmask => '0',
+    sdctr => '0',
     ld    => '0',
     pv    => '0',
     rett  => '0',
@@ -2221,8 +2221,8 @@ end;
 
 
   --SIMD control signals generation
-  procedure simd_gen(inst : word; simden, wmask : out std_ulogic) is
-  variable write_msk : std_ulogic;
+  procedure simd_gen(inst : word; simden, sdctr : out std_ulogic) is
+  variable write_ctrl : std_ulogic;
   variable enable_simd : std_ulogic;
   variable op : std_logic_vector(1 downto 0);
   variable op3 : std_logic_vector(5 downto 0);
@@ -2230,7 +2230,7 @@ end;
     op  := inst(31 downto 30);
     op3 := inst(24 downto 19);
 
-    write_msk := '0'; enable_simd := '0';
+    write_ctrl := '0'; enable_simd := '0';
 
     case op is 
     when FMT3 =>
@@ -2239,12 +2239,12 @@ end;
             enable_simd := '1';
         when WRMSK =>
             enable_simd := '1';
-            write_msk := '1';
+            write_ctrl := '1';
         when others =>
         end case;
     when others => 
     end case;
-    wmask := write_msk; simden := enable_simd;
+    sdctr := write_ctrl; simden := enable_simd;
   end;
 
 -- register write address generation
@@ -2324,7 +2324,6 @@ end;
   variable immediate_data : std_logic_vector(7 downto 0);
   variable rhzeros : integer range 0 to 8;
   begin
-      -
       immediate_data := (others => '0'); inst := insn;
       rhzeros := to_integer(unsigned(inst(3 downto 1))); --number of right hand 0s, for pow2
 
@@ -4629,8 +4628,9 @@ begin
     sdi.op <= r.a.ctrl.inst(12 downto 5);
     sdi.rc_we <= r.a.ctrl.simd and r.a.ctrl.wreg;
     sdi.rc_addr <= r.a.ctrl.inst(29 downto 25);
-    sdi.mask_we <= r.a.ctrl.wmask;
+    sdi.ctrl_reg_we <= r.a.ctrl.sdctr;
     sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
+    sdi.res_byte_en <= r.a.ctrl.inst(7 downto 4);
     sdi.swiz_veca <= r.a.ctrl.inst(29 downto 25) & r.a.ctrl.inst(18 downto 16);
     sdi.swiz_vecb <= r.a.ctrl.inst(15 downto 8);
 
@@ -4708,7 +4708,7 @@ begin
     rd_gen(r, de_inst, v.a.ctrl.wreg, v.a.ctrl.ld, de_rd, de_rexen);
     
     --marcmod: call to simd_gen
-    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.wmask);
+    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.sdctr);
 
     if r.d.annul='1' then de_rexen:='0'; end if;
     regaddr(de_cwp, de_rd, r.d.stwin, r.d.cwpmax, v.a.ctrl.rd);

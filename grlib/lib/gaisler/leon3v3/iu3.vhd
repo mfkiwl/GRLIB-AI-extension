@@ -44,6 +44,8 @@ use gaisler.arith.all;
 -- pragma translate_off
 use grlib.sparc_disas.all;
 -- pragma translate_on
+library marcmod;
+use marcmod.simdmod.all;
 
 
 entity iu3 is
@@ -1374,6 +1376,7 @@ architecture rtl of iu3 is
     store   => '0');
 
   signal r, rin : registers;
+  signal counter : std_logic_vector(63 downto 0);
   signal wpr, wprin : watchpoint_registers;
   signal dsur, dsuin : dsu_registers;
   signal ir, irin : irestart_register;
@@ -2339,11 +2342,32 @@ end;
                   immediate_data := not(immediate_data) + "00000001";
               end if;
               immediate_data(0) := inst(0);
-          -- same as for signed multiplication division 
-              -- adds inst(4)inst(0) (allowing 3, 5, 6, 7, 9, 10, 11...)
+          -- same as for signed multiplication/division but no negatives, instead inst(4) is used with inst(0)
+          -- adds inst(4)inst(0) (allowing 3, 5, 6, 7, 9, 10, 11...)
           when S1_UMUL | S1_USMUL | S1_UDIV => 
               immediate_data(rhzeros + 1) := '1';
               immediate_data(1 downto 0) := inst(4) & inst(0);
+          -- same as for multiplication but starts at 0
+          -- inst(0) is subtracted (added for negative)
+          when S1_MAX | S1_MIN =>
+              if inst(4 downto 0) /= "00000" then 
+                immediate_data(rhzeros + 1) := '1';
+                if inst(4) = '1' then
+                    immediate_data := not(immediate_data) + "00000001";
+                    if inst(0) = '1' then 
+                        immediate_data := immediate_data + "11111111";
+                    end if;
+                else 
+                    immediate_data(0) := inst(0);
+                end if;
+            end if;
+          -- same as for max/min but with all positive
+          -- inst(0) is subtracted
+          when S1_UMAX | S1_UMIN =>
+              if inst(4 downto 0) /= "00000" then 
+                  immediate_data(rhzeros + 1) := '1';
+                  immediate_data(0) := inst(0);
+              end if;
           when others =>
               immediate_data := "000" & inst(4 downto 0);
       end case;
@@ -4185,7 +4209,7 @@ begin
       xc_result := mulo.result(31 downto 0);
     --marcmod: get result from the SIMD module
     elsif (r.x.ctrl.simd and (not r.x.ctrl.annul)) = '1'  then
-        xc_result := sdo.rc_data;
+        xc_result := sdo.simd_res;
     else xc_result := r.x.result; end if;
     xc_df_result := xc_result;
 
@@ -4521,13 +4545,6 @@ begin
       end if;
     end if;
 
-    --marcmod: bypass data from memory
-    sdi.ldbpa <= r.e.ldbp1;
-    sdi.ldra  <= ex_op1;
-    sdi.ldbpb <= r.e.ldbp2;
-    sdi.ldrb  <= ex_op2;
-
-
     ex_add_res := (ex_op1 & '1') + (ex_op2 & r.e.alucin);
 
     if ex_add_res(2 downto 1) = "00" then v.m.nalign := '0';
@@ -4622,13 +4639,12 @@ begin
            v.e.ymsb, v.e.mul, ra_div, v.e.mulstep, v.e.mac, v.e.ldbp2, v.e.invop2
     );
     --marcmod: configure SIMD module input
-    sdi.inst <= r.a.ctrl.inst;
     sdi.ra <= ra_op1;
     sdi.rb <= ra_op2;
-    sdi.op <= r.a.ctrl.inst(12 downto 5);
-    sdi.rc_we <= r.a.ctrl.simd and r.a.ctrl.wreg;
-    sdi.rc_addr <= r.a.ctrl.inst(29 downto 25);
-    sdi.ctrl_reg_we <= r.a.ctrl.sdctr;
+    sdi.op2 <= r.a.ctrl.inst(12 downto 10);
+    sdi.op1 <= r.a.ctrl.inst(9 downto 5);
+    sdi.rc_we <= r.a.ctrl.simd and (not r.a.ctrl.sdctr) and (not r.a.ctrl.annul);
+    sdi.ctrl_reg_we <= r.a.ctrl.sdctr and (not r.a.ctrl.annul);
     sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
     sdi.res_byte_en <= r.a.ctrl.inst(7 downto 4);
     sdi.swiz_veca <= r.a.ctrl.inst(29 downto 25) & r.a.ctrl.inst(18 downto 16);
@@ -5025,6 +5041,8 @@ begin
   reg : process (clk)
   begin
     if rising_edge(clk) then
+        --marcmod debug
+      counter <= counter + 1;
       if (holdn = '1') then
         r <= rin;
       else
@@ -5045,6 +5063,7 @@ begin
         end if;
       end if;
       if rstn = '0' then
+          counter <= (others => '0');
         if RESET_ALL then
           r <= RRES;
           if DYNRST then

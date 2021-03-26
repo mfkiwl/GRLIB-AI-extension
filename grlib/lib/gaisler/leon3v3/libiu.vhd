@@ -34,6 +34,9 @@ use gaisler.libfpu.all;
 use gaisler.arith.all;
 use gaisler.mmuconfig.all;
 
+library marcmod;
+use marcmod.simdmod.all;
+
 package libiu is
 
   constant RDBITS : integer := 32;
@@ -44,31 +47,6 @@ package libiu is
 
   subtype cbwmaskword is std_logic_vector(3 downto 0);
   type cbwmasktype is array (0 to 3) of cbwmaskword;
-
-  type simd_in_type is record
-     inst        : std_logic_vector (31 downto 0); -- inst
-     ra          : std_logic_vector (31 downto 0); -- operand 1 data
-     rb          : std_logic_vector (31 downto 0); -- operand 2 data
-     op          : std_logic_vector (7 downto 0);  -- operation code
-     ldbpa       : std_logic;                      -- load produced data for operand a
-     ldra        : std_logic_vector (31 downto 0); -- data from load operand a
-     ldbpb       : std_logic;                      -- load produced data for operand b
-     ldrb        : std_logic_vector (31 downto 0); -- data from load operand b
-     rc_we       : std_logic;                      -- we on destination (work)
-     rc_addr     : std_logic_vector (4 downto 0);  -- addr of destination
-     ctrl_reg_we : std_logic;                      -- we on the mask register
-     mask_value  : std_logic_vector (3 downto 0);  -- new value for the mask
-     res_byte_en : std_logic_vector (3 downto 0);  -- a set bit indicates s2 operation written in byte
-     swiz_veca   : std_logic_vector (7 downto 0);  -- swizling for operand a
-     swiz_vecb   : std_logic_vector (7 downto 0);  -- swizling for operand b
-  end record;
-
-  type simd_out_type is record
-     rc_data     : std_logic_vector(31 downto 0); -- output data
-     s1bp        : std_logic_vector(31 downto 0); -- s1 bypass output data
-     s2bp        : std_logic_vector(31 downto 0); -- s2 bp output data
-  end record;
-
 
   type iregfile_in_type is record
      raddr1        : std_logic_vector(9 downto 0); -- read address 1

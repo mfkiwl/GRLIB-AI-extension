@@ -3,11 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define min(a,b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a < _b ? _a : _b; })
-
 #ifndef N
 #define N 4
 #endif
@@ -20,23 +15,22 @@ int computeCell(int a, int b){
             : "r"(a), "0"(b));
 
     //printf("a: %d\nb: %d\nr: %d\n",a,b,r);
-    return min(r, 255);
+    return r;
 }
-
 int computeSum(int a, int b) {
     int r;
     //sum sum a b
     asm("add %1, %0, %0" 
             : "=r"(r) 
             : "r"(a), "0"(b));
-    return min(r, 255);
+    return r;
 }
 
 int main()
 {
     char string[3*(3+(6*N*N+N))];
     int pos = 0;
-	unsigned char A[N][N], B[N][N], C[N][N];
+	unsigned int A[N][N], B[N][N], C[N][N];
 	srand(N);
 
 

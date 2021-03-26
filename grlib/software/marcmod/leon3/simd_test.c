@@ -50,7 +50,7 @@ int main()
     __asm__("ld [%fp + -8], %g1");
     __asm__("sll %g2, %g1, %g1");
     __asm__("st %g1, [ %fp + -12 ]");
-    printf("ssub: c=%#010x, expected result 0x807f7ff1\n", c);
+    printf("ssub: c=%#010x, expected result 0x807f0ff1\n", c);
 
     //test Max MAX signed
     a=0x0204080a;
@@ -58,9 +58,8 @@ int main()
     __asm__("ld [%fp + -4], %g2");
     __asm__("ld [%fp + -8], %g1");
     __asm__("sll %g2, %g1, %g1");
-    __asm__("add %g1, 1, %g1");
     __asm__("st %g1, [ %fp + -12 ]");
-    printf("signed max max: c=%#010x, expected result 0x00000041\n", c);
+    printf("signed max max: c=%#010x, expected result 0x00000040\n", c);
 
     //test Max MAX unsigned
     __asm__("ld [%fp + -4], %g2");
@@ -89,9 +88,8 @@ int main()
     __asm__("ld [%fp + -4], %g2");
     __asm__("ld [%fp + -8], %g1");
     __asm__("sll %g2, %g1, %g1");
-    __asm__("add %g1, 1, %g1");
     __asm__("st %g1, [ %fp + -12 ]");
-    printf("dot product: c=%#010x, expected result 0x00000015\n", c);
+    printf("dot product: c=%#010x, expected result 0x00000014\n", c);
    
     //test dot product2
     a=0xfffe03fc;

@@ -1,0 +1,163 @@
+*asm:
+%{v:-V} %{Qy:} %{!Qn:-Qy} %{n} %{T} %{Ym,*} %{Wa,*:%*} -s %{fpic|fpie|fPIC|fPIE:-K PIC} %(asm_cpu) 
+
+*asm_debug:
+%{gstabs*:--gstabs}%{!gstabs*:%{g*:--gdwarf2}}
+
+*asm_final:
+
+
+*asm_options:
+%a %Y %{c:%W{o*}%{!o*:-o %w%b%O}}%{!c:-o %d%w%u%O}
+
+*invoke_as:
+%{!S:-o %|.s |
+ as %(asm_options) %|.s %A }
+
+*cpp:
+%(cpp_cpu) %(cpp_arch) %(cpp_endian) %(cpp_subtarget)
+
+*cpp_options:
+%(cpp_unique_options) %1 %{m*} %{std*&ansi&trigraphs} %{W*&pedantic*} %{w} %{f*} %{g*:%{!g0:%{!fno-working-directory:-fworking-directory}}} %{O*} %{undef}
+
+*cpp_debug_options:
+%{d*}
+
+*cpp_unique_options:
+%{C|CC:%{!E:%eGCC does not support -C or -CC without -E}} %{!Q:-quiet} %{nostdinc*} %{C} %{CC} %{v} %{I*} %{P} %I %{MD:-MD %{!o:%b.d}%{o*:%.d%*}} %{MMD:-MMD %{!o:%b.d}%{o*:%.d%*}} %{M} %{MM} %{MF*} %{MG} %{MP} %{MQ*} %{MT*} %{!E:%{!M:%{!MM:%{MD|MMD:%{o*:-MQ %*}}}}} %{remap} %{g3:-dD} %{H} %C %{D*&U*&A*} %{i*} %Z %i %{E|M|MM:%W{o*}}
+
+*trad_capable_cpp:
+cc1 -E %{traditional|ftraditional|traditional-cpp:-traditional-cpp}
+
+*cc1:
+%{sun4:} %{target:} %{mcypress:-mcpu=cypress} %{msparclite:-mcpu=sparclite} %{mf930:-mcpu=f930} %{mf934:-mcpu=f934}  %{msupersparc:-mcpu=supersparc} 
+
+*cc1_options:
+%{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %1 %{!Q:-quiet} -dumpbase %B %{d*} %{m*} %{a*} %{c|S:%{o*:-auxbase-strip %*}%{!o*:-auxbase %b}}%{!c:%{!S:-auxbase %b}} %{g*} %{O*} %{W*&pedantic*} %{w} %{std*&ansi&trigraphs} %{v:-version} %{pg:-p} %{p} %{f*} %{undef} %{Qn:-fno-ident} %{--help:--help} %{--target-help:--target-help} %{!fsyntax-only:%{S:%W{o*}%{!o*:-o %b.s}}} %{fsyntax-only:-o %j} %{-param*}
+
+*cc1plus:
+
+
+*link_gcc_c_sequence:
+%G %L %G %L
+
+*endfile:
+%{ffast-math|funsafe-math-optimizations:crtfastmath.o%s}    %{!qnocrtbegin: crtend.o%s }  %{!qnocrtn: crtn.o%s } 
+
+*link:
+
+
+*lib:
+%{!nostdlib: --start-group -lc -lgcc  -lleonbare --end-group} 
+
+*libgcc:
+-lgcc
+
+*startfile:
+%{!qsvt: locore_mvt.o%s} %{qsvt: locore_svt.o%s} %{!qprom: crt0.o%s} %{qprom: %{qprom2: %{qprom2ecos: crt_cpdataecos.o%s} %{!qprom2ecos: crt_cpdata.o%s}  } %{!qprom2: crt0_noatexit.o%s } }   crti.o%s %{!qprom: %{!qnocrtbegin: crtbegin.o%s } }  %{qprom: %{qprom2: %{!qprom2ecos: %{!qnocrtbegin: crtbegin.o%s } } } prominit.o%s %{qsvt: prominit_svt.o%s} } %{qprommp: prominit_mp.o%s} %{!qnoambapp: pnpinit.o%s} %{qnoambapp: pnpinit_simple.o%s} %{qfix-tn0018: tn0018yes.o%s}
+
+*switches_need_spaces:
+
+
+*cross_compile:
+1
+
+*version:
+3.4.4
+
+*multilib:
+. !msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8 !msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;flat !msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;ut699 !msoft-float !mv8 !mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;mfix-gr712rc !msoft-float !mv8 !mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;mfix-ut700 !msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;mfix-b2bst !msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;mfix-tn0013 !msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst mfix-tn0013;mfix-b2bst/mfix-tn0013 !msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst mfix-tn0013;flat/mfix-gr712rc !msoft-float !mv8 mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;flat/mfix-ut700 !msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;flat/mfix-b2bst !msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;flat/mfix-tn0013 !msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst mfix-tn0013;flat/mfix-b2bst/mfix-tn0013 !msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst mfix-tn0013;v8/flat !msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/ut699 !msoft-float mv8 !mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/mfix-gr712rc !msoft-float mv8 !mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/mfix-ut700 !msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/mfix-b2bst !msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;v8/mfix-tn0013 !msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst mfix-tn0013;v8/mfix-b2bst/mfix-tn0013 !msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst mfix-tn0013;v8/flat/ut699 !msoft-float mv8 mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/flat/mfix-gr712rc !msoft-float mv8 mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/flat/mfix-ut700 !msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;v8/flat/mfix-b2bst !msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;v8/flat/mfix-tn0013 !msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst mfix-tn0013;v8/flat/mfix-b2bst/mfix-tn0013 !msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst mfix-tn0013;soft/v8 msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/flat msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/mfix-gr712rc msoft-float !mv8 !mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/mfix-ut700 msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/mfix-b2bst msoft-float !mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;soft/flat/ut699 msoft-float !mv8 mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/flat/mfix-gr712rc msoft-float !mv8 mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/flat/mfix-ut700 msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/flat/mfix-b2bst msoft-float !mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;soft/v8/flat msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/ut699 msoft-float mv8 !mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/mfix-gr712rc msoft-float mv8 !mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/mfix-ut700 msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/mfix-b2bst msoft-float mv8 !mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;soft/v8/flat/ut699 msoft-float mv8 mflat mtune=ut699 !mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/flat/mfix-gr712rc msoft-float mv8 mflat !mtune=ut699 mfix-gr712rc !mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/flat/mfix-ut700 msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc mfix-ut700 !mfix-b2bst !mfix-tn0013;soft/v8/flat/mfix-b2bst msoft-float mv8 mflat !mtune=ut699 !mfix-gr712rc !mfix-ut700 mfix-b2bst !mfix-tn0013;
+
+*multilib_defaults:
+
+
+*multilib_extra:
+
+
+*multilib_matches:
+mno-fpu msoft-float;mcpu=v8 mv8;msoft-float msoft-float;mv8 mv8;mflat mflat;mtune=ut699 mtune=ut699;mfix-gr712rc mfix-gr712rc;mfix-ut700 mfix-ut700;mfix-b2bst mfix-b2bst;mfix-tn0013 mfix-tn0013;
+
+*multilib_exclusions:
+msoft-float mtune=ut699;mflat mtune=ut699;mtune=ut699 mfix-b2bst;
+
+*multilib_options:
+msoft-float mv8 mflat mtune=ut699/mfix-gr712rc/mfix-ut700 mfix-b2bst mfix-tn0013
+
+*linker:
+collect2
+
+*link_libgcc:
+%D
+
+*md_exec_prefix:
+
+
+*md_startfile_prefix:
+
+
+*md_startfile_prefix_1:
+
+
+*startfile_prefix_spec:
+
+
+*sysroot_suffix_spec:
+
+
+*sysroot_hdrs_suffix_spec:
+
+
+*cpp_cpu:
+%{msoft-float:-D_SOFT_FLOAT} %{mflat: -D_FLAT} %{mcypress:} %{msparclite:-D__sparclite__} %{mf930:-D__sparclite__} %{mf934:-D__sparclite__} %{mv8:-D__sparc_v8__} %{msupersparc:-D__supersparc__ -D__sparc_v8__} %{mcpu=sparclet:-D__sparclet__} %{mcpu=tsc701:-D__sparclet__} %{mcpu=sparclite:-D__sparclite__} %{mcpu=f930:-D__sparclite__} %{mcpu=f934:-D__sparclite__} %{mcpu=v8:-D__sparc_v8__} %{mcpu=supersparc:-D__supersparc__ -D__sparc_v8__} %{mcpu=hypersparc:-D__hypersparc__ -D__sparc_v8__} %{mcpu=sparclite86x:-D__sparclite86x__} %{mcpu=v9:-D__sparc_v9__} %{mcpu=ultrasparc:-D__sparc_v9__} %{mcpu=ultrasparc3:-D__sparc_v9__} %{!mcpu*:%{!mcypress:%{!msparclite:%{!mf930:%{!mf934:%{!msupersparc:%(cpp_cpu_default)}}}}}} 
+
+*cpp_cpu_default:
+-D__leonbare__
+
+*cpp_arch32:
+
+
+*cpp_arch64:
+-D__arch64__
+
+*cpp_arch_default:
+
+
+*cpp_arch:
+%{m32:%(cpp_arch32)} %{m64:%(cpp_arch64)} %{!m32:%{!m64:%(cpp_arch_default)}} 
+
+*cpp_endian:
+%{mlittle-endian:-D__LITTLE_ENDIAN__} %{mlittle-endian-data:-D__LITTLE_ENDIAN_DATA__}
+
+*cpp_subtarget:
+%{pthreads:-D_REENTRANT -D_PTHREADS} %{!pthreads:%{threads:-D_REENTRANT -D_SOLARIS_THREADS}} %{compat-bsd:-iwithprefixbefore ucbinclude -I/usr/ucbinclude} 
+
+*asm_cpu:
+%{mcpu=v9:-xarch=v8plus} %{mcpu=ultrasparc:-xarch=v8plusa} %{mcpu=ultrasparc3:-xarch=v8plusb} %{!mcpu*:%(asm_cpu_default)} 
+
+*asm_cpu_default:
+
+
+*asm_arch32:
+-32
+
+*asm_arch64:
+-64 -no-undeclared-regs
+
+*asm_relax:
+%{!mno-relax:-relax}
+
+*asm_arch_default:
+-32
+
+*asm_arch:
+%{m32:%(asm_arch32)} %{m64:%(asm_arch64)} %{!m32:%{!m64:%(asm_arch_default)}} 
+
+*startfile_arch:
+%{ansi:values-Xc.o%s} 			    %{!ansi:values-Xa.o%s}
+
+*link_arch:
+%{G:-G}    %{YP,*}    %{R*}    %{compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/ucblib:/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib}              %{!p:%{!pg:-Y P,/usr/ucblib:/usr/ccs/lib:/usr/lib}}}              -R /usr/ucblib}    %{!compat-bsd:      %{!YP,*:%{p|pg:-Y P,/usr/ccs/lib/libp:/usr/lib/libp:/usr/ccs/lib:/usr/lib}              %{!p:%{!pg:-Y P,/usr/ccs/lib:/usr/lib}}}}
+
+*link_command:
+%{!fsyntax-only:%{!c:%{!M:%{!MM:%{!E:%{!S:    %(linker) %l %{pie:-pie} %X %{o*} %{A} %{d} %{e*} %{m} %{N} %{n} %{r}    %{s} %{t} %{u*} %{x} %{z} %{Z} %{!A:%{!nostdlib:%{!nostartfiles:%S}}}    %{static:} %{L*} %(link_libgcc) %o %{fprofile-arcs|fprofile-generate:-lgcov}    %{!nostdlib:%{!nodefaultlibs:%(link_gcc_c_sequence)}}    %{!A:%{!nostdlib:%{!nostartfiles:%E}}} %{T*} }}}}}}
+

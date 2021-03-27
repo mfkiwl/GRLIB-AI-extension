@@ -1,0 +1,8 @@
+.;
+soft;@msoft-float
+leon3;@mcpu=leon3
+leon3/soft;@mcpu=leon3@msoft-float
+leon3/rex;@mcpu=leon3@mrex
+leon3/rex/soft;@mcpu=leon3@msoft-float@mrex
+rex;@mrex
+rex/soft;@mrex@msoft-float

@@ -1,0 +1,6 @@
+.;
+soft;@msoft-float
+gr712rc;@mcpu=gr712rc
+gr712rc/soft;@mcpu=gr712rc@msoft-float
+leon3;@mcpu=leon3
+leon3/soft;@mcpu=leon3@msoft-float

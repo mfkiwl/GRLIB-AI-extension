@@ -1,2 +1,0 @@
-#define LEON_PAGE_SIZE_DEFINED "_16k"
-

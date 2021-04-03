@@ -1,5 +1,5 @@
-VER=$(VNAME)2020.2
-BID=4254
+VER=$(VNAME)2020.4
+BID=4261
 CC=gcc
 SED=sed
 
@@ -510,7 +510,7 @@ ghdl-time: $(SIMTOP)
 	./$(SIMTOP) $(GHDLRUNOPT) 
 
 ghdl-clean:
-	-rm -rf gnu $(SIMTOP) make.ghdl *.ghw *.vcd
+	-rm -rf gnu $(SIMTOP) make.ghdl *.ghw *.vcd *.fst
 
 #########   NcSim targets   ############
 

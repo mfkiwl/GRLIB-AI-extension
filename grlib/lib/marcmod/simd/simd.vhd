@@ -249,7 +249,7 @@ architecture rtl of simd_module is
         sel := "00";     -- result as it is, no saturation
         if sat = '1' and ovf = '1' then 
             if sign = '1' then 
-                if asign = bsign then -- positive result
+                if asign = '0' then
                     sel := "01";  -- result is 7f signed max
                 else 
                     sel := "10";  -- result is 80 signed min
@@ -280,9 +280,11 @@ architecture rtl of simd_module is
         variable z : std_logic_vector(VLEN downto 0);
         variable mux : std_logic_vector(1 downto 0);
         variable res : vector_component;
+        variable ovf : std_logic;
     begin
         z := ((sign and a(a'left))&a) + ((sign and b(b'left))&b);
-        mux := sat_mux(a(a'left), b(b'left), sign, sat, z(z'left));
+        ovf := z(z'left) or (z(a'left) and sign);
+        mux := sat_mux(a(a'left), b(b'left), sign, sat, ovf);
         sat_sel(mux, z(vector_component'range), res);
         return res;
     end add;
@@ -308,7 +310,11 @@ architecture rtl of simd_module is
         mux := sat_mux(tmp(0)(tmp(0)'left), tmp(1)(tmp(1)'left), sign, sat, ovf);
         sat_sel(mux, acc, res);
         if(sign = '1') then
-            z := std_logic_vector(resize(signed(res), word'length));
+            if (sat = '1') then
+                z := std_logic_vector(resize(signed(res), word'length));
+            else 
+                z := std_logic_vector(resize(signed(res(vector_component'range)), word'length));
+            end if;
         else 
             z := std_logic_vector(resize(unsigned(res), word'length));
         end if;
@@ -330,7 +336,7 @@ architecture rtl of simd_module is
             end if;
         elsif sign = '0' and sat = '1' then
             if z(z'left) = '1' then 
-                z(vector_component'range) := (others => '1');
+                z(vector_component'range) := (others => '0');
             end if;
         end if;
         return z(vector_component'range);

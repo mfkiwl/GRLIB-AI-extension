@@ -172,10 +172,12 @@ architecture rtl of iu3 is
   constant S1_SSUB : std_logic_vector (4 downto 0) :="01110";
   constant S1_SMUL : std_logic_vector (4 downto 0) :="01111";
   constant S1_MOVB : std_logic_vector (4 downto 0) :="10000";
+  constant S1_SHFT : std_logic_vector (4 downto 0) :="10001";
   constant S1_UMUL : std_logic_vector (4 downto 0) :="10011";
   constant S1_UDIV : std_logic_vector (4 downto 0) :="10100";
   constant S1_UMAX : std_logic_vector (4 downto 0) :="10101";
   constant S1_UMIN : std_logic_vector (4 downto 0) :="10110";
+  constant S1_SSHFT : std_logic_vector (4 downto 0):="11001";
   constant S1_USADD : std_logic_vector (4 downto 0):="11101";
   constant S1_USSUB : std_logic_vector (4 downto 0):="11110";
   constant S1_USMUL : std_logic_vector (4 downto 0):="11111"; 
@@ -2344,7 +2346,7 @@ end;
               immediate_data(0) := inst(0);
           -- same as for signed multiplication/division but no negatives, instead inst(4) is used with inst(0)
           -- adds inst(4)inst(0) (allowing 3, 5, 6, 7, 9, 10, 11...)
-          when S1_UMUL | S1_USMUL | S1_UDIV => 
+          when S1_UMUL | S1_USMUL  => 
               immediate_data(rhzeros + 1) := '1';
               immediate_data(1 downto 0) := inst(4) & inst(0);
           -- same as for multiplication but starts at 0
@@ -2368,6 +2370,8 @@ end;
                   immediate_data(rhzeros + 1) := '1';
                   immediate_data(0) := inst(0);
               end if;
+          when S1_SHFT | S1_SSHFT => 
+              immediate_data := (7 downto 5 => inst(4)) & inst(4 downto 0);
           when others =>
               immediate_data := "000" & inst(4 downto 0);
       end case;

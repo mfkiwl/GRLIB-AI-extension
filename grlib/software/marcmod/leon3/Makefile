@@ -11,6 +11,7 @@ XCFLAGS0=-O0 -g -msoft-float -mcpu=v8
 
 bin_change:
 	g++ -o bin_change bin_change.cc
+	g++ -o bin_change2 bin_change2.cc
 make.x:
 	g++ -o make.x make_simd_op.cc
 systest: 
@@ -62,18 +63,18 @@ mat_mul: mat_mul.c
 	cp mat_mul.srec $(CURRENT_DIR)/test.srec
 	sparc-gaisler-elf-objdump -d mat_mul.o > mat_mul.dump
 
-grayscale: grayscale.c arrays.h image256.h
+grayscale: grayscale.c arrays.h image256.h image32.h
 	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
 	$(XCC) $(XCFLAGS) grayscale.o -o grayscale.exe 
 	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 grayscale.exe grayscale.srec
 	cp grayscale.srec $(CURRENT_DIR)/test.srec
 	sparc-gaisler-elf-objdump -d grayscale.o > grayscale.dump
 
-grayscale_simd: grayscale_simd.c arrays.h image256.h
+grayscale_simd: grayscale_simd.c arrays.h image256.h image32.h
 	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
 	$(XCC) $(XCFLAGS) grayscale_simd.o -o grayscale_simd.exe 
 	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 grayscale_simd.exe tmp.grayscale_simd.srec
-	./bin_change tmp.grayscale_simd.srec grayscale_simd.list grayscale_simd.srec 83320001
+	./bin_change2 tmp.grayscale_simd.srec grayscale_simd.list grayscale_simd.srec 83386002
 	cp grayscale_simd.srec $(CURRENT_DIR)/test.srec
 	sparc-gaisler-elf-objdump -d grayscale_simd.o > grayscale_simd.dump
 
@@ -110,4 +111,4 @@ mat_mul_simd32: mat_mul_simd32.o bin_change
 	sparc-gaisler-elf-objdump -d mat_mul_simd32.o > mat_mul_simd32.dump
 
 clean:
-	rm -f *.exe *.o *.dump bin_change make.x tmp*.*
+	rm -f *.exe *.o *.dump bin_change2 bin_change make.x tmp*.*

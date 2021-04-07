@@ -3,7 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define N 4
+#ifndef N
+#define N 8
+#endif
 int computeCell(int a, int b){
 
     int r;
@@ -15,6 +17,15 @@ int computeCell(int a, int b){
     return r;
 }
 
+int computeSum(int a, int b) {
+    int r;
+    //sum sum a b
+    asm("add %1, %0, %0" 
+            : "=r"(r) 
+            : "r"(a), "0"(b));
+    return r;
+}
+
 int main()
 {
     char string[3*(3+(6*N*N+N))];
@@ -22,7 +33,6 @@ int main()
 	unsigned char A[N][N], B[N][N], C[N][N];
 	srand(N);
 
-	puts("TEST BEGIN");
 
 	for(int i=0; i<N; i++)
 	    for(int j=0; j<N; j++) {
@@ -31,12 +41,25 @@ int main()
         }
 
     int sum = 0;
+    int aux; 
+
+	puts("TEST BEGIN");
+    asm("nop");
+    asm("srl %i0, %o1, %g2");
+    asm("nop");
     for(int i=0; i<N; i++)
         for(int j=0; j<N; j++){
-            sum += computeCell(*((int *) &A[i][0]),*((int *) &B[j][0]));
+            for(int k=0; k<N/4; k++){
+                aux = computeCell(*((int *) &A[i][k*4]),*((int *) &B[j][k*4]));
+                sum = computeSum(aux, sum);
+            }
             C[i][j] = sum;
             sum = 0;
         }
+    asm("nop");
+    asm("srl %i0, %o1, %g2");
+    asm("nop");
+	puts("TEST END");
 
 	pos += sprintf(&string[pos],"A:\n");
 	for(int i=0; i<N; i++){
@@ -60,5 +83,5 @@ int main()
     }
     
     puts(string);
-    puts("END OF TEST");
+    puts("END OF SIMULATION");
 }

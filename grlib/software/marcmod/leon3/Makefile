@@ -11,6 +11,7 @@ XCFLAGS0=-O0 -g -msoft-float -mcpu=v8
 
 bin_change:
 	g++ -o bin_change bin_change.cc
+	g++ -o bin_change2 bin_change2.cc
 make.x:
 	g++ -o make.x make_simd_op.cc
 systest: 
@@ -55,18 +56,59 @@ simd_mask: simd_mask_test.c bin_change
 	sparc-gaisler-elf-objdump -d simd_mask_test.o > simd_mask_test.dump
 	
 
-mat_mul: mat_mul.o
-	$(XCC) $(XCFLAGS) mat_mul.o -o mat_mul.exe
+mat_mul: mat_mul.c
+	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
+	$(XCC) $(XCFLAGS) mat_mul.o -o mat_mul.exe 
 	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul.exe mat_mul.srec
 	cp mat_mul.srec $(CURRENT_DIR)/test.srec
 	sparc-gaisler-elf-objdump -d mat_mul.o > mat_mul.dump
 
-mat_mul_simd: mat_mul_simd.o bin_change
+grayscale: grayscale.c arrays.h image256.h image32.h
+	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
+	$(XCC) $(XCFLAGS) grayscale.o -o grayscale.exe 
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 grayscale.exe grayscale.srec
+	cp grayscale.srec $(CURRENT_DIR)/test.srec
+	sparc-gaisler-elf-objdump -d grayscale.o > grayscale.dump
+
+grayscale_simd: grayscale_simd.c arrays.h image256.h image32.h
+	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
+	$(XCC) $(XCFLAGS) grayscale_simd.o -o grayscale_simd.exe 
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 grayscale_simd.exe tmp.grayscale_simd.srec
+	./bin_change2 tmp.grayscale_simd.srec grayscale_simd.list grayscale_simd.srec 83386002
+	cp grayscale_simd.srec $(CURRENT_DIR)/test.srec
+	sparc-gaisler-elf-objdump -d grayscale_simd.o > grayscale_simd.dump
+
+mat_mul_int: mat_mul_int.c
+	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
+	$(XCC) $(XCFLAGS) mat_mul_int.o -o mat_mul_int.exe 
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_int.exe mat_mul_int.srec
+	cp mat_mul_int.srec $(CURRENT_DIR)/test.srec
+	sparc-gaisler-elf-objdump -d mat_mul_int.o > mat_mul_int.dump
+
+mat_mul_simd: mat_mul_simd.c bin_change
+	$(XCC) $(XCFLAGS) -D N=$(par1) -c mat_mul_simd.c
 	$(XCC) $(XCFLAGS) mat_mul_simd.o -o mat_mul_simd.exe
 	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_simd.exe tmp.mat_mul_simd.srec
-	./bin_change tmp.mat_mul_simd.srec mat_mul_simd.list mat_mul_simd.srec 925A0009
+	./bin_change tmp.mat_mul_simd.srec mat_mul_simd.list tmp2.mat_mul_simd.srec 925A0009
+	./bin_change tmp2.mat_mul_simd.srec mat_mul_simd32.list3 mat_mul_simd.srec 92020009
 	cp mat_mul_simd.srec $(CURRENT_DIR)/test.srec
 	sparc-gaisler-elf-objdump -d mat_mul_simd.o > mat_mul_simd.dump
+	
+mat_mul_simd4: mat_mul_simd4.o bin_change
+	$(XCC) $(XCFLAGS) mat_mul_simd4.o -o mat_mul_simd4.exe
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_simd4.exe tmp.mat_mul_simd4.srec
+	./bin_change tmp.mat_mul_simd4.srec mat_mul_simd4.list mat_mul_simd4.srec 925A0009
+	cp mat_mul_simd4.srec $(CURRENT_DIR)/test.srec
+	sparc-gaisler-elf-objdump -d mat_mul_simd4.o > mat_mul_simd4.dump
+
+mat_mul_simd32: mat_mul_simd32.o bin_change
+	$(XCC) $(XCFLAGS) mat_mul_simd32.o -o mat_mul_simd32.exe
+	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 mat_mul_simd32.exe tmp.mat_mul_simd32.srec
+	./bin_change tmp.mat_mul_simd32.srec mat_mul_simd32.list tmp2.mat_mul_simd32.srec 925A0009
+	./bin_change tmp2.mat_mul_simd32.srec mat_mul_simd32.list2 tmp3.mat_mul_simd32.srec 84784001
+	./bin_change tmp3.mat_mul_simd32.srec mat_mul_simd32.list3 mat_mul_simd32.srec 92020009
+	cp mat_mul_simd32.srec $(CURRENT_DIR)/test.srec
+	sparc-gaisler-elf-objdump -d mat_mul_simd32.o > mat_mul_simd32.dump
 
 clean:
-	rm -f *.exe *.o *.dump bin_change make.x tmp.*
+	rm -f *.exe *.o *.dump bin_change2 bin_change make.x tmp*.*

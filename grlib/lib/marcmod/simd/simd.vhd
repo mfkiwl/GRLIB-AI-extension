@@ -4,146 +4,75 @@ use ieee.numeric_std.all;
 
 library grlib;
 use grlib.stdlib.all;
+
 library marcmod;
 use marcmod.simdmod.all;
 
-entity simd is 
-    generic(
-            XLEN : integer := 32;
-            VLEN : integer range 0 to 32 := 8;
-            RSIZE: integer := 5;
-            LOGSZ: integer := 2 --integer(ceil(log2(real(XLEN/VLEN))))
-           );
+entity simd_module is 
     port(
-            -- general inputs
             clk   : in  std_ulogic;
             rstn  : in  std_ulogic;
             holdn : in  std_ulogic;
-            
-            -- signals for debug 
-            inst  : in  std_logic_vector(31 downto 0);
-            rc_we_i   : in std_logic;
-            rc_addr_i : in std_logic_vector (RSIZE-1 downto 0);
-
-            -- vector operations inputs
-            ra_i  : in  std_logic_vector (XLEN-1 downto 0);
-            rb_i  : in  std_logic_vector (XLEN-1 downto 0);
-            op_i  : in  std_logic_vector (7 downto 0);
-
-            -- memory bypass input
-            ldbpa_i : in std_logic;
-            ldra_i  : in  std_logic_vector (XLEN-1 downto 0);
-            ldbpb_i : in std_logic;
-            ldrb_i  : in  std_logic_vector (XLEN-1 downto 0);
-
-            -- mask modification inputs
-            ctrl_reg_we_i : in std_logic;
-            mask_value_i  : in std_logic_vector((XLEN/VLEN)-1 downto 0);
-            res_byte_en_i : in std_logic_vector((XLEN/VLEN)-1 downto 0);
-            swiz_veca_i   : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
-            swiz_vecb_i   : in std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0);
-
-            -- outputs
-            rc_data_o : out std_logic_vector (XLEN-1 downto 0);
-            s1bp_o : out std_logic_vector (XLEN-1 downto 0); -- data from stage 1 to bypass if needed
-            s2bp_o : out std_logic_vector (XLEN-1 downto 0) -- data from stage 2 to bypass if needed
-            --exceptions out 
+            sdi   : in  simd_in_type;
+            sdo   : out simd_out_type
         );
 end;
 
-architecture rtl of simd is
-    ---------------------------------------------------------------
-    -- CONSTANTS FOR OPERATIONS --
-    --------------------------------------------------------------
-    --constants function operations stage1 (simd_code 4-0)
-    constant S1_NOP : std_logic_vector (4 downto 0) := "00000";
-    constant S1_ADD : std_logic_vector (4 downto 0) := "00001";
-    constant S1_SUB : std_logic_vector (4 downto 0) := "00010";
-    constant S1_MUL : std_logic_vector (4 downto 0) := "00011";
-    constant S1_DIV : std_logic_vector (4 downto 0) := "00100";
-    constant S1_MAX : std_logic_vector (4 downto 0) := "00101";
-    constant S1_MIN : std_logic_vector (4 downto 0) := "00110";
-    constant S1_AND : std_logic_vector (4 downto 0) := "00111";
-    constant S1_OR  : std_logic_vector (4 downto 0) := "01000";
-    constant S1_XOR : std_logic_vector (4 downto 0) := "01001";
-    constant S1_NAND: std_logic_vector (4 downto 0) := "01010";
-    constant S1_NOR : std_logic_vector (4 downto 0) := "01011";
-    constant S1_XNOR: std_logic_vector (4 downto 0) := "01100";
-    constant S1_SADD : std_logic_vector (4 downto 0) :="01101";
-    constant S1_SSUB : std_logic_vector (4 downto 0) :="01110";
-    constant S1_SMUL : std_logic_vector (4 downto 0) :="01111";
-    constant S1_MOVB : std_logic_vector (4 downto 0) :="10000";
-
-    constant S1_UMUL : std_logic_vector (4 downto 0) :="10011";
-    constant S1_UDIV : std_logic_vector (4 downto 0) :="10100";
-    constant S1_UMAX : std_logic_vector (4 downto 0) :="10101";
-    constant S1_UMIN : std_logic_vector (4 downto 0) :="10110";
-    constant S1_USADD : std_logic_vector (4 downto 0):="11101";
-    constant S1_USSUB : std_logic_vector (4 downto 0):="11110";
-    constant S1_USMUL : std_logic_vector (4 downto 0):="11111"; 
-
-    --constants function operations stage2 (simd_code 7-5)
-    constant S2_NOP : std_logic_vector (2 downto 0) := "000";
-    constant S2_SUM : std_logic_vector (2 downto 0) := "001";
-    constant S2_MAX : std_logic_vector (2 downto 0) := "010";
-    constant S2_MIN : std_logic_vector (2 downto 0) := "011";
-    constant S2_XOR : std_logic_vector (2 downto 0) := "100";
-
-    constant S2_USUM: std_logic_vector (2 downto 0) := "101";
-    constant S2_UMAX: std_logic_vector (2 downto 0) := "110";
-    constant S2_UMIN: std_logic_vector (2 downto 0) := "111";
-
-
+architecture rtl of simd_module is
     ---------------------------------------------------------------
     -- REGISTER TYPES DEFINITION --
     --------------------------------------------------------------
 
-    -- Result register type 
-    type result_reg_type is record
-        data : std_logic_vector (XLEN-1 downto 0);
-        sat: std_logic; -- is the result saturated
-		--error
-    end record;
+    --vector register type
+    subtype vector_component is std_logic_vector(VLEN-1 downto 0);
+    type vector_reg_type is array (0 to VSIZE-1) of vector_component;
 
-    --Operand register type
-    type operand_reg_type is record
-        data : std_logic_vector (XLEN-1 downto 0);
-    end record;
+    type lpmul_in_array is array (0 to VSIZE-1) of lpmul_in_type;
+    type lpmul_out_array is array (0 to VSIZE-1) of lpmul_out_type;
+
+    type l1_sum_array is array (0 to VSIZE/2) of std_logic_vector(VLEN downto 0);
+    type l2_sum_array is array (0 to VSIZE/4) of std_logic_vector(VLEN+1 downto 0);
+
+    subtype word is std_logic_vector(XLEN-1 downto 0);
 
     -- mask registers (predicate)
-    subtype pred_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
+    subtype mask_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
 
     -- stage 2 byte enable (result in byte x)
     subtype s2byteen_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
 
-    -- swizling registers (reordering)
+    -- swizzling registers (reordering)
     subtype log_length is integer range 0 to (XLEN/VLEN)-1;
-    type swizling_reg_type is array (0 to (XLEN/VLEN)-1) of log_length;
+    type swizzling_reg_type is array (0 to (XLEN/VLEN)-1) of log_length;
 
     type ctrl_reg_type is record
-        p  : pred_reg_type;
-        sa : swizling_reg_type;
-        sb : swizling_reg_type;
+        mk : mask_reg_type;
+        sa : swizzling_reg_type;
+        sb : swizzling_reg_type;
         be : s2byteen_reg_type;
+        ac : vector_reg_type;
     end record;
 
     -- Stage1 entry register
     type s1_reg_type is record
-        ra : operand_reg_type;
-        rb : operand_reg_type;
+        ra : vector_reg_type;
+        rb : vector_reg_type;
         op1: std_logic_vector(4 downto 0);
         op2: std_logic_vector(2 downto 0);
+        en : std_logic;
     end record; 
     
     -- Stage2 entry register
     type s2_reg_type is record
-        ra : result_reg_type;
+        ra : vector_reg_type;
         op2: std_logic_vector(2 downto 0);
+        sat: std_logic;
+        en : std_logic;
     end record;
 
     -- Stage3 entry register
     type s3_reg_type is record
-        rc : result_reg_type;
+        rc : word;
     end record;
 
 
@@ -160,59 +89,64 @@ architecture rtl of simd is
     ---------------------------------------------------------------
     -- CONSTANTS FOR PIPELINE REGISTERS RESET --
     --------------------------------------------------------------
-    constant op_reg_res : operand_reg_type := (
-        data => (others => '0')
-    );
-
-    constant res_reg_res : result_reg_type := (
-        data => (others => '0'),
-        sat => '0'
-    );
+    constant vector_reg_res : vector_reg_type := (others => (others => '0'));
 
     -- set the 1st stage registers reset
     constant s1_reg_res : s1_reg_type := (
-        ra => op_reg_res,
-        rb => op_reg_res,
+        ra => vector_reg_res,
+        rb => vector_reg_res,
         op1 => (others => '0'),
-        op2 => (others => '0')
+        op2 => (others => '0'),
+        en => '0'
     );
 
     -- set the 2nd stage registers reset
     constant s2_reg_res : s2_reg_type := (
-        ra => res_reg_res,
-        op2 => (others => '0')
+        ra => vector_reg_res,
+        op2 => (others => '0'),
+        sat => '0',
+        en => '0'
     );
 
     -- set the 3rd stage registers reset
     constant s3_reg_res : s3_reg_type := (
-        rc => res_reg_res
+        rc => (others => '0')
     );
 
-    function swizling_init return swizling_reg_type is
-        variable res_val : swizling_reg_type;
+    function swizzling_init return swizzling_reg_type is
+        variable res_val : swizzling_reg_type;
     begin
         for i in 0 to (XLEN/VLEN)-1 loop
             res_val(i) := i;
         end loop;
         return res_val;
-    end function swizling_init;
+    end function swizzling_init;
 
-    function swizling_set(signal sz_i : std_logic_vector(XLEN/VLEN*LOGSZ-1 downto 0)) return swizling_reg_type is
-        variable res_val : swizling_reg_type;
+    function swizzling_set(sz_i : std_logic_vector(VSIZE*LOGSZ-1 downto 0)) return swizzling_reg_type is
+        variable res_val : swizzling_reg_type;
     begin
         for i in 0 to (XLEN/VLEN)-1 loop
             res_val(i) := to_integer(unsigned(sz_i(i*LOGSZ+LOGSZ-1 downto i*LOGSZ)));
         end loop;
         return res_val;
-    end function swizling_set;
+    end function swizzling_set;
+
+    function swizzling(data : vector_reg_type; sz : swizzling_reg_type) return vector_reg_type is
+        variable result : vector_reg_type;
+    begin
+        for i in result'range loop
+            result(i) := data(sz(i)); 
+        end loop;
+        return result;
+    end function swizzling;
 
     constant ctrl_reg_res : ctrl_reg_type := (
-        p => (others => '1'),
-        sa => swizling_init,
-        sb => swizling_init,
-        be =>(others => '0')
+        mk => (others => '1'),
+        sa => swizzling_init,
+        sb => swizzling_init,
+        be =>(others => '0'),
+        ac => vector_reg_res
     );
-
 
     -- reset all registers
     constant RRES : registers := (
@@ -223,357 +157,429 @@ architecture rtl of simd is
     );
 
     ---------------------------------------------------------------
+    -- FUNCTIONS
+    --------------------------------------------------------------
+    function to_vector(data : word) return vector_reg_type is
+        variable vec : vector_reg_type;
+    begin
+        for i in vec'range loop
+            vec(i) := data(VLEN*i+VLEN-1 downto VLEN*i);
+        end loop;
+        return vec;
+    end;
+
+    function to_word(vec : vector_reg_type) return word is
+        variable data : word;
+    begin
+        for i in vec'range loop
+            data(VLEN*i+VLEN-1 downto VLEN*i) := vec(i);
+        end loop;
+        return data;
+    end;
+
+
+
+    ---------------------------------------------------------------
     -- SIGNALS DEFINITIONS
     --------------------------------------------------------------
     --signals for the registers r -> current, rin -> next
     signal r, rin: registers;
-    signal rs1, rs2 : operand_reg_type;
+    signal n_be : s2byteen_reg_type;
+    signal n_ac : vector_reg_type;
 
+    signal lpmuli : lpmul_in_array;
+    signal lpmulo : lpmul_out_array;
 
-    
-    --define functions
     ---------------------------------------------------------------
     -- TWO OPERANDS OPERATIONS (S1) --
     --------------------------------------------------------------
-    procedure stage1_ops(signal op : in std_logic_vector (4 downto 0);
-                         signal ra : in operand_reg_type;
-                         signal rb : in operand_reg_type;
-                         signal ctr: in ctrl_reg_type;
-						 --exceptions or errors
-                         signal rc : out result_reg_type) is
+
+    -- s1 result multiplexor
+    procedure s1_mux(op : in std_logic_vector(4 downto 0);
+                     sel: out std_logic_vector(3 downto 0)) is
     begin
-        rc.sat <= '0';
+        sel := '0' & op(2 downto 0);
         case op is
-            when S1_NOP =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)); 
-                                                            
-                end loop;  
-
-            when S1_MOVB =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)); 
-                                                            
-                end loop;  
-
-            --addition and saturated addition
-            when S1_ADD => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= add(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)), 
-                                                                rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-            when S1_SADD => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'1');
-                end loop;  
-                rc.sat <= '1';
-            when S1_USADD => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_add(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'0');
-                end loop;  
-                rc.sat <= '1';
-
-            --subtraction and saturated subtraction
-            when S1_SUB => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= sub(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-            when S1_SSUB => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'1');
-                end loop;  
-                rc.sat <= '1';
-            when S1_USSUB => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_sub(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'0');
-                end loop;  
-                rc.sat <= '1';
-
-            --multiplication and saturated multiplication
-            when S1_MUL =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_mul(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                       rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)))(VLEN-1 downto 0);
-                end loop;  
-            when S1_SMUL =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'1')(VLEN-1 downto 0);
-                end loop;  
-                rc.sat <= '1';
-            when S1_USMUL =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= saturate_mul(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)),'0')(VLEN-1 downto 0);
-                end loop;  
-                rc.sat <= '1';
-            when S1_UMUL =>
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_mul(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)))(VLEN-1 downto 0);
-                end loop;  
-
-            -- division
-            when S1_DIV => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    if rb.data(VLEN*i+VLEN-1 downto VLEN*i) = (VLEN => '0') then
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
-                            -- Error of some kind?
-                    else 
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_div(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                           rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)))(VLEN-1 downto 0);
-                    end if;
-                end loop;  
-            when S1_UDIV => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    if rb.data(VLEN*i+VLEN-1 downto VLEN*i) = (VLEN => '0') then
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= (VLEN => '1');
-                            -- Error of some kind?
-                    else 
-                        rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_div(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                             rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)))(VLEN-1 downto 0);
-                    end if;
-                end loop;  
-
-            -- Maximum and minimum 
-            when S1_MAX => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_max(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                       rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-            when S1_MIN => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= signed_min(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                       rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-            when S1_UMAX => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_max(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-            when S1_UMIN => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= unsigned_min(ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)),
-                                                                         rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i)));
-                end loop;  
-
-            --bitwise operations have no carry so no need to loop
-            when S1_AND => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) and
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-            when S1_OR  => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) or
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-            when S1_XOR  => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) xor
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-            when S1_NAND => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) nand
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-            when S1_NOR  => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) nor
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-            when S1_XNOR  => 
-                for i in 0 to (XLEN/VLEN)-1 loop
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*ctr.sa(i)+VLEN-1 downto VLEN*ctr.sa(i)) xnor
-                                                            rb.data(VLEN*ctr.sb(i)+VLEN-1 downto VLEN*ctr.sb(i));
-                end loop;  
-
-            when others => -- only error case
-                rc.data <= ra.data;
+            when S1_SADD | S1_USADD => sel := "0001";
+            when S1_SSUB | S1_USSUB => sel := "0010";
+            when S1_SMUL | S1_USMUL => sel := "0011";
+            when S1_AND | S1_OR | S1_XOR | S1_NAND | S1_NOR | S1_XNOR => 
+                sel := "0111";
+            when S1_MOVB => sel := "0100";
+            when S1_SHFT | S1_SSHFT => sel := "1000";
+            when others =>
         end case;
+    end s1_mux;
 
-        for i in 0 to (XLEN/VLEN)-1 loop
-            if ctr.p(i)='0' then
-                rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= ra.data(VLEN*i+VLEN-1 downto VLEN*i);
+    procedure s1_select(sel: in std_logic_vector(3 downto 0); 
+                        ra, rs2, add_res, sub_res, max_res, min_res, logic_res, shift_res,  mul_res : in vector_reg_type;
+                        s1_res : out vector_reg_type) is
+    begin
+        case sel is
+            when "0000" => s1_res := ra;
+            when "0001" => s1_res := add_res;
+            when "0010" => s1_res := sub_res;
+            when "0011" => s1_res := mul_res;
+            when "0100" => s1_res := rs2;
+            when "0101" => s1_res := max_res;
+            when "0110" => s1_res := min_res;
+            when "0111" => s1_res := logic_res;
+            when "1000" => s1_res := shift_res;
+            when others => s1_res := (others => (others => '0'));
+        end case;
+    end s1_select;
+    
+    procedure s2_select(sel : in std_logic_vector(2 downto 0);
+                        ra, sum_res, max_res, min_res, xor_res : in word;
+                        rc : out word) is 
+    begin
+        case sel is
+            when "000" => rc := ra;
+            when "001" | "101" => rc := sum_res;
+            when "010" | "110" => rc := max_res;
+            when "011" | "111" => rc := min_res;
+            when "100" => rc := xor_res;
+            when others =>rc := ra;
+        end case;
+    end s2_select;
+
+    function sat_mux (asign, bsign, sign, sat, ovf : std_logic) return std_logic_vector is
+        variable sel : std_logic_vector(1 downto 0);
+    begin 
+        sel := "00";     -- result as it is, no saturation
+        if sat = '1' and ovf = '1' then 
+            if sign = '1' then 
+                if asign = '0' then
+                    sel := "01";  -- result is 7f signed max
+                else 
+                    sel := "10";  -- result is 80 signed min
+                end if;
+            else
+                sel := "11";  --  result is ff unsigned max
+            end if;
+        end if;
+        return sel;
+    end sat_mux;
+
+    procedure sat_sel (sel : in std_logic_vector(1 downto 0);
+                       r : in std_logic_vector;
+                       res : out std_logic_vector) is
+    begin
+        case sel is
+            when "00" => res := r;
+            when "01" => res := '0' & (res'left-1 downto 0 => '1');
+            when "10" => res := '1' & (res'left-1 downto 0 => '0');
+            when "11" => res := (others => '1');
+            when others => res := (others => '0');
+        end case;
+    end sat_sel;
+
+
+    function add(a, b : vector_component;
+                 sign, sat : std_logic) return vector_component is
+        variable z : std_logic_vector(VLEN downto 0);
+        variable mux : std_logic_vector(1 downto 0);
+        variable res : vector_component;
+        variable ovf : std_logic;
+    begin
+        z := ((sign and a(a'left))&a) + ((sign and b(b'left))&b);
+        ovf := z(z'left) or (z(a'left) and sign);
+        mux := sat_mux(a(a'left), b(b'left), sign, sat, ovf);
+        sat_sel(mux, z(vector_component'range), res);
+        return res;
+    end add;
+
+    function sum(a : vector_reg_type; sign, sat : std_logic) return word is 
+        variable acc, res : std_logic_vector(VLEN+1 downto 0);
+        variable tmp : l1_sum_array;
+        variable mux : std_logic_vector(1 downto 0);
+        variable ovf : std_logic;
+        variable z : word;
+    begin 
+        z:= (others => '0');
+        for i in 0 to VSIZE/2-1 loop 
+            tmp(i) := ('0' & a(i*2)) + ('0' & a(i*2+1));
+        end loop;
+        acc :=  ('0' & tmp(0)) + ('0' & tmp(1));
+        ovf := acc(acc'left) or acc(acc'left-1);
+        if sign = '1' then
+            if acc(acc'left-2) = '1' then
+                ovf := acc(acc'left) nand acc(acc'left-1);
+            end if;
+        end if;
+        mux := sat_mux(tmp(0)(tmp(0)'left), tmp(1)(tmp(1)'left), sign, sat, ovf);
+        sat_sel(mux, acc, res);
+        if(sign = '1') then
+            if (sat = '1') then
+                z := std_logic_vector(resize(signed(res), word'length));
+            else 
+                z := std_logic_vector(resize(signed(res(vector_component'range)), word'length));
+            end if;
+        else 
+            z := std_logic_vector(resize(unsigned(res), word'length));
+        end if;
+        return z;
+    end sum;
+
+    function sub(a, b : vector_component;
+                 sign, sat : std_logic) return vector_component is
+        variable z : std_logic_vector(VLEN downto 0);
+    begin
+        z := ((sign and a(a'left))&a) - ((sign and b(b'left))&b);
+        if sign = '1' and sat = '1' then
+            if a(a'left) /= b(b'left) and a(a'left) /= z(a'left) then 
+                if a(a'left) = '1' then 
+                    z(vector_component'range) := '1'&(VLEN-2 downto 0 => '0');
+                else 
+                    z(vector_component'range) := '0'&(VLEN-2 downto 0 => '1');
+                end if;
+            end if;
+        elsif sign = '0' and sat = '1' then
+            if z(z'left) = '1' then 
+                z(vector_component'range) := (others => '0');
+            end if;
+        end if;
+        return z(vector_component'range);
+    end sub;
+
+    -- max function
+    function max(a, b : vector_component;
+                 sign : std_logic) return vector_component is 
+        variable z : vector_component;
+    begin
+        if sign = '1' then 
+            if signed(a) > signed(b) then z := a;
+            else z := b;
+            end if;
+        else 
+            if a > b then z := a;
+            else z := b;
+            end if;
+        end if;
+        return z;
+    end max;
+
+    --max recursive function
+    function max_red(a : vector_reg_type; sign : std_logic) return word is
+        variable acc : vector_component;
+        variable z : word;
+    begin
+        acc := a(0);
+        for i in 1 to VSIZE-1 loop
+            acc := max(acc, a(i), sign);
+        end loop;
+        z := (others => (sign and acc(acc'left)));
+        z(acc'range) := acc;
+        return z;
+    end max_red;
+        
+
+    -- min function
+    function min(a, b : vector_component;
+                 sign : std_logic) return vector_component is 
+        variable z : vector_component;
+    begin
+        if sign = '1' then 
+            if signed(a) > signed(b) then z := b;
+            else z := a;
+            end if;
+        else 
+            if a > b then z := b;
+            else z := a;
+            end if;
+        end if;
+        return z;
+    end min;
+
+    --min recursive function
+    function min_red(a : vector_reg_type; sign : std_logic) return word is
+        variable acc : vector_component;
+        variable z : word;
+    begin
+        acc := a(0);
+        for i in 1 to VSIZE-1 loop
+            acc := min(acc, a(i), sign);
+        end loop;
+        z := (others => (sign and acc(acc'left)));
+        z(acc'range) := acc;
+        return z;
+    end min_red;
+
+    --logic operations
+    function logic_op(a, b : vector_component;
+                      op : std_logic_vector(2 downto 0)) return vector_component is
+        variable z : vector_component;
+    begin
+        case op is 
+            when "111" => z := a and b;
+            when "000" => z := a or b;
+            when "001" => z := a xor b;
+            when "010" => z := a nand b;
+            when "011" => z := a nor b;
+            when "100" => z := a xnor b;
+            when others => z := (others => '0');
+        end case;
+        return z;
+    end logic_op;
+
+    function shift(a, b : vector_component; sat : std_logic) return vector_component is
+        variable z : vector_component;
+        variable i : integer;
+    begin
+        i := to_integer(signed(b(b'left downto 1)));
+        if b(b'left) = '1' then -- shift right
+            if b(0) = '1' then -- arithmetic
+                z := std_logic_vector(shift_right(signed(a), -i));
+            else 
+                z := std_logic_vector(shift_right(unsigned(a), -i));
+            end if;
+        else 
+            z := std_logic_vector(shift_left(unsigned(a), i));
+        end if;
+        return z;
+    end shift;
+
+    function xor_red(a : vector_reg_type) return word is
+        variable acc : vector_component;
+    begin
+        acc := a(0);
+        for i in 1 to VSIZE-1 loop
+            acc := a(i) xor acc;
+        end loop;
+        return std_logic_vector(resize(unsigned(acc), word'length));
+    end xor_red;
+
+
+    --apply mask to vector
+    procedure mask(vector, original : in vector_reg_type;
+                   msk : in std_logic_vector(VSIZE-1 downto 0);
+                   msk_res : out vector_reg_type) is
+    begin 
+        msk_res := original;
+        for i in msk'range loop
+            if msk(i) = '1' then
+                msk_res(i) := vector(i);
             end if;
         end loop;
+    end mask;
 
-    end procedure stage1_ops;
+    --apply shift and accumulate
+    procedure shift_and_acc(be : in s2byteen_reg_type;
+                           acc : in vector_reg_type;
+                           data: in vector_reg_type;
+                           res : out vector_reg_type;
+                           nxt_be : out s2byteen_reg_type) is
+        variable new_acc : vector_reg_type;
+    begin
+        new_acc := acc;
+        for i in be'range loop
+            if be(i) = '1' then
+                new_acc(i) := data(0);
+            end if;
+        end loop;
+        res := new_acc; nxt_be := be(be'left-1 downto 0) & '0';
+    end shift_and_acc;
+
 
     ---------------------------------------------------------------
     -- REDUCTION OPERATIONS (S2) --
     --------------------------------------------------------------
-    procedure stage2_ops(signal op : in std_logic_vector (2 downto 0);
-						 signal ra : in result_reg_type; 
-	                     signal be : in s2byteen_reg_type;
-						 signal rc : out result_reg_type) is 
-	variable acc : std_logic_vector (XLEN-1 downto 0);
-    begin
-		rc.sat <= ra.sat;
-		case op is 
-			when S2_NOP => 
-				acc := ra.data;
-			when S2_SUM =>
-                acc(XLEN-1 downto VLEN) := (others => (ra.data(VLEN-1)));
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    if ra.sat = '1' then
-					    acc(VLEN-1 downto 0) := saturate_add(acc(VLEN-1 downto 0), ra.data(VLEN*i+VLEN-1 downto VLEN*i), '1');
-                        acc(XLEN-1 downto VLEN) := (others => (acc(VLEN-1)));
-                    else 
-					    acc := add(acc, (XLEN-1 downto VLEN => (ra.data(VLEN*i+VLEN-1))) & ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-                    end if;
-				end loop;
-			when S2_USUM =>
-                acc(XLEN-1 downto VLEN) := (others => '0');
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    if ra.sat = '1' then
-                        acc(VLEN-1 downto 0) := saturate_add(acc(VLEN-1 downto 0), ra.data(VLEN*i+VLEN-1 downto VLEN*i), '0');
-                    else 
-					    acc := add(acc, ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-                    end if;
-				end loop;
-			when S2_MAX =>
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    acc(VLEN-1 downto 0) :=   signed_max(acc(VLEN-1 downto 0),
-                                                         ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-				end loop;
-                acc(XLEN-1 downto VLEN) := (others => (acc(VLEN-1)));
-			when S2_MIN =>
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    acc(VLEN-1 downto 0) :=   signed_min(acc(VLEN-1 downto 0),
-                                                         ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-				end loop;
-                acc(XLEN-1 downto VLEN) := (others => (acc(VLEN-1)));
-			when S2_UMAX =>
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    acc(VLEN-1 downto 0) :=   unsigned_max(acc(VLEN-1 downto 0),
-                                                           ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-				end loop;
-                acc(XLEN-1 downto VLEN) := (others => '0');
-			when S2_UMIN =>
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-                    acc(VLEN-1 downto 0) :=   unsigned_min(acc(VLEN-1 downto 0),
-                                                           ra.data(VLEN*i+VLEN-1 downto VLEN*i));
-				end loop;
-                acc(XLEN-1 downto VLEN) := (others => '0');
-			when S2_XOR =>
-                acc(XLEN-1 downto VLEN) := (others => '0');
-                acc(VLEN-1 downto 0) := ra.data(VLEN-1 downto 0);
-				for i in 1 to (XLEN/VLEN)-1 loop
-				    acc(VLEN-1 downto 0) := acc(VLEN-1 downto 0) xor ra.data(VLEN*i+VLEN-1 downto VLEN*i);
-				end loop;
-			when others =>
-		end case;
-        rc.data <= (others => '0');
-        if op = S2_NOP or unsigned(be)=0 then 
-            rc.data <= acc;
-        else 
-            for i in 0 to (XLEN/VLEN)-1 loop
-                if be(i)='1' then
-                    --OPTION
-                    --have an inner register that holds the value
-                    --output all values in  this register
-                    --register clears when be=0
-                    rc.data(VLEN*i+VLEN-1 downto VLEN*i) <= acc(VLEN-1 downto 0);
-                end if;
-            end loop;
-            -- OPTION
-            -- if necessary then
-            --     be<=be(be'left downto 1) & '0'
-            -- end if;
-        end if;
 
-        
-    end procedure stage2_ops;
-
-    ---------------------------------------------------------------
-    -- STAGE TO STAGE PROCEDURES --
-    --------------------------------------------------------------
-    procedure stage1_to_2(signal r_s1 : in s1_reg_type;
-                          signal rs1, rs2 : in operand_reg_type;
-                          signal r_ctr: in ctrl_reg_type;
-                          signal r_s2 : out s2_reg_type) is
-    begin
-        --operation stage1 
-        stage1_ops(r_s1.op1, rs1, rs2, r_ctr, r_s2.ra);
-        r_s2.op2 <= r_s1.op2;
-    end procedure stage1_to_2;
-
-    procedure stage2_to_3(signal r_s2 : in s2_reg_type;
-                          signal r_be : in s2byteen_reg_type;
-                          signal r_s3 : out s3_reg_type) is
-    begin
-        --operation stage2 
-        stage2_ops(r_s2.op2, r_s2.ra, r_be, r_s3.rc);
-    end procedure stage2_to_3;
-
-    procedure input_to_stage1( signal ra  : in  std_logic_vector (XLEN-1 downto 0);
-                               signal rb  : in  std_logic_vector (XLEN-1 downto 0);
-                               signal op  : in  std_logic_vector (7 downto 0);
-                               signal r_s1 : out s1_reg_type) is
-    begin
-        r_s1.ra.data <= ra;
-        r_s1.rb.data <= rb;
-        
-        r_s1.op1 <= op(4 downto 0);
-        r_s1.op2 <= op(7 downto 5);
-
-    end procedure input_to_stage1;
-
-    procedure stage3_to_output(signal r_s3 : in s3_reg_type;
-                               signal rc_data : out std_logic_vector (XLEN-1 downto 0)) is 
-    begin
-        rc_data <= r_s3.rc.data;
-    end procedure stage3_to_output;
-
-    -- END OF PROCEDURES --
 begin
     ---------------------------------------------------------------
     -- MAIN BODY --
     --------------------------------------------------------------
-    --fill stage1 register with input
-    input_to_stage1(ra_i, rb_i, op_i, rin.s1);
-    --stage 1 to stage 2
-    -- mux 
-    rs1.data <= r.s1.ra.data when ldbpa_i = '0' else ldra_i;
-    rs2.data <= r.s1.rb.data when ldbpb_i = '0' else ldrb_i;
-
-    stage1_to_2(r.s1, rs1, rs2, r.ctr, rin.s2);
-
-    --stage 2 to stage 3
-    stage2_to_3(r.s2, r.ctr.be, rin.s3);
-    --fill output signals
-    stage3_to_output(r.s3, rc_data_o);
-    s1bp_o <= rin.s2.ra.data;
-    s2bp_o <= rin.s3.rc.data;
+    genmul : for i in 0 to XLEN/VLEN-1 generate
+        mul : lpmul
+            port map(lpmuli(i), lpmulo(i));
+        end generate genmul;
 
 
-    -- update mask
-    rin.ctr.p <= mask_value_i when ctrl_reg_we_i = '1' else
-                 r.ctr.p;
+    comb: process(r, sdi, lpmulo)
+        variable v : registers;
+        variable rs1, rs2 : vector_reg_type;
+        variable s1_res : vector_reg_type;
+        variable add_res, sub_res, mul_res, max_res, min_res, logic_res, shift_res: vector_reg_type;
+        variable s1_alusel : std_logic_vector(3 downto 0);
+        variable s2sum_res, s2max_res, s2min_res, s2xor_res : word;
 
-    rin.ctr.be <= res_byte_en_i when ctrl_reg_we_i = '1' else 
-                  r.ctr.be;
+        variable s2_res : word;
+        variable nxt_acc : vector_reg_type;
+        variable nxt_be : s2byteen_reg_type;
+    begin
+        v := r;
 
-    rin.ctr.sa <= swizling_set(swiz_veca_i) when ctrl_reg_we_i = '1' else
-                  r.ctr.sa;
+        -- INPUT TO CTRL
+        if sdi.ctrl_reg_we = '1' then
+            v.ctr.mk := sdi.mask_value;
+            v.ctr.be := sdi.res_byte_en;
+            v.ctr.sa := swizzling_set(sdi.swiz_veca); 
+            v.ctr.sb := swizzling_set(sdi.swiz_vecb);
+            v.ctr.ac := vector_reg_res;
+        end if;
 
-    rin.ctr.sb <= swizling_set(swiz_vecb_i) when ctrl_reg_we_i = '1' else
-                  r.ctr.sb;
+        -- INPUT TO S1 --
+        v.s1.ra := to_vector(sdi.ra); --swizzling(to_vector(sdi.ra),r.ctr.sa);
+        v.s1.rb := to_vector(sdi.rb); --swizzling(to_vector(sdi.rb),r.ctr.sb);
+        v.s1.en := sdi.rc_we; v.s1.op1 := sdi.op1; v.s1.op2 := sdi.op2;
 
 
+        --Swizzling
+        rs1 := swizzling(r.s1.ra, r.ctr.sa);
+        rs2 := swizzling(r.s1.rb, r.ctr.sb);
+
+        for i in vector_reg_type'range loop
+            lpmuli(i).opA <= rs1(i);
+            lpmuli(i).opB <= rs2(i);
+            lpmuli(i).sign <= not r.s1.op1(4);
+            lpmuli(i).sat <= r.s1.op1(3);
+        end loop;
+
+        s1_mux(r.s1.op1, s1_alusel);
+        -- S1 TO S2 --
+        for i in vector_reg_type'range loop
+            add_res(i) := add(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
+            sub_res(i) := sub(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
+            mul_res(i) := lpmulo(i).mul_res;
+            max_res(i) := max(rs1(i), rs2(i), not r.s1.op1(4));
+            min_res(i) := min(rs1(i), rs2(i), not r.s1.op1(4));
+            logic_res(i) := logic_op(rs1(i), rs2(i), r.s1.op1(2 downto 0));
+            shift_res(i) := shift(rs1(i), rs2(i), r.s1.op1(3));
+        end loop;
+        s1_select(s1_alusel, r.s1.ra, rs2, add_res, sub_res, max_res,
+                  min_res, logic_res, shift_res, mul_res, s1_res);
+        mask(s1_res, r.s1.ra, r.ctr.mk, v.s2.ra);
+
+        v.s2.op2 := r.s1.op2; v.s2.sat := r.s1.op1(3); v.s2.en := r.s1.en;
+
+        -- S2 TO S3 --
+        s2sum_res := sum(r.s2.ra, not r.s2.op2(2), r.s2.sat);
+        s2max_res := max_red(r.s2.ra, not r.s2.op2(2));
+        s2min_res := min_red(r.s2.ra, not r.s2.op2(2));
+        s2xor_res := xor_red(r.s2.ra);
+
+        s2_select(r.s2.op2, to_word(r.s2.ra), s2sum_res, s2max_res, s2min_res, s2xor_res, s2_res);
+        shift_and_acc(r.ctr.be, r.ctr.ac, to_vector(s2_res), nxt_acc, nxt_be);
+
+        if r.s2.op2 /= S2_NOP and r.s2.en = '1' and r.ctr.be /= (s2byteen_reg_type'range => '0') then 
+            v.s3.rc := to_word(nxt_acc);
+            v.ctr.ac := nxt_acc;
+            v.ctr.be := nxt_be;
+        else 
+            v.s3.rc := s2_res;
+            if r.ctr.be = (s2byteen_reg_type'range => '0') then
+                v.ctr.ac := vector_reg_res;
+            end if;
+        end if;
+
+        -- S3 TO OUTPUT --
+        sdo.simd_res <= r.s3.rc;
+        sdo.s1bp <= to_word(v.s2.ra);
+        sdo.s2bp <= v.s3.rc;
+
+        -- Outputs
+        rin <= v;
+    end process;
 
 
     ---------------------------------------------------------------

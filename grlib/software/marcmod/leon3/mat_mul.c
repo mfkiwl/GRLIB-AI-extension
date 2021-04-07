@@ -43,7 +43,7 @@ int main()
 	for(int i=0; i<N; i++)
 	    for(int j=0; j<N; j++) {
 	        A[i][j] = rand()%10;
-	        B[i][j] = rand()%10;
+	        B[j][i] = rand()%10;
         }
 
     int sum = 0;
@@ -55,7 +55,7 @@ int main()
     for(int i=0; i<N; i++)
         for(int j=0; j<N; j++){
             for(int k=0; k<N; k++){
-                aux = computeCell(A[i][k],B[k][j]);
+                aux = computeCell(A[i][k],B[j][k]);
                 sum = computeSum(sum, aux);
             }
             C[i][j] = sum;

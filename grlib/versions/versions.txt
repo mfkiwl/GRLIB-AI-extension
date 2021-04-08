@@ -1,0 +1,9 @@
+Versions directory containing the binary files and experiment results for each leon3-minimal version. Below each version characteristics are explained.
+
+- v0.0: Baseline leon3
+
+- v1.0: First version of a working SIMD module integrated in the leon3 with timing constrains of 10ns met.
+        Two stages in the module being the second reduction operatins.
+        All operatins take one cycle.
+        Mask and configuration parameters hardcoded in WRMSK instruction.
+

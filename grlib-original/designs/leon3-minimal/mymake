@@ -1,6 +1,0 @@
-export CURRENT_DIR=$PWD
-if [ -z "$2" ]
-then export par1=4
-else export par1=$2
-fi
-cd ../../software/marcmod/leon3/ && make $1 && cd - > /dev/null

@@ -1,6 +1,10 @@
 Versions directory containing the binary files and experiment results for each leon3-minimal version. Below each version characteristics are explained.
+testbench.caos executable works in caos gw and caos17 machines
+testbench executable works in my personal Arch (GLIBC_2.33)
 
 - v0.0: Baseline leon3
+
+- v0.0.1: Same as v0.0.1 with no I/D cache
 
 - v1.0: First version of a working SIMD module integrated in the leon3 with timing constrains of 10ns met.
         Two stages in the module being the second reduction operatins.

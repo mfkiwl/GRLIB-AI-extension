@@ -1,0 +1,58 @@
+ghdl -m -fexplicit --ieee=synopsys --mb-comments --warn-no-binding -O2 --workdir=gnu/work --work=work `cat ghdl.path` testbench
+./testbench --assert-level=error --ieee-asserts=disable 
+LEON3 MP Demonstration design
+GRLIB Version 2020.2.0, build 4254
+Target technology: inferred  , memory library: inferred  
+ahbctrl: AHB arbiter/multiplexer rev 1
+ahbctrl: Common I/O area disabled
+ahbctrl: AHB masters: 2, AHB slaves: 8
+ahbctrl: Configuration area at 0xfffff000, 4 kbyte
+ahbctrl: mst0: Cobham Gaisler          LEON3 SPARC V8 Processor        
+ahbctrl: mst1: Cobham Gaisler          AHB Debug UART                  
+ahbctrl: slv0: European Space Agency   LEON2 Memory Controller         
+ahbctrl:       memory at 0x00000000, size 512 Mbyte, cacheable, prefetch
+ahbctrl:       memory at 0x20000000, size 512 Mbyte
+ahbctrl:       memory at 0x40000000, size 1024 Mbyte, cacheable, prefetch
+ahbctrl: slv1: Cobham Gaisler          AHB/APB Bridge                  
+ahbctrl:       memory at 0x80000000, size 1 Mbyte
+apbctrl: APB Bridge at 0x80000000 rev 1
+apbctrl: slv0: European Space Agency   LEON2 Memory Controller         
+apbctrl:       I/O ports at 0x80000000, size 256 byte 
+apbctrl: slv1: Cobham Gaisler          Generic UART                    
+apbctrl:       I/O ports at 0x80000100, size 256 byte 
+apbctrl: slv2: Cobham Gaisler          Multi-processor Interrupt Ctrl. 
+apbctrl:       I/O ports at 0x80000200, size 256 byte 
+apbctrl: slv3: Cobham Gaisler          Modular Timer Unit              
+apbctrl:       I/O ports at 0x80000300, size 256 byte 
+apbctrl: slv7: Cobham Gaisler          AHB Debug UART                  
+apbctrl:       I/O ports at 0x80000700, size 256 byte 
+apbctrl: slv11: Cobham Gaisler          General Purpose I/O port        
+apbctrl:       I/O ports at 0x80000b00, size 256 byte 
+grgpio11: 8-bit GPIO Unit rev 3
+gptimer3: Timer Unit rev 1, 8-bit scaler, 4 32-bit timers, irq 8
+irqmp: Multi-processor Interrupt Controller rev 4, #cpu 1, eirq 0
+apbuart1: Generic UART rev 1, fifo 32, irq 2, scaler bits 12
+ahbuart7: AHB Debug UART rev 0
+leon3_0: LEON3 SPARC V8 processor rev 3: iuft: 0, fpft: 0, cacheft: 0
+leon3_0: icache 1*4 kbyte, dcache 1*4 kbyte
+UART: NOP (move) c=0x01020304, expected 0x01020304 mask 1111
+UART: add: c=0x01030507, expected result 0x01030507 mask 1111
+UART: sadd: c=0x8180ff01, expected result 0x8180ff01 mask 0000
+UART: sub: c=0x0a0a0a0a, expected result 0x0a0a0a0a mask 0000
+UART: ssub: c=0x807f0af1, expected result 0x807f0af1 mask 0001
+UART: signed max max: c=0x00000020, expected result 0x00000020 mask 1011
+UART: unsigned max max: c=0x00000080, expected result 0x00000080 mask 1110
+UART: unsigned min min: c=0x00000002, expected result 0x00000002 mask 1111
+UART: signed min min: c=0x00000002, expected result 0x00000002 mask 1100
+UART: dot product: c=0x0000000c, expected result 0x0000000C mask 1010
+UART: dot product2: c=0000000000, expected result 0x00000000 mask 1010
+UART: saturate mul: c=0x7f7f80ff, expected result 0x7f7f80ff mask 1010
+UART: div: c=0x4020ff01, expected result 0x4020ff01 mask 1111
+UART: div2: c=0xf6fb0aff, expected result 0xf6fb0aff mask 1111
+UART: nand: c=0xdead4150, expected result 0xDEAD4150 mask 0011
+UART: xor reduce: c=0x00000027, expected result 0x00000027 mask 0011
+UART: END OF TEST
+testbench.vhd:411:6:@2754733ns:(assertion failure): *** IU in error mode, simulation halted ***
+./testbench:error: assertion failed
+in process .testbench(behav).iuerr
+./testbench:error: simulation failed

@@ -7,3 +7,5 @@ Versions directory containing the binary files and experiment results for each l
         All operatins take one cycle.
         Mask and configuration parameters hardcoded in WRMSK instruction.
 
+- v1.0.1: Same as v1.0 with no I/D cache
+

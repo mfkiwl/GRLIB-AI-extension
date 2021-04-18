@@ -1,0 +1,1 @@
+#define TARGET_GAISLER_VXWORKS 1

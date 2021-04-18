@@ -1,0 +1,200 @@
+
+mat_mul_int.o:     file format elf32-sparc
+
+
+Disassembly of section .text:
+
+00000000 <computeCell>:
+   0:	92 5a 00 09 	smul  %o0, %o1, %o1
+   4:	81 c3 e0 08 	retl 
+   8:	90 10 00 09 	mov  %o1, %o0
+
+0000000c <computeSum>:
+   c:	92 02 00 09 	add  %o0, %o1, %o1
+  10:	81 c3 e0 08 	retl 
+  14:	90 10 00 09 	mov  %o1, %o0
+
+Disassembly of section .text.startup:
+
+00000000 <main>:
+   0:	03 3f ff e1 	sethi  %hi(0xffff8400), %g1
+   4:	82 10 63 30 	or  %g1, 0x330, %g1	! ffff8730 <computeSum+0xffff8724>
+   8:	9d e3 80 01 	save  %sp, %g1, %sp
+   c:	90 10 20 20 	mov  0x20, %o0
+  10:	31 3f ff e1 	sethi  %hi(0xffff8400), %i0
+  14:	33 3f ff e5 	sethi  %hi(0xffff9400), %i1
+  18:	b0 16 23 90 	or  %i0, 0x390, %i0
+  1c:	b2 16 63 90 	or  %i1, 0x390, %i1
+  20:	b0 07 80 18 	add  %fp, %i0, %i0
+  24:	40 00 00 00 	call  24 <main+0x24>
+  28:	b2 07 80 19 	add  %fp, %i1, %i1
+  2c:	b6 26 30 00 	sub  %i0, -4096, %i3
+  30:	b8 10 00 19 	mov  %i1, %i4
+  34:	a0 10 00 18 	mov  %i0, %l0
+  38:	ba 04 20 80 	add  %l0, 0x80, %i5
+  3c:	b4 10 00 1c 	mov  %i4, %i2
+  40:	40 00 00 00 	call  40 <main+0x40>
+  44:	01 00 00 00 	nop 
+  48:	83 3a 20 1f 	sra  %o0, 0x1f, %g1
+  4c:	81 80 60 00 	wr  %g1, %y
+  50:	01 00 00 00 	nop 
+  54:	01 00 00 00 	nop 
+  58:	01 00 00 00 	nop 
+  5c:	84 7a 20 0a 	sdiv  %o0, 0xa, %g2
+  60:	83 28 a0 02 	sll  %g2, 2, %g1
+  64:	82 00 40 02 	add  %g1, %g2, %g1
+  68:	82 00 40 01 	add  %g1, %g1, %g1
+  6c:	82 22 00 01 	sub  %o0, %g1, %g1
+  70:	40 00 00 00 	call  70 <main+0x70>
+  74:	c2 24 00 00 	st  %g1, [ %l0 ]
+  78:	83 3a 20 1f 	sra  %o0, 0x1f, %g1
+  7c:	81 80 60 00 	wr  %g1, %y
+  80:	01 00 00 00 	nop 
+  84:	01 00 00 00 	nop 
+  88:	01 00 00 00 	nop 
+  8c:	84 7a 20 0a 	sdiv  %o0, 0xa, %g2
+  90:	83 28 a0 02 	sll  %g2, 2, %g1
+  94:	82 00 40 02 	add  %g1, %g2, %g1
+  98:	82 00 40 01 	add  %g1, %g1, %g1
+  9c:	82 22 00 01 	sub  %o0, %g1, %g1
+  a0:	c2 26 80 00 	st  %g1, [ %i2 ]
+  a4:	a0 04 20 04 	add  %l0, 4, %l0
+  a8:	80 a4 00 1d 	cmp  %l0, %i5
+  ac:	12 bf ff e5 	bne  40 <main+0x40>
+  b0:	b4 06 a0 80 	add  %i2, 0x80, %i2
+  b4:	80 a4 00 1b 	cmp  %l0, %i3
+  b8:	12 bf ff e0 	bne  38 <main+0x38>
+  bc:	b8 07 20 04 	add  %i4, 4, %i4
+  c0:	11 00 00 00 	sethi  %hi(0), %o0
+  c4:	40 00 00 00 	call  c4 <main+0xc4>
+  c8:	90 12 20 00 	mov  %o0, %o0	! 0 <main>
+  cc:	01 00 00 00 	nop 
+  d0:	85 36 00 09 	srl  %i0, %o1, %g2
+  d4:	01 00 00 00 	nop 
+  d8:	23 3f ff e9 	sethi  %hi(0xffffa400), %l1
+  dc:	b4 10 00 18 	mov  %i0, %i2
+  e0:	a2 14 63 90 	or  %l1, 0x390, %l1
+  e4:	a6 26 70 00 	sub  %i1, -4096, %l3
+  e8:	a2 07 80 11 	add  %fp, %l1, %l1
+  ec:	a8 10 00 11 	mov  %l1, %l4
+  f0:	b6 10 00 19 	mov  %i1, %i3
+  f4:	a4 10 00 14 	mov  %l4, %l2
+  f8:	ba 10 20 00 	clr  %i5
+  fc:	b8 10 20 00 	clr  %i4
+ 100:	d2 06 c0 1d 	ld  [ %i3 + %i5 ], %o1
+ 104:	40 00 00 00 	call  104 <main+0x104>
+ 108:	d0 06 80 1d 	ld  [ %i2 + %i5 ], %o0
+ 10c:	92 10 00 08 	mov  %o0, %o1
+ 110:	40 00 00 00 	call  110 <main+0x110>
+ 114:	90 10 00 1c 	mov  %i4, %o0
+ 118:	ba 07 60 04 	add  %i5, 4, %i5
+ 11c:	80 a7 60 80 	cmp  %i5, 0x80
+ 120:	12 bf ff f8 	bne  100 <main+0x100>
+ 124:	b8 10 00 08 	mov  %o0, %i4
+ 128:	d0 24 80 00 	st  %o0, [ %l2 ]
+ 12c:	b6 06 e0 80 	add  %i3, 0x80, %i3
+ 130:	80 a6 c0 13 	cmp  %i3, %l3
+ 134:	12 bf ff f1 	bne  f8 <main+0xf8>
+ 138:	a4 04 a0 04 	add  %l2, 4, %l2
+ 13c:	b4 06 a0 80 	add  %i2, 0x80, %i2
+ 140:	80 a6 80 10 	cmp  %i2, %l0
+ 144:	12 bf ff eb 	bne  f0 <main+0xf0>
+ 148:	a8 05 20 80 	add  %l4, 0x80, %l4
+ 14c:	01 00 00 00 	nop 
+ 150:	85 36 00 09 	srl  %i0, %o1, %g2
+ 154:	01 00 00 00 	nop 
+ 158:	11 00 00 00 	sethi  %hi(0), %o0
+ 15c:	40 00 00 00 	call  15c <main+0x15c>
+ 160:	90 12 20 00 	mov  %o0, %o0	! 0 <main>
+ 164:	21 00 00 00 	sethi  %hi(0), %l0
+ 168:	39 3f ff ed 	sethi  %hi(0xffffb400), %i4
+ 16c:	05 10 4e 82 	sethi  %hi(0x413a0800), %g2
+ 170:	b8 17 23 90 	or  %i4, 0x390, %i4
+ 174:	84 10 a2 00 	or  %g2, 0x200, %g2
+ 178:	a4 14 20 00 	mov  %l0, %l2
+ 17c:	c4 27 80 1c 	st  %g2, [ %fp + %i4 ]
+ 180:	a8 10 20 0a 	mov  0xa, %l4
+ 184:	82 10 20 03 	mov  3, %g1
+ 188:	b8 07 80 1c 	add  %fp, %i4, %i4
+ 18c:	a6 06 20 80 	add  %i0, 0x80, %l3
+ 190:	ba 10 00 01 	mov  %g1, %i5
+ 194:	d4 06 00 00 	ld  [ %i0 ], %o2
+ 198:	90 07 00 1d 	add  %i4, %i5, %o0
+ 19c:	40 00 00 00 	call  19c <main+0x19c>
+ 1a0:	92 10 00 12 	mov  %l2, %o1
+ 1a4:	b0 06 20 04 	add  %i0, 4, %i0
+ 1a8:	80 a6 00 13 	cmp  %i0, %l3
+ 1ac:	12 bf ff fa 	bne  194 <main+0x194>
+ 1b0:	ba 07 40 08 	add  %i5, %o0, %i5
+ 1b4:	e8 2f 00 1d 	stb  %l4, [ %i4 + %i5 ]
+ 1b8:	82 07 00 1d 	add  %i4, %i5, %g1
+ 1bc:	c0 28 60 01 	clrb  [ %g1 + 1 ]
+ 1c0:	80 a6 00 1a 	cmp  %i0, %i2
+ 1c4:	12 bf ff f2 	bne  18c <main+0x18c>
+ 1c8:	82 07 60 01 	add  %i5, 1, %g1
+ 1cc:	84 10 20 42 	mov  0x42, %g2
+ 1d0:	c4 2f 00 01 	stb  %g2, [ %i4 + %g1 ]
+ 1d4:	b8 07 00 01 	add  %i4, %g1, %i4
+ 1d8:	82 10 20 3a 	mov  0x3a, %g1
+ 1dc:	e8 2f 20 02 	stb  %l4, [ %i4 + 2 ]
+ 1e0:	c2 2f 20 01 	stb  %g1, [ %i4 + 1 ]
+ 1e4:	c0 2f 20 03 	clrb  [ %i4 + 3 ]
+ 1e8:	82 07 60 04 	add  %i5, 4, %g1
+ 1ec:	39 3f ff ed 	sethi  %hi(0xffffb400), %i4
+ 1f0:	b4 14 20 00 	mov  %l0, %i2
+ 1f4:	b8 17 23 90 	or  %i4, 0x390, %i4
+ 1f8:	a4 10 20 0a 	mov  0xa, %l2
+ 1fc:	b8 07 80 1c 	add  %fp, %i4, %i4
+ 200:	b0 06 60 80 	add  %i1, 0x80, %i0
+ 204:	ba 10 00 01 	mov  %g1, %i5
+ 208:	d4 06 40 00 	ld  [ %i1 ], %o2
+ 20c:	90 07 00 1d 	add  %i4, %i5, %o0
+ 210:	40 00 00 00 	call  210 <main+0x210>
+ 214:	92 10 00 1a 	mov  %i2, %o1
+ 218:	b2 06 60 04 	add  %i1, 4, %i1
+ 21c:	80 a6 40 18 	cmp  %i1, %i0
+ 220:	12 bf ff fa 	bne  208 <main+0x208>
+ 224:	ba 07 40 08 	add  %i5, %o0, %i5
+ 228:	e4 2f 00 1d 	stb  %l2, [ %i4 + %i5 ]
+ 22c:	82 07 00 1d 	add  %i4, %i5, %g1
+ 230:	c0 28 60 01 	clrb  [ %g1 + 1 ]
+ 234:	80 a6 40 1b 	cmp  %i1, %i3
+ 238:	12 bf ff f2 	bne  200 <main+0x200>
+ 23c:	82 07 60 01 	add  %i5, 1, %g1
+ 240:	84 10 20 43 	mov  0x43, %g2
+ 244:	c4 2f 00 01 	stb  %g2, [ %i4 + %g1 ]
+ 248:	ba 07 60 04 	add  %i5, 4, %i5
+ 24c:	82 07 00 01 	add  %i4, %g1, %g1
+ 250:	84 10 20 3a 	mov  0x3a, %g2
+ 254:	39 3f ff ed 	sethi  %hi(0xffffb400), %i4
+ 258:	c4 28 60 01 	stb  %g2, [ %g1 + 1 ]
+ 25c:	b8 17 23 90 	or  %i4, 0x390, %i4
+ 260:	e4 28 60 02 	stb  %l2, [ %g1 + 2 ]
+ 264:	c0 28 60 03 	clrb  [ %g1 + 3 ]
+ 268:	b2 24 70 00 	sub  %l1, -4096, %i1
+ 26c:	b8 07 80 1c 	add  %fp, %i4, %i4
+ 270:	a0 14 20 00 	mov  %l0, %l0
+ 274:	b4 10 20 0a 	mov  0xa, %i2
+ 278:	b6 04 60 80 	add  %l1, 0x80, %i3
+ 27c:	d4 04 40 00 	ld  [ %l1 ], %o2
+ 280:	90 07 00 1d 	add  %i4, %i5, %o0
+ 284:	40 00 00 00 	call  284 <main+0x284>
+ 288:	92 10 00 10 	mov  %l0, %o1
+ 28c:	a2 04 60 04 	add  %l1, 4, %l1
+ 290:	80 a4 40 1b 	cmp  %l1, %i3
+ 294:	12 bf ff fa 	bne  27c <main+0x27c>
+ 298:	ba 07 40 08 	add  %i5, %o0, %i5
+ 29c:	f4 2f 00 1d 	stb  %i2, [ %i4 + %i5 ]
+ 2a0:	82 07 00 1d 	add  %i4, %i5, %g1
+ 2a4:	c0 28 60 01 	clrb  [ %g1 + 1 ]
+ 2a8:	80 a4 40 19 	cmp  %l1, %i1
+ 2ac:	12 bf ff f3 	bne  278 <main+0x278>
+ 2b0:	ba 07 60 01 	inc  %i5
+ 2b4:	40 00 00 00 	call  2b4 <main+0x2b4>
+ 2b8:	90 10 00 1c 	mov  %i4, %o0
+ 2bc:	b0 10 20 00 	clr  %i0
+ 2c0:	11 00 00 00 	sethi  %hi(0), %o0
+ 2c4:	40 00 00 00 	call  2c4 <main+0x2c4>
+ 2c8:	90 12 20 00 	mov  %o0, %o0	! 0 <main>
+ 2cc:	81 c7 e0 08 	ret 
+ 2d0:	81 e8 00 00 	restore 

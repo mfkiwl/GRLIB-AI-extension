@@ -1,0 +1,93 @@
+SIMD module configuration Characteristics:
+    1-set mask (VSIZE bits) (4)
+    2-mask rs1 or 0 (1 bit)
+    3-swizzling rs1 (VSIZE*LOGSZ bits) (4*2=8)
+    4-swizzling rs2 (VSIZE*LOGSZ bits) (4*2=8)
+    5-stage 2 output type (word/half/byte) (2 bits)
+    6-stage 2 duplicate output mask (VSIZE bits) (4) 
+    7-enable high precision middle stage for mult (if two cycles required) (1 bit)
+TOTAL 28 bits
+FREE  4 bits
+ 3322 2 2222 22 21111111 11100000 0 0000
+ 1098 7 6543 21 09876543 21098765 4 3210 
+|FREE|7|  6 | 5|   4    |    3   |2| 1  |
+
+
+---
+How to handle higher upper bits output from stage 1
+
+We define v0.x as the least significant bits from the 16b result in 
+component x of the vector. And v1.x is the most significant bits for the 
+component x. Such that |v1.x|v0.x| would be the complete 16b result.
+    
+Option 1: We have rd and rdh which contains the higher bits for the results as: 
+rd  is |v0.x|v0.y|v0.z|v0.w|
+rdh is |v1.x|v1.y|v1.z|v1.w| *special register
+
+Pros:   
+    Requires no additional hardware modifications
+    Keeps the consistency of the module outputs
+    No extra cost for further use of the 8b vector
+Cons:
+    High cost to get the 16 bits results in separate registers
+
+How to get the full 16 bits in separate registers: (17 instructions)
+
+    mov rhd, r1 (r1 = rhd)
+    set tmp, 0x00001C92 # 7 -> 0, 6 -> 0, 5 -> 0, 4 -> 0 (All is w), 3 -> default, 2 -> 1 (pass rs1), 1 -> mask only change second component
+    mv tmp, ctrl_reg # set previous configuration
+    --Component w
+    and rd, 255, r2 (r2 = rd and 0xff)
+    merg_ r2, r1, r2 (r2 = r1.w & r2.w)
+    --Component z
+    slr rd, 8, rd #move to next component
+    slr r1, 8, r1 #To avoid having to change the swizzling
+    and rd, 255, r3 (r3 = rd and 0xff)
+    merg_ r3, r1, r3 (r3 = r1.z & r3.z)
+    --Component y
+    slr rd, 8, rd #move to next component
+    slr r1, 8, r1 #To avoid having to change the swizzling
+    and rd, 255, r4 (r4 = rd and 0xff)
+    merg_ r4, r1, r4 (r4 = r1.y & r4.y)
+    --Component x
+    slr rd, 8, rd #move to next component
+    slr r1, 8, r1 #To avoid having to change the swizzling
+    and rd, 255, r5 (r5 = rd and 0xff)
+    merg_ r5, r1, r5 (r5 = r1.x & r5.x)
+
+Option 2: We have rd1 and rd2 that hold two complete 16 values each such as:
+rd1 is |v1.z|v0.z|v1.w|v0.w|
+rd2 is |v1.x|v0.x|v1.y|v0.y| *special register
+
+Pros: 
+    Easy to obtain the results in different registers with 16 bits precision
+Cons:
+    Requires two output modes (16b precision or 8b precision) *Only significant if stage 2 operation is nop
+        (Maybe use option1 if 8b is set?)
+    Small extra cost to keep working with the lowest 8b vector
+
+
+How to get the full 16 bits in separate registers: (7 instructions) 
+
+    set tmp, 0xffff #is macro so counts as two
+    and rd1, tmp, r1 (r1 = rd1 and 0x0000ffff)
+    slr rd1, 16, r2 (r2 = rd2 >> 16)
+    mv rd2, r4 (r4=rd2)
+    and r4, tmp, r3 (r3 = r4 and 0x0000ffff)
+    slr r4, 16, r4 (r4 = rd4 >> 16)
+
+How to get the 8b vector with the lowest part:
+    
+    mov rd2, r2 (r1 = rd2)
+    set tmp, (mask 1100 (pass rs1), config swizzling) 
+    mov tmp, config_reg #set configuration 
+    merg_ rd1, r2, r2 (r2 = r2.yw & rd1.yw)
+
+Option 3: Have 4 special registers that store the 16 bits results separately
+Pros: 
+    No additional software work to get the separate results (aside from a move)
+Cons:
+    Hardware cost of 4 extra registers
+
+
+

@@ -1,0 +1,115 @@
+
+grayscale_simd.o:     file format elf32-sparc
+
+
+Disassembly of section .text:
+
+00000000 <grayscale>:
+   0:	01 00 00 00 	nop 
+   4:	85 36 00 09 	srl  %i0, %o1, %g2
+   8:	01 00 00 00 	nop 
+   c:	84 02 24 00 	add  %o0, 0x400, %g2
+  10:	c2 02 00 00 	ld  [ %o0 ], %g1
+  14:	83 38 60 02 	sra  %g1, 2, %g1
+  18:	c2 2a 40 00 	stb  %g1, [ %o1 ]
+  1c:	c2 02 20 04 	ld  [ %o0 + 4 ], %g1
+  20:	83 38 60 02 	sra  %g1, 2, %g1
+  24:	c2 2a 60 01 	stb  %g1, [ %o1 + 1 ]
+  28:	c2 02 20 08 	ld  [ %o0 + 8 ], %g1
+  2c:	83 38 60 02 	sra  %g1, 2, %g1
+  30:	c2 2a 60 02 	stb  %g1, [ %o1 + 2 ]
+  34:	c2 02 20 0c 	ld  [ %o0 + 0xc ], %g1
+  38:	83 38 60 02 	sra  %g1, 2, %g1
+  3c:	c2 2a 60 03 	stb  %g1, [ %o1 + 3 ]
+  40:	c2 02 20 10 	ld  [ %o0 + 0x10 ], %g1
+  44:	83 38 60 02 	sra  %g1, 2, %g1
+  48:	c2 2a 60 04 	stb  %g1, [ %o1 + 4 ]
+  4c:	c2 02 20 14 	ld  [ %o0 + 0x14 ], %g1
+  50:	83 38 60 02 	sra  %g1, 2, %g1
+  54:	c2 2a 60 05 	stb  %g1, [ %o1 + 5 ]
+  58:	c2 02 20 18 	ld  [ %o0 + 0x18 ], %g1
+  5c:	83 38 60 02 	sra  %g1, 2, %g1
+  60:	c2 2a 60 06 	stb  %g1, [ %o1 + 6 ]
+  64:	c2 02 20 1c 	ld  [ %o0 + 0x1c ], %g1
+  68:	83 38 60 02 	sra  %g1, 2, %g1
+  6c:	c2 2a 60 07 	stb  %g1, [ %o1 + 7 ]
+  70:	c2 02 20 20 	ld  [ %o0 + 0x20 ], %g1
+  74:	83 38 60 02 	sra  %g1, 2, %g1
+  78:	c2 2a 60 08 	stb  %g1, [ %o1 + 8 ]
+  7c:	c2 02 20 24 	ld  [ %o0 + 0x24 ], %g1
+  80:	83 38 60 02 	sra  %g1, 2, %g1
+  84:	c2 2a 60 09 	stb  %g1, [ %o1 + 9 ]
+  88:	c2 02 20 28 	ld  [ %o0 + 0x28 ], %g1
+  8c:	83 38 60 02 	sra  %g1, 2, %g1
+  90:	c2 2a 60 0a 	stb  %g1, [ %o1 + 0xa ]
+  94:	c2 02 20 2c 	ld  [ %o0 + 0x2c ], %g1
+  98:	83 38 60 02 	sra  %g1, 2, %g1
+  9c:	c2 2a 60 0b 	stb  %g1, [ %o1 + 0xb ]
+  a0:	c2 02 20 30 	ld  [ %o0 + 0x30 ], %g1
+  a4:	83 38 60 02 	sra  %g1, 2, %g1
+  a8:	c2 2a 60 0c 	stb  %g1, [ %o1 + 0xc ]
+  ac:	c2 02 20 34 	ld  [ %o0 + 0x34 ], %g1
+  b0:	83 38 60 02 	sra  %g1, 2, %g1
+  b4:	c2 2a 60 0d 	stb  %g1, [ %o1 + 0xd ]
+  b8:	c2 02 20 38 	ld  [ %o0 + 0x38 ], %g1
+  bc:	83 38 60 02 	sra  %g1, 2, %g1
+  c0:	c2 2a 60 0e 	stb  %g1, [ %o1 + 0xe ]
+  c4:	c2 02 20 3c 	ld  [ %o0 + 0x3c ], %g1
+  c8:	83 38 60 02 	sra  %g1, 2, %g1
+  cc:	c2 2a 60 0f 	stb  %g1, [ %o1 + 0xf ]
+  d0:	90 02 20 40 	add  %o0, 0x40, %o0
+  d4:	80 a0 80 08 	cmp  %g2, %o0
+  d8:	12 bf ff ce 	bne  10 <grayscale+0x10>
+  dc:	92 02 60 10 	add  %o1, 0x10, %o1
+  e0:	01 00 00 00 	nop 
+  e4:	85 36 00 09 	srl  %i0, %o1, %g2
+  e8:	01 00 00 00 	nop 
+  ec:	81 c3 e0 08 	retl 
+  f0:	01 00 00 00 	nop 
+
+000000f4 <print>:
+  f4:	9d e3 bf a0 	save  %sp, -96, %sp
+  f8:	94 10 20 10 	mov  0x10, %o2
+  fc:	92 10 20 10 	mov  0x10, %o1
+ 100:	11 00 00 00 	sethi  %hi(0), %o0
+ 104:	39 00 00 00 	sethi  %hi(0), %i4
+ 108:	90 12 20 00 	mov  %o0, %o0
+ 10c:	40 00 00 00 	call  10c <print+0x18>
+ 110:	b6 06 21 00 	add  %i0, 0x100, %i3
+ 114:	b8 17 20 00 	mov  %i4, %i4
+ 118:	ba 10 20 00 	clr  %i5
+ 11c:	d6 0e 00 1d 	ldub  [ %i0 + %i5 ], %o3
+ 120:	90 10 00 1c 	mov  %i4, %o0
+ 124:	94 10 00 0b 	mov  %o3, %o2
+ 128:	40 00 00 00 	call  128 <print+0x34>
+ 12c:	92 10 00 0b 	mov  %o3, %o1
+ 130:	ba 07 60 01 	inc  %i5
+ 134:	80 a7 60 10 	cmp  %i5, 0x10
+ 138:	32 bf ff fa 	bne,a   120 <print+0x2c>
+ 13c:	d6 0e 00 1d 	ldub  [ %i0 + %i5 ], %o3
+ 140:	40 00 00 00 	call  140 <print+0x4c>
+ 144:	90 10 20 0a 	mov  0xa, %o0
+ 148:	b0 06 20 10 	add  %i0, 0x10, %i0
+ 14c:	80 a6 00 1b 	cmp  %i0, %i3
+ 150:	12 bf ff f3 	bne  11c <print+0x28>
+ 154:	ba 10 20 00 	clr  %i5
+ 158:	81 c7 e0 08 	ret 
+ 15c:	81 e8 00 00 	restore 
+
+Disassembly of section .text.startup:
+
+00000000 <main>:
+   0:	9d e3 ba a0 	save  %sp, -1376, %sp
+   4:	94 10 24 00 	mov  0x400, %o2
+   8:	90 07 bc 00 	add  %fp, -1024, %o0
+   c:	13 00 00 00 	sethi  %hi(0), %o1
+  10:	40 00 00 00 	call  10 <main+0x10>
+  14:	92 12 60 00 	mov  %o1, %o1	! 0 <main>
+  18:	90 07 bc 00 	add  %fp, -1024, %o0
+  1c:	40 00 00 00 	call  1c <main+0x1c>
+  20:	92 07 bb 00 	add  %fp, -1280, %o1
+  24:	b0 10 20 00 	clr  %i0
+  28:	40 00 00 00 	call  28 <main+0x28>
+  2c:	90 07 bb 00 	add  %fp, -1280, %o0
+  30:	81 c7 e0 08 	ret 
+  34:	81 e8 00 00 	restore 

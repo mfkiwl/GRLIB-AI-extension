@@ -1,0 +1,11 @@
+MULTIARCH_DIRNAME = $(call if_multiarch,sparc-linux-gnu)
+
+# leon3 is implicitly default
+
+MULTILIB_OPTIONS = mfix-ut700
+MULTILIB_DIRNAMES = mfix-ut700
+MULTILIB_MATCHES =
+
+MULTILIB_REQUIRED =
+MULTILIB_REQUIRED += mfix-ut700
+MULTILIB_OSDIRNAMES = mfix-ut700=!mfix-ut700

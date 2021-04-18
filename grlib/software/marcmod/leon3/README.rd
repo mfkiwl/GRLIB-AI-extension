@@ -1,18 +1,16 @@
-Directory containing the testing utilities for the leon3mp design
+Directory containing the testing utilities for the leon3 design
 The executed program, must be found in test.srec file in the .srec format
 A makefile is provided with the commands to generate this srec file
 execute "make _test_name" to generate all the necessary files
 
-To use instructions not included in the compiler the bin_change and make_simd_op 
-programs are included. Use make_sim_op (whose executable is make.x) to 
-generate the hex codification for the simd instructions.
---TODO-- allow input to be operation name
+All tests are grouped in directories with similar testing goals:
 
-Include a list of all the new instructions, just the ones not included in the 
-compiler, in the corresponding order. This list must be in _test_name.list
+module_tests/ -> Contains tests to verify the correct behaviour of the 
+                 module.
+matrix_multiplication/ -> contains tests with different aproaches for
+                          matrix multiplication, both including the 
+                          use of the AI module and not.
 
-When calling bin_change pass this list together with the output file, usually
-test.srec, and the dummy instruction used in the C code to compile.
-
-For existing test all this mechanisms are included when executing "make _test_name"
-
+image_manipulation/ -> Tests regarding the manipulation of image files 
+                       also included tests with no use of the module for
+                       performance comparison.

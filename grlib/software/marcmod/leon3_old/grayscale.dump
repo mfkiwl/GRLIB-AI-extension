@@ -1,0 +1,211 @@
+
+grayscale.o:     file format elf32-sparc
+
+
+Disassembly of section .text:
+
+00000000 <grayscale>:
+   0:	01 00 00 00 	nop 
+   4:	85 36 00 09 	srl  %i0, %o1, %g2
+   8:	01 00 00 00 	nop 
+   c:	84 02 24 00 	add  %o0, 0x400, %g2
+  10:	c2 0a 20 01 	ldub  [ %o0 + 1 ], %g1
+  14:	c8 0a 00 00 	ldub  [ %o0 ], %g4
+  18:	c6 0a 20 02 	ldub  [ %o0 + 2 ], %g3
+  1c:	89 31 20 02 	srl  %g4, 2, %g4
+  20:	87 30 e0 02 	srl  %g3, 2, %g3
+  24:	83 30 60 02 	srl  %g1, 2, %g1
+  28:	82 00 40 04 	add  %g1, %g4, %g1
+  2c:	82 00 40 03 	add  %g1, %g3, %g1
+  30:	c2 2a 40 00 	stb  %g1, [ %o1 ]
+  34:	c2 0a 20 05 	ldub  [ %o0 + 5 ], %g1
+  38:	c8 0a 20 04 	ldub  [ %o0 + 4 ], %g4
+  3c:	c6 0a 20 06 	ldub  [ %o0 + 6 ], %g3
+  40:	89 31 20 02 	srl  %g4, 2, %g4
+  44:	87 30 e0 02 	srl  %g3, 2, %g3
+  48:	83 30 60 02 	srl  %g1, 2, %g1
+  4c:	82 00 40 04 	add  %g1, %g4, %g1
+  50:	82 00 40 03 	add  %g1, %g3, %g1
+  54:	c2 2a 60 01 	stb  %g1, [ %o1 + 1 ]
+  58:	c2 0a 20 09 	ldub  [ %o0 + 9 ], %g1
+  5c:	c8 0a 20 08 	ldub  [ %o0 + 8 ], %g4
+  60:	c6 0a 20 0a 	ldub  [ %o0 + 0xa ], %g3
+  64:	89 31 20 02 	srl  %g4, 2, %g4
+  68:	87 30 e0 02 	srl  %g3, 2, %g3
+  6c:	83 30 60 02 	srl  %g1, 2, %g1
+  70:	82 00 40 04 	add  %g1, %g4, %g1
+  74:	82 00 40 03 	add  %g1, %g3, %g1
+  78:	c2 2a 60 02 	stb  %g1, [ %o1 + 2 ]
+  7c:	c2 0a 20 0c 	ldub  [ %o0 + 0xc ], %g1
+  80:	c8 0a 20 0d 	ldub  [ %o0 + 0xd ], %g4
+  84:	c6 0a 20 0e 	ldub  [ %o0 + 0xe ], %g3
+  88:	89 31 20 02 	srl  %g4, 2, %g4
+  8c:	87 30 e0 02 	srl  %g3, 2, %g3
+  90:	83 30 60 02 	srl  %g1, 2, %g1
+  94:	82 00 40 04 	add  %g1, %g4, %g1
+  98:	82 00 40 03 	add  %g1, %g3, %g1
+  9c:	c2 2a 60 03 	stb  %g1, [ %o1 + 3 ]
+  a0:	c2 0a 20 10 	ldub  [ %o0 + 0x10 ], %g1
+  a4:	c8 0a 20 11 	ldub  [ %o0 + 0x11 ], %g4
+  a8:	c6 0a 20 12 	ldub  [ %o0 + 0x12 ], %g3
+  ac:	89 31 20 02 	srl  %g4, 2, %g4
+  b0:	87 30 e0 02 	srl  %g3, 2, %g3
+  b4:	83 30 60 02 	srl  %g1, 2, %g1
+  b8:	82 00 40 04 	add  %g1, %g4, %g1
+  bc:	82 00 40 03 	add  %g1, %g3, %g1
+  c0:	c2 2a 60 04 	stb  %g1, [ %o1 + 4 ]
+  c4:	c2 0a 20 14 	ldub  [ %o0 + 0x14 ], %g1
+  c8:	c8 0a 20 15 	ldub  [ %o0 + 0x15 ], %g4
+  cc:	c6 0a 20 16 	ldub  [ %o0 + 0x16 ], %g3
+  d0:	89 31 20 02 	srl  %g4, 2, %g4
+  d4:	87 30 e0 02 	srl  %g3, 2, %g3
+  d8:	83 30 60 02 	srl  %g1, 2, %g1
+  dc:	82 00 40 04 	add  %g1, %g4, %g1
+  e0:	82 00 40 03 	add  %g1, %g3, %g1
+  e4:	c2 2a 60 05 	stb  %g1, [ %o1 + 5 ]
+  e8:	c2 0a 20 18 	ldub  [ %o0 + 0x18 ], %g1
+  ec:	c8 0a 20 19 	ldub  [ %o0 + 0x19 ], %g4
+  f0:	c6 0a 20 1a 	ldub  [ %o0 + 0x1a ], %g3
+  f4:	89 31 20 02 	srl  %g4, 2, %g4
+  f8:	87 30 e0 02 	srl  %g3, 2, %g3
+  fc:	83 30 60 02 	srl  %g1, 2, %g1
+ 100:	82 00 40 04 	add  %g1, %g4, %g1
+ 104:	82 00 40 03 	add  %g1, %g3, %g1
+ 108:	c2 2a 60 06 	stb  %g1, [ %o1 + 6 ]
+ 10c:	c2 0a 20 1c 	ldub  [ %o0 + 0x1c ], %g1
+ 110:	c8 0a 20 1d 	ldub  [ %o0 + 0x1d ], %g4
+ 114:	c6 0a 20 1e 	ldub  [ %o0 + 0x1e ], %g3
+ 118:	89 31 20 02 	srl  %g4, 2, %g4
+ 11c:	87 30 e0 02 	srl  %g3, 2, %g3
+ 120:	83 30 60 02 	srl  %g1, 2, %g1
+ 124:	82 00 40 04 	add  %g1, %g4, %g1
+ 128:	82 00 40 03 	add  %g1, %g3, %g1
+ 12c:	c2 2a 60 07 	stb  %g1, [ %o1 + 7 ]
+ 130:	c2 0a 20 20 	ldub  [ %o0 + 0x20 ], %g1
+ 134:	c8 0a 20 21 	ldub  [ %o0 + 0x21 ], %g4
+ 138:	c6 0a 20 22 	ldub  [ %o0 + 0x22 ], %g3
+ 13c:	89 31 20 02 	srl  %g4, 2, %g4
+ 140:	87 30 e0 02 	srl  %g3, 2, %g3
+ 144:	83 30 60 02 	srl  %g1, 2, %g1
+ 148:	82 00 40 04 	add  %g1, %g4, %g1
+ 14c:	82 00 40 03 	add  %g1, %g3, %g1
+ 150:	c2 2a 60 08 	stb  %g1, [ %o1 + 8 ]
+ 154:	c2 0a 20 24 	ldub  [ %o0 + 0x24 ], %g1
+ 158:	c8 0a 20 25 	ldub  [ %o0 + 0x25 ], %g4
+ 15c:	c6 0a 20 26 	ldub  [ %o0 + 0x26 ], %g3
+ 160:	89 31 20 02 	srl  %g4, 2, %g4
+ 164:	87 30 e0 02 	srl  %g3, 2, %g3
+ 168:	83 30 60 02 	srl  %g1, 2, %g1
+ 16c:	82 00 40 04 	add  %g1, %g4, %g1
+ 170:	82 00 40 03 	add  %g1, %g3, %g1
+ 174:	c2 2a 60 09 	stb  %g1, [ %o1 + 9 ]
+ 178:	c2 0a 20 28 	ldub  [ %o0 + 0x28 ], %g1
+ 17c:	c8 0a 20 29 	ldub  [ %o0 + 0x29 ], %g4
+ 180:	c6 0a 20 2a 	ldub  [ %o0 + 0x2a ], %g3
+ 184:	89 31 20 02 	srl  %g4, 2, %g4
+ 188:	87 30 e0 02 	srl  %g3, 2, %g3
+ 18c:	83 30 60 02 	srl  %g1, 2, %g1
+ 190:	82 00 40 04 	add  %g1, %g4, %g1
+ 194:	82 00 40 03 	add  %g1, %g3, %g1
+ 198:	c2 2a 60 0a 	stb  %g1, [ %o1 + 0xa ]
+ 19c:	c2 0a 20 2c 	ldub  [ %o0 + 0x2c ], %g1
+ 1a0:	c8 0a 20 2d 	ldub  [ %o0 + 0x2d ], %g4
+ 1a4:	c6 0a 20 2e 	ldub  [ %o0 + 0x2e ], %g3
+ 1a8:	89 31 20 02 	srl  %g4, 2, %g4
+ 1ac:	87 30 e0 02 	srl  %g3, 2, %g3
+ 1b0:	83 30 60 02 	srl  %g1, 2, %g1
+ 1b4:	82 00 40 04 	add  %g1, %g4, %g1
+ 1b8:	82 00 40 03 	add  %g1, %g3, %g1
+ 1bc:	c2 2a 60 0b 	stb  %g1, [ %o1 + 0xb ]
+ 1c0:	c2 0a 20 30 	ldub  [ %o0 + 0x30 ], %g1
+ 1c4:	c8 0a 20 31 	ldub  [ %o0 + 0x31 ], %g4
+ 1c8:	c6 0a 20 32 	ldub  [ %o0 + 0x32 ], %g3
+ 1cc:	89 31 20 02 	srl  %g4, 2, %g4
+ 1d0:	87 30 e0 02 	srl  %g3, 2, %g3
+ 1d4:	83 30 60 02 	srl  %g1, 2, %g1
+ 1d8:	82 00 40 04 	add  %g1, %g4, %g1
+ 1dc:	82 00 40 03 	add  %g1, %g3, %g1
+ 1e0:	c2 2a 60 0c 	stb  %g1, [ %o1 + 0xc ]
+ 1e4:	c2 0a 20 34 	ldub  [ %o0 + 0x34 ], %g1
+ 1e8:	c8 0a 20 35 	ldub  [ %o0 + 0x35 ], %g4
+ 1ec:	c6 0a 20 36 	ldub  [ %o0 + 0x36 ], %g3
+ 1f0:	89 31 20 02 	srl  %g4, 2, %g4
+ 1f4:	87 30 e0 02 	srl  %g3, 2, %g3
+ 1f8:	83 30 60 02 	srl  %g1, 2, %g1
+ 1fc:	82 00 40 04 	add  %g1, %g4, %g1
+ 200:	82 00 40 03 	add  %g1, %g3, %g1
+ 204:	c2 2a 60 0d 	stb  %g1, [ %o1 + 0xd ]
+ 208:	c2 0a 20 38 	ldub  [ %o0 + 0x38 ], %g1
+ 20c:	c8 0a 20 39 	ldub  [ %o0 + 0x39 ], %g4
+ 210:	c6 0a 20 3a 	ldub  [ %o0 + 0x3a ], %g3
+ 214:	89 31 20 02 	srl  %g4, 2, %g4
+ 218:	87 30 e0 02 	srl  %g3, 2, %g3
+ 21c:	83 30 60 02 	srl  %g1, 2, %g1
+ 220:	82 00 40 04 	add  %g1, %g4, %g1
+ 224:	82 00 40 03 	add  %g1, %g3, %g1
+ 228:	c2 2a 60 0e 	stb  %g1, [ %o1 + 0xe ]
+ 22c:	c2 0a 20 3c 	ldub  [ %o0 + 0x3c ], %g1
+ 230:	c8 0a 20 3d 	ldub  [ %o0 + 0x3d ], %g4
+ 234:	c6 0a 20 3e 	ldub  [ %o0 + 0x3e ], %g3
+ 238:	83 30 60 02 	srl  %g1, 2, %g1
+ 23c:	89 31 20 02 	srl  %g4, 2, %g4
+ 240:	87 30 e0 02 	srl  %g3, 2, %g3
+ 244:	82 00 40 04 	add  %g1, %g4, %g1
+ 248:	82 00 40 03 	add  %g1, %g3, %g1
+ 24c:	c2 2a 60 0f 	stb  %g1, [ %o1 + 0xf ]
+ 250:	90 02 20 40 	add  %o0, 0x40, %o0
+ 254:	80 a0 80 08 	cmp  %g2, %o0
+ 258:	12 bf ff 6e 	bne  10 <grayscale+0x10>
+ 25c:	92 02 60 10 	add  %o1, 0x10, %o1
+ 260:	01 00 00 00 	nop 
+ 264:	85 36 00 09 	srl  %i0, %o1, %g2
+ 268:	01 00 00 00 	nop 
+ 26c:	81 c3 e0 08 	retl 
+ 270:	01 00 00 00 	nop 
+
+00000274 <print>:
+ 274:	9d e3 bf a0 	save  %sp, -96, %sp
+ 278:	94 10 20 10 	mov  0x10, %o2
+ 27c:	92 10 20 10 	mov  0x10, %o1
+ 280:	11 00 00 00 	sethi  %hi(0), %o0
+ 284:	39 00 00 00 	sethi  %hi(0), %i4
+ 288:	90 12 20 00 	mov  %o0, %o0
+ 28c:	40 00 00 00 	call  28c <print+0x18>
+ 290:	b6 06 21 00 	add  %i0, 0x100, %i3
+ 294:	b8 17 20 00 	mov  %i4, %i4
+ 298:	ba 10 20 00 	clr  %i5
+ 29c:	d6 0e 00 1d 	ldub  [ %i0 + %i5 ], %o3
+ 2a0:	90 10 00 1c 	mov  %i4, %o0
+ 2a4:	94 10 00 0b 	mov  %o3, %o2
+ 2a8:	40 00 00 00 	call  2a8 <print+0x34>
+ 2ac:	92 10 00 0b 	mov  %o3, %o1
+ 2b0:	ba 07 60 01 	inc  %i5
+ 2b4:	80 a7 60 10 	cmp  %i5, 0x10
+ 2b8:	32 bf ff fa 	bne,a   2a0 <print+0x2c>
+ 2bc:	d6 0e 00 1d 	ldub  [ %i0 + %i5 ], %o3
+ 2c0:	40 00 00 00 	call  2c0 <print+0x4c>
+ 2c4:	90 10 20 0a 	mov  0xa, %o0
+ 2c8:	b0 06 20 10 	add  %i0, 0x10, %i0
+ 2cc:	80 a6 00 1b 	cmp  %i0, %i3
+ 2d0:	12 bf ff f3 	bne  29c <print+0x28>
+ 2d4:	ba 10 20 00 	clr  %i5
+ 2d8:	81 c7 e0 08 	ret 
+ 2dc:	81 e8 00 00 	restore 
+
+Disassembly of section .text.startup:
+
+00000000 <main>:
+   0:	9d e3 ba a0 	save  %sp, -1376, %sp
+   4:	94 10 24 00 	mov  0x400, %o2
+   8:	90 07 bc 00 	add  %fp, -1024, %o0
+   c:	13 00 00 00 	sethi  %hi(0), %o1
+  10:	40 00 00 00 	call  10 <main+0x10>
+  14:	92 12 60 00 	mov  %o1, %o1	! 0 <main>
+  18:	90 07 bc 00 	add  %fp, -1024, %o0
+  1c:	40 00 00 00 	call  1c <main+0x1c>
+  20:	92 07 bb 00 	add  %fp, -1280, %o1
+  24:	b0 10 20 00 	clr  %i0
+  28:	40 00 00 00 	call  28 <main+0x28>
+  2c:	90 07 bb 00 	add  %fp, -1280, %o0
+  30:	81 c7 e0 08 	ret 
+  34:	81 e8 00 00 	restore 

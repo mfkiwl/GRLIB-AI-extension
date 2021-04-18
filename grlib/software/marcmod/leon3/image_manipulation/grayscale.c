@@ -15,32 +15,26 @@
 //            a[i][j][3] = 255;
 //        }
 //}
+  
+unsigned char shift_and_add(unsigned char r, unsigned char g, unsigned char b){
+    unsigned char ret;
+    ret = (r>>2) + (g>>2) + (b>>2);
+    return ret;
+}
 
-//int b = 0xfcfcfc7f;
-
-//int shift_and_add(int a){
-   //int r;
-   //asm("srl %1, %0, %0" 
-   //        : "=r"(r) 
-   //        : "r"(a), "0"(b));
-   //return r;
-//}
-
-int shift_and_add(int a);
-asm("shift_and_add:");
-asm("retl"); 
-asm("srl %o0, %g1, %g1"); 
-
-
-__attribute__((optimize("unroll-loops")))
+//__attribute__((optimize("unroll-loops")))
 void grayscale(unsigned char src[N][N][4], unsigned char dst[N][N]){
     unsigned char color;
     asm("nop");
     asm("srl %i0, %o1, %g2");
     asm("nop");
     for (int i = 0; i<N; i++)
-        for (int j = 0; j<N; j++){
-            dst[i][j]= *((int *) &src[i][j][0]) >> 2; //shift_and_add(*((int *) &src[i][j][0]));
+        for (int j = 0; j<N; j+=4){
+            dst[i][j] = (src[i][j][0]>>2) + (src[i][j][1]>>2) + (src[i][j][2]>>2);
+            dst[i][j+1] = (src[i][j+1][0]>>2) + (src[i][j+1][1]>>2) + (src[i][j+1][2]>>2);
+            dst[i][j+2] = (src[i][j+2][0]>>2) + (src[i][j+2][1]>>2) + (src[i][j+2][2]>>2);
+            dst[i][j+3] = (src[i][j+3][0]>>2) + (src[i][j+3][1]>>2) + (src[i][j+3][2]>>2);
+ //           dst[i][j] = shift_and_add(src[i][j][0], src[i][j][1], src[i][j][2]);
         }
     asm("nop");
     asm("srl %i0, %o1, %g2");

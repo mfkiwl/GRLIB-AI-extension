@@ -154,10 +154,14 @@ architecture rtl of proc3 is
   signal sdi   : simd_in_type;
   signal sdo   : simd_out_type;
 
+  signal dchold, ichold, fphold : std_logic;
+
 begin
 
   holdnx <= ico.hold and dco.hold and fpo.holdn; holdn <= holdnx;
   pholdn <= fpo.holdn;
+  dchold <= dco.hold;
+  ichold <= ico.hold;
 
 -- integer unit
 

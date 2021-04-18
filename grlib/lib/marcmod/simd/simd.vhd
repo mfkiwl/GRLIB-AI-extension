@@ -282,8 +282,13 @@ architecture rtl of simd_module is
         variable res : vector_component;
         variable ovf : std_logic;
     begin
-        z := ((sign and a(a'left))&a) + ((sign and b(b'left))&b);
-        ovf := z(z'left) or (z(a'left) and sign);
+        z := ('0'&a) + ('0'&b);
+        if sign = '1' then 
+            ovf := (a(a'left) xnor b(b'left)) and (a(a'left) xor z(a'left));
+        else ovf := z(z'left);
+        end if;
+        --z := ((sign and a(a'left))&a) + ((sign and b(b'left))&b);
+        --ovf := z(z'left) or (z(a'left) and sign);
         mux := sat_mux(a(a'left), b(b'left), sign, sat, ovf);
         sat_sel(mux, z(vector_component'range), res);
         return res;

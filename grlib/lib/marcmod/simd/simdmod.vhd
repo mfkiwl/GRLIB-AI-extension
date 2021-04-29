@@ -10,17 +10,52 @@ package simdmod is
     constant LOGSZ : integer := 2; -- CFG_LOGSZ;
     constant VSIZE : integer := XLEN/VLEN;
 
+    subtype word is std_logic_vector(XLEN-1 downto 0);
+
+    --vector register type
+    subtype vector_component is std_logic_vector(VLEN-1 downto 0);
+    type vector_reg_type is array (0 to VSIZE-1) of vector_component;
+
+    --interstage vector register type (high precision);
+    subtype high_prec_component is std_logic_vector(VLEN downto 0);
+    type inter_reg_type is array (0 to VSIZE-1) of high_prec_component;
+
+    ------------------------------------------------------------
+    -- SIMD CONTROL REGISTER --
+    ------------------------------------------------------------
+    -- mask registers (predicate)
+    subtype mask_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
+
+    -- output type selection
+    subtype output_length_type is std_logic_vector(1 downto 0);
+
+    -- duplicate output
+    subtype output_dup_select is std_logic_vector((XLEN/VLEN)-1 downto 0);
+
+
+    -- swizzling registers (reordering)
+    subtype log_length is integer range 0 to (XLEN/VLEN)-1;
+    type swizzling_reg_type is array (0 to (XLEN/VLEN)-1) of log_length;
+
+
+    type simd_ctrl_reg_type is record
+        mk : mask_reg_type;      -- mask value
+        ms : std_logic;          -- mask selection (ra or 0)
+        sa : swizzling_reg_type; -- swizzling ra
+        sb : swizzling_reg_type; -- swizzling rb
+        ol : output_length_type; -- output type (word/half/byte)
+        od : output_dup_select;  -- output duplication
+        --ac : vector_reg_type;
+    end record;
+
+
     type simd_in_type is record
         ra          : std_logic_vector (XLEN-1 downto 0);         -- operand 1 data
         rb          : std_logic_vector (XLEN-1 downto 0);         -- operand 2 data
         op1         : std_logic_vector (4 downto 0);              -- operation code stage1
         op2         : std_logic_vector (2 downto 0);              -- operation code stage2
         rc_we       : std_logic;                                  -- we on destination (work)
-        ctrl_reg_we : std_logic;                                  -- we on the mask register
-        mask_value  : std_logic_vector (VSIZE-1 downto 0);        -- new value for the mask
-        res_byte_en : std_logic_vector (VSIZE-1 downto 0);        -- a set bit indicates s2 operation written in byte
-        swiz_veca   : std_logic_vector (VSIZE*LOGSZ-1 downto 0);  -- swizling for operand a
-        swiz_vecb   : std_logic_vector (VSIZE*LOGSZ-1 downto 0);  -- swizling for operand b
+        ctrl        : simd_ctrl_reg_type;                         -- special register to control the module behaviour
     end record;
     
     type simd_out_type is record

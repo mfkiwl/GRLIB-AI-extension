@@ -1,7 +1,7 @@
 
 ----------------------------------------------------------------------------
 --  This file is a part of the GRLIB VHDL IP LIBRARY
---  Copyright (C) 2010 Aeroflex Gaisler
+--  Copyright (C) 2009 Aeroflex Gaisler
 ----------------------------------------------------------------------------
 -- Entity: 	ahbrom
 -- File:	ahbrom.vhd
@@ -14,6 +14,8 @@ library grlib;
 use grlib.amba.all;
 use grlib.stdlib.all;
 use grlib.devices.all;
+use grlib.config.all;
+use grlib.config_types.all;
 
 entity ahbrom is
   generic (
@@ -32,9 +34,10 @@ entity ahbrom is
 end;
 
 architecture rtl of ahbrom is
-constant abits : integer := 10;
+constant abits : integer := 17; 
 constant bytes : integer := 560;
 
+constant ENDIAN : boolean := (GRLIB_CONFIG_ARRAY(grlib_little_endian) /= 0);
 
 constant hconfig : ahb_config_type := (
   0 => ahb_device_reg ( VENDOR_GAISLER, GAISLER_AHBROM, 0, 0, 0),
@@ -43,7 +46,7 @@ constant hconfig : ahb_config_type := (
 signal romdata : std_logic_vector(127 downto 0);
 signal addr : std_logic_vector(abits-1 downto 2);
 signal hsel, hready : std_ulogic;
-signal full_addr : std_logic_vector(31 downto 0);
+signal hsize : std_logic_vector(2 downto 0);
 
 begin
 
@@ -57,13 +60,16 @@ begin
   begin
     if rising_edge(clk) then 
       addr <= ahbsi.haddr(abits-1 downto 2);
-      full_addr <= ahbsi.haddr;
+      if ENDIAN then
+        addr(3 downto 2) <= not ahbsi.haddr(3 downto 2);
+      end if;
+      hsize <= ahbsi.hsize;
     end if;
   end process;
 
   p0 : if pipe = 0 generate
-    ahbso.hrdata  <= ahbdrivedata(romdata);
-    ahbso.hready  <= '1';
+    ahbso.hrdata        <= ahbselectdata(romdata, addr(4 downto 2), hsize); 
+    ahbso.hready        <= '1';
   end generate;
 
   p1 : if pipe = 1 generate
@@ -74,52 +80,55 @@ begin
 	hready <= ahbsi.hready;
 	ahbso.hready <=  (not rst) or (hsel and hready) or
 	  (ahbsi.hsel(hindex) and not ahbsi.htrans(1) and ahbsi.hready);
-	ahbso.hrdata  <= ahbdrivedata(romdata);
+        ahbso.hrdata <= ahbselectdata(romdata, addr(4 downto 2), ahbsi.hsize); 
       end if;
     end process;
   end generate;
 
   comb : process (addr)
   begin
-    case conv_integer(addr(abits-1 downto 4) is
-    when 16#00000# => romdata <= X"00000013";
-    when 16#00001# => romdata <= X"00000113"; 
-    when 16#00004# => romdata <= X"00000213";
-    when 16#00003# => romdata <= X"00000313";
-    when 16#00002# => romdata <= X"00000213";
-
-    when 16#00006# => romdata <= X"00000413";
-    when 16#00005# => romdata <= X"00000513";
-    when 16#00008# => romdata <= X"00000613";
-    when 16#00007# => romdata <= X"00000713";
-
-    when 16#0000A# => romdata <= X"00000813";
-    when 16#00009# => romdata <= X"00000913";
-    when 16#0000C# => romdata <= X"00000A13";
-    when 16#0000B# => romdata <= X"00000B13";
-
-    when 16#0000E# => romdata <= X"00000C13";
-    when 16#0000D# => romdata <= X"00000D13";
-    when 16#00010# => romdata <= X"00000E13";
-    when 16#0000F# => romdata <= X"00000F13";
-
-    when 16#00012# => romdata <= X"00001013";
-    when 16#00011# => romdata <= X"00001113";
-    when 16#00014# => romdata <= X"00001213";
-    when 16#00013# => romdata <= X"00001313";
-
-    when 16#00016# => romdata <= X"00001413";
-    when 16#00015# => romdata <= X"00001513";
-    when 16#00018# => romdata <= X"00001613";
-    when 16#00017# => romdata <= X"00001713";
-
-    when others => romdata <= (others => '-');
-    end case;
+    if ENDIAN then
+      case conv_integer(addr(abits-1 downto 4)) is
+        -- 128-bits words
+        -- text.start
+        when 16#01000# => romdata <= X"FF85859300008597F140257340000437";
+        when 16#01001# => romdata <= X"0000001310500073000400670000100F";
+        -- Padding
+        when 16#01002# => romdata <= X"00000013000000130000001300000013";
+        when 16#01003# => romdata <= X"00000013000000130000001300000013";
+        -- text.hang
+        when 16#01400# => romdata <= X"10500073FFC5859300004597F1402573";
+        when 16#01401# => romdata <= X"FF1FF06F000000130000001300000013";
+        -- Padding
+        when 16#01402# => romdata <= X"00000013000000130000001300000013";
+        when 16#01403# => romdata <= X"00000013000000130000001300000013";
+        when others => romdata <= (others => '-');
+      end case;
+    else
+        case conv_integer(addr(abits-1 downto 4)) is
+        -- 128-bits words
+        -- text.start
+        --when 16#00000# => romdata <= X"00004597F140257310500073FFC58593";
+        --when 16#00001# => romdata <= X"0000001300000013FF1FF06F00000013";
+        --when 16#01000# => romdata <= X"F140257340000437FF85859300008597";
+        --when 16#01001# => romdata <= X"000400670000100F0000001310500073";
+        ---- Padding
+        --when 16#01002# => romdata <= X"00000013000000130000001300000013";
+        --when 16#01003# => romdata <= X"00000013000000130000001300000013";
+        ---- text.hang
+        --when 16#01400# => romdata <= X"00004597F140257310500073FFC58593";
+        --when 16#01401# => romdata <= X"0000001300000013FF1FF06F00000013";
+        ---- Padding
+        --when 16#01402# => romdata <= X"00000013000000130000001300000013";
+        --when 16#01403# => romdata <= X"00000013000000130000001300000013";
+        when others => romdata <= X"00000013000000130000001300000013"; --(others => '-');
+      end case;
+    end if;
   end process;
   -- pragma translate_off
   bootmsg : report_version 
   generic map ("ahbrom" & tost(hindex) &
-  ": 32-bit AHB ROM Module,  " & tost(bytes/4) & " words, " & tost(abits-2) & " address bits" );
+  ": 128-bit AHB ROM Module,  " & tost(bytes/4) & " words, " & tost(abits-2) & " address bits" );
   -- pragma translate_on
   end;
 

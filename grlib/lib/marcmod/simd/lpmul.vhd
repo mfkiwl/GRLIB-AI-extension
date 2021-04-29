@@ -43,22 +43,22 @@ architecture rtl of lpmul is
     z2 : std_logic_vector) return std_logic_vector is
         variable sel : std_logic_vector(2 downto 0);
     begin 
-        sel := "000";     -- result as it is, no saturation
+        sel := "000";                                           -- result as it is, no saturation
         if sat = '1' then 
             if sign = '1' then 
-                if asign = bsign then -- positive result
-                    if z2&rsign /= (z2'range => '0')&'0' then 
-                        sel := "011";  -- result is 7f signed max
+                if asign = bsign then                           -- result should be positive
+                    if z2&rsign /= (z2'range => '0')&'0' then   -- overflow including sign bit
+                        sel := "011";                           -- result is 7f signed max
                     end if;
-                else 
-                    if z2 /= (z2'range => '0') then 
-                        sel := "100";  -- result is 80 signed min
-                    else sel := "001";  -- result is ca2 negative
+                else                                            -- result should be negative
+                    if z2 /= (z2'range => '0') then             -- overflow
+                        sel := "100";                           -- result is 80 signed min
+                    else sel := "001";                          -- else result is ca2 negative
                     end if;
                 end if;
             else
-                if z2 /= (z2'range => '0') then 
-                    sel := "111";  --  result is ff unsigned max
+                if z2 /= (z2'range => '0') then                 -- overflow
+                    sel := "111";                               -- result is ff unsigned max
                 end if;
             end if;
         end if;
@@ -92,16 +92,18 @@ begin
         signA := muli.opA(muli.opA'left);
         signB := muli.opB(muli.opB'left);
 
+        -- have both operands as positive if signed and saturation
         if (muli.sign and signA and muli.sat) = '1' then 
             a := sign_invert(muli.opA);
         end if;
         if (muli.sign and signB and muli.sat) = '1' then 
             b := sign_invert(muli.opB);
         end if;
+        -- low precision product
         z := product(a, b);
+        -- select result with sign and saturation
         mux := sat_mux(signA, signB, z(r'left), muli.sign, muli.sat, z(z'left downto r'length));
         sat_sel(mux, z(r'range), sign_invert(z(r'range)), r);
         mulo.mul_res <= r;
     end process;
 end;
-

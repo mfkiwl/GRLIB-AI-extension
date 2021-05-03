@@ -483,7 +483,7 @@ begin
         s1_mux(r.s1.op1, s1_alusel);
         -- S1 TO S2 --
         for i in vector_reg_type'range loop
-            add_res(i) := add(rs1(i), rs2(i), r.s1.op1(3) and (not r.s1.op1(4)), r.s1.op1(3));
+            add_res(i) := add(rs1(i), rs2(i), not r.s1.op2(2) or (r.s1.op1(3) and (not r.s1.op1(4))), r.s1.op1(3));
             sub_res(i) := sub(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
             mul_res(i) := extend(lpmulo(i).mul_res, not r.s1.op1(4), high_prec_component'length);
             max_res(i) := max(rs1(i), rs2(i), not r.s1.op1(4));

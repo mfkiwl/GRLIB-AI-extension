@@ -546,6 +546,16 @@ begin
         end if;
     end process;
 
+    ---------------------------------------------------------------
+    -- PRINT SIMD VERSION --
+    --------------------------------------------------------------
+    x : process
+    begin
+        wait for 5 * 1 ns;
+        print("AI SIMD version: " & simd_version);
+        wait;
+    end process;
+
 end; 
 
 

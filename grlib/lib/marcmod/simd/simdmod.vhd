@@ -5,6 +5,7 @@ use grlib.stdlib.all;
 
 package simdmod is
 
+    constant simd_version : string := "v1.1";
     constant XLEN : integer :=  32; --CFG_XLEN;
     constant VLEN : integer :=  8; --CFG_VLEN;
     constant LOGSZ : integer := 2; -- CFG_LOGSZ;

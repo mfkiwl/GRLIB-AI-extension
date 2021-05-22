@@ -1,7 +1,7 @@
 
 ----------------------------------------------------------------------------
 --  This file is a part of the GRLIB VHDL IP LIBRARY
---  Copyright (C) 2009 Aeroflex Gaisler
+--  Copyright (C) 2010 Aeroflex Gaisler
 ----------------------------------------------------------------------------
 -- Entity: 	ahbrom
 -- File:	ahbrom.vhd
@@ -14,8 +14,6 @@ library grlib;
 use grlib.amba.all;
 use grlib.stdlib.all;
 use grlib.devices.all;
-use grlib.config.all;
-use grlib.config_types.all;
 
 entity ahbrom is
   generic (
@@ -34,19 +32,16 @@ entity ahbrom is
 end;
 
 architecture rtl of ahbrom is
-constant abits : integer := 17; 
+constant abits : integer := 10;
 constant bytes : integer := 560;
-
-constant ENDIAN : boolean := (GRLIB_CONFIG_ARRAY(grlib_little_endian) /= 0);
 
 constant hconfig : ahb_config_type := (
   0 => ahb_device_reg ( VENDOR_GAISLER, GAISLER_AHBROM, 0, 0, 0),
   4 => ahb_membar(haddr, '1', '1', hmask), others => zero32);
 
-signal romdata : std_logic_vector(127 downto 0);
+signal romdata : std_logic_vector(31 downto 0);
 signal addr : std_logic_vector(abits-1 downto 2);
 signal hsel, hready : std_ulogic;
-signal hsize : std_logic_vector(2 downto 0);
 
 begin
 
@@ -60,16 +55,12 @@ begin
   begin
     if rising_edge(clk) then 
       addr <= ahbsi.haddr(abits-1 downto 2);
-      if ENDIAN then
-        addr(3 downto 2) <= not ahbsi.haddr(3 downto 2);
-      end if;
-      hsize <= ahbsi.hsize;
     end if;
   end process;
 
   p0 : if pipe = 0 generate
-    ahbso.hrdata        <= ahbselectdata(romdata, addr(4 downto 2), hsize); 
-    ahbso.hready        <= '1';
+    ahbso.hrdata  <= ahbdrivedata(romdata);
+    ahbso.hready  <= '1';
   end generate;
 
   p1 : if pipe = 1 generate
@@ -80,53 +71,162 @@ begin
 	hready <= ahbsi.hready;
 	ahbso.hready <=  (not rst) or (hsel and hready) or
 	  (ahbsi.hsel(hindex) and not ahbsi.htrans(1) and ahbsi.hready);
-        ahbso.hrdata <= ahbselectdata(romdata, addr(4 downto 2), ahbsi.hsize); 
+	ahbso.hrdata  <= ahbdrivedata(romdata);
       end if;
     end process;
   end generate;
 
   comb : process (addr)
   begin
-    if ENDIAN then
-      case conv_integer(addr(abits-1 downto 4)) is
-        -- 128-bits words
-        -- text.start
-        when 16#01000# => romdata <= X"FF85859300008597F140257340000437";
-        when 16#01001# => romdata <= X"0000001310500073000400670000100F";
-        -- Padding
-        when 16#01002# => romdata <= X"00000013000000130000001300000013";
-        when 16#01003# => romdata <= X"00000013000000130000001300000013";
-        -- text.hang
-        when 16#01400# => romdata <= X"10500073FFC5859300004597F1402573";
-        when 16#01401# => romdata <= X"FF1FF06F000000130000001300000013";
-        -- Padding
-        when 16#01402# => romdata <= X"00000013000000130000001300000013";
-        when 16#01403# => romdata <= X"00000013000000130000001300000013";
-        when others => romdata <= (others => '-');
-      end case;
-    else
-      case conv_integer(addr(abits-1 downto 4)) is
-        -- 128-bits words
-        -- text.start
-        when 16#01000# => romdata <= X"F140257340000437FF85859300008597";
-        when 16#01001# => romdata <= X"000400670000100F0000001310500073";
-        -- Padding
-        when 16#01002# => romdata <= X"00000013000000130000001300000013";
-        when 16#01003# => romdata <= X"00000013000000130000001300000013";
-        -- text.hang
-        when 16#01400# => romdata <= X"00004597F140257310500073FFC58593";
-        when 16#01401# => romdata <= X"0000001300000013FF1FF06F00000013";
-        -- Padding
-        when 16#01402# => romdata <= X"00000013000000130000001300000013";
-        when 16#01403# => romdata <= X"00000013000000130000001300000013";
-        when others => romdata <= (others => '-');
-      end case;
-    end if;
+    case conv_integer(addr) is
+    when 16#00000# => romdata <= X"00000013";
+    when 16#00001# => romdata <= X"00100013";
+    when 16#00002# => romdata <= X"00200013";
+    when 16#00003# => romdata <= X"00300013";
+    when 16#00004# => romdata <= X"00400013";
+    when 16#00005# => romdata <= X"00500013";
+    when 16#00006# => romdata <= X"00600013";
+    when 16#00007# => romdata <= X"00700013";
+    when 16#00008# => romdata <= X"00800013";
+    when 16#00009# => romdata <= X"00900013";
+    when 16#0000A# => romdata <= X"00A00013";
+    when 16#0000B# => romdata <= X"00B00013";
+    when 16#0000C# => romdata <= X"00C00013";
+    when 16#0000D# => romdata <= X"00D00013";
+    when 16#0000E# => romdata <= X"00E00013";
+    when 16#0000F# => romdata <= X"00F00013";
+    when 16#00010# => romdata <= X"01000013";
+    when 16#00011# => romdata <= X"01100013";
+    when 16#00012# => romdata <= X"01200013";
+    when 16#00013# => romdata <= X"01300013";
+    when 16#00014# => romdata <= X"01400013";
+    when 16#00015# => romdata <= X"01500013";
+    when 16#00016# => romdata <= X"01600013";
+    when 16#00017# => romdata <= X"01700013";
+    when 16#00018# => romdata <= X"01800013";
+    when 16#00019# => romdata <= X"01900013";
+    when 16#0001A# => romdata <= X"01A00013";
+    when 16#0001B# => romdata <= X"01B00013";
+    when 16#0001C# => romdata <= X"01C00013";
+    when 16#0001D# => romdata <= X"01D00013";
+    when 16#0001E# => romdata <= X"01E00013";
+    when 16#0001F# => romdata <= X"01F00013";
+    when 16#00020# => romdata <= X"02000013";
+    when 16#00021# => romdata <= X"02000013";
+    when 16#00022# => romdata <= X"02000013";
+    when 16#00023# => romdata <= X"02000013";
+    when 16#00024# => romdata <= X"02000013";
+    when 16#00025# => romdata <= X"02000013";
+    when 16#00026# => romdata <= X"02000013";
+    when 16#00027# => romdata <= X"02000013";
+    when 16#00028# => romdata <= X"02000013";
+    when 16#00029# => romdata <= X"02000013";
+    when 16#0002A# => romdata <= X"02000013";
+    when 16#0002B# => romdata <= X"00000013";
+    when 16#0002C# => romdata <= X"00000013";
+    when 16#0002D# => romdata <= X"00000013";
+    when 16#0002E# => romdata <= X"00000013";
+    when 16#0002F# => romdata <= X"00000013";
+    when 16#00030# => romdata <= X"00000013";
+    when 16#00031# => romdata <= X"00000013";
+    when 16#00032# => romdata <= X"00000013";
+    when 16#00033# => romdata <= X"00000013";
+    when 16#00034# => romdata <= X"00000013";
+    when 16#00035# => romdata <= X"00000013";
+    when 16#00036# => romdata <= X"00000013";
+    when 16#00037# => romdata <= X"00000013";
+    when 16#00038# => romdata <= X"00000013";
+    when 16#00039# => romdata <= X"00000013";
+    when 16#0003A# => romdata <= X"00000013";
+    when 16#0003B# => romdata <= X"00000013";
+    when 16#0003C# => romdata <= X"00000013";
+    when 16#0003D# => romdata <= X"00000013";
+    when 16#0003E# => romdata <= X"00000013";
+    when 16#0003F# => romdata <= X"00000013";
+    when 16#00040# => romdata <= X"00000013";
+    when 16#00041# => romdata <= X"00000013";
+    when 16#00042# => romdata <= X"00000013";
+    when 16#00043# => romdata <= X"00000013";
+    when 16#00044# => romdata <= X"00000013";
+    when 16#00045# => romdata <= X"00000013";
+    when 16#00046# => romdata <= X"00000013";
+    when 16#00047# => romdata <= X"00000013";
+    when 16#00048# => romdata <= X"00000013";
+    when 16#00049# => romdata <= X"00000013";
+    when 16#0004A# => romdata <= X"00000013";
+    when 16#0004B# => romdata <= X"00000013";
+    when 16#0004C# => romdata <= X"00000013";
+    when 16#0004D# => romdata <= X"00000013";
+    when 16#0004E# => romdata <= X"00000013";
+    when 16#0004F# => romdata <= X"00000013";
+    when 16#00050# => romdata <= X"00000013";
+    when 16#00051# => romdata <= X"00000013";
+    when 16#00052# => romdata <= X"00000013";
+    when 16#00053# => romdata <= X"00000013";
+    when 16#00054# => romdata <= X"00000013";
+    when 16#00055# => romdata <= X"00000013";
+    when 16#00056# => romdata <= X"00000013";
+    when 16#00057# => romdata <= X"00000013";
+    when 16#00058# => romdata <= X"00000013";
+    when 16#00059# => romdata <= X"00000013";
+    when 16#0005A# => romdata <= X"00000013";
+    when 16#0005B# => romdata <= X"00000013";
+    when 16#0005C# => romdata <= X"00000013";
+    when 16#0005D# => romdata <= X"00000013";
+    when 16#0005E# => romdata <= X"00000013";
+    when 16#0005F# => romdata <= X"00000013";
+    when 16#00060# => romdata <= X"00000013";
+    when 16#00061# => romdata <= X"00000013";
+    when 16#00062# => romdata <= X"00000013";
+    when 16#00063# => romdata <= X"00000013";
+    when 16#00064# => romdata <= X"00000013";
+    when 16#00065# => romdata <= X"00000013";
+    when 16#00066# => romdata <= X"00000013";
+    when 16#00067# => romdata <= X"00000013";
+    when 16#00068# => romdata <= X"00000013";
+    when 16#00069# => romdata <= X"00000013";
+    when 16#0006A# => romdata <= X"00000013";
+    when 16#0006B# => romdata <= X"00000013";
+    when 16#0006C# => romdata <= X"00000013";
+    when 16#0006D# => romdata <= X"00000013";
+    when 16#0006E# => romdata <= X"00000013";
+    when 16#0006F# => romdata <= X"00000013";
+    when 16#00070# => romdata <= X"00000013";
+    when 16#00071# => romdata <= X"00000013";
+    when 16#00072# => romdata <= X"00000013";
+    when 16#00073# => romdata <= X"00000013";
+    when 16#00074# => romdata <= X"00000013";
+    when 16#00075# => romdata <= X"00000013";
+    when 16#00076# => romdata <= X"00000013";
+    when 16#00077# => romdata <= X"00000013";
+    when 16#00078# => romdata <= X"00000013";
+    when 16#00079# => romdata <= X"00000013";
+    when 16#0007A# => romdata <= X"00000013";
+    when 16#0007B# => romdata <= X"00000013";
+    when 16#0007C# => romdata <= X"00000013";
+    when 16#0007D# => romdata <= X"00000013";
+    when 16#0007E# => romdata <= X"00000013";
+    when 16#0007F# => romdata <= X"00000013";
+    when 16#00080# => romdata <= X"00000013";
+    when 16#00081# => romdata <= X"00000013";
+    when 16#00082# => romdata <= X"00000013";
+    when 16#00083# => romdata <= X"00000013";
+    when 16#00084# => romdata <= X"00000013";
+    when 16#00085# => romdata <= X"00000013";
+    when 16#00086# => romdata <= X"00000013";
+    when 16#00087# => romdata <= X"00000013";
+    when 16#00088# => romdata <= X"00000013";
+    when 16#00089# => romdata <= X"00000013";
+    when 16#0008A# => romdata <= X"00000013";
+    when 16#0008B# => romdata <= X"00000013";
+    when 16#0008C# => romdata <= X"00000013";
+    when others => romdata <= (others => '-');
+    end case;
   end process;
   -- pragma translate_off
   bootmsg : report_version 
   generic map ("ahbrom" & tost(hindex) &
-  ": 128-bit AHB ROM Module,  " & tost(bytes/4) & " words, " & tost(abits-2) & " address bits" );
+  ": 32-bit AHB ROM Module,  " & tost(bytes/4) & " words, " & tost(abits-2) & " address bits" );
   -- pragma translate_on
   end;
 

@@ -506,6 +506,9 @@ ghdl-wave: $(SIMTOP)
 ghdl-vcd: $(SIMTOP)
 	./$(SIMTOP) $(GHDLRUNOPT) --vcd=$(SIMTOP).vcd
 
+ghdl-fst: $(SIMTOP)
+	./$(SIMTOP) $(GHDLRUNOPT) --fst=$(SIMTOP).fst --read-wave-opt=signals.txt
+
 ghdl-time: $(SIMTOP)
 	./$(SIMTOP) $(GHDLRUNOPT) 
 

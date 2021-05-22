@@ -13,7 +13,7 @@ simd_%:
 mat_mu%:
 	$(MAKE) -C matrix_multiplication $@
 
-gray%:
+gray% filt%:
 	$(MAKE) -C image_manipulation $@
 
 clean:

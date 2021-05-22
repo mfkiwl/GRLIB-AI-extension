@@ -6,15 +6,6 @@
 #define N 2
 #endif
 
-//void init(unsigned char a[N][N][4]){
-//    for (int i = 0; i<N; i++)
-//        for (int j = 0; j<N; j++){
-//            a[i][j][0] = rand()%255;
-//            a[i][j][1] = rand()%255;
-//            a[i][j][2] = rand()%255;
-//            a[i][j][3] = 255;
-//        }
-//}
   
 unsigned char shift_and_add(unsigned char r, unsigned char g, unsigned char b){
     unsigned char ret;
@@ -22,19 +13,14 @@ unsigned char shift_and_add(unsigned char r, unsigned char g, unsigned char b){
     return ret;
 }
 
-//__attribute__((optimize("unroll-loops")))
-void grayscale(unsigned char src[N][N][4], unsigned char dst[N][N]){
+void grayscale(unsigned char src[N][4][N], unsigned char dst[N][N]){
     unsigned char color;
     asm("nop");
     asm("srl %i0, %o1, %g2");
     asm("nop");
     for (int i = 0; i<N; i++)
-        for (int j = 0; j<N; j+=4){
-            dst[i][j] = (src[i][j][0]>>2) + (src[i][j][1]>>2) + (src[i][j][2]>>2);
-            dst[i][j+1] = (src[i][j+1][0]>>2) + (src[i][j+1][1]>>2) + (src[i][j+1][2]>>2);
-            dst[i][j+2] = (src[i][j+2][0]>>2) + (src[i][j+2][1]>>2) + (src[i][j+2][2]>>2);
-            dst[i][j+3] = (src[i][j+3][0]>>2) + (src[i][j+3][1]>>2) + (src[i][j+3][2]>>2);
- //           dst[i][j] = shift_and_add(src[i][j][0], src[i][j][1], src[i][j][2]);
+        for (int j = 0; j<N; j++){
+            dst[i][j] = (src[i][0][j]>>2) + (src[i][1][j]>>2) + (src[i][2][j]>>2);
         }
     asm("nop");
     asm("srl %i0, %o1, %g2");
@@ -53,9 +39,9 @@ void print(unsigned char src[N][N]) {
     
 
 int main(){
-    unsigned char source[N][N][4] = {IMAGE_ARRAY};
+    unsigned char source[N][4][N] = {IMAGE_ARRAY};
     unsigned char dest[N][N];
     //init(source);
     grayscale(source, dest);
-    print(dest);
+//    print(dest);
 }

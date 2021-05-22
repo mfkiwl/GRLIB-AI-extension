@@ -1,0 +1,6 @@
+#cycles TestName MatSize (simd|orig) speedup
+  6.441.041 Grayscale 256x256 (simd) 2.1X
+ 13.548.090 Grayscale 256x256 (orig) 1X
+138.909.319 Matrix Multiplication 120x120 (simd) 5.1X
+709.738.072 Matrix Multiplication 120x120 (oirg) 1X
+

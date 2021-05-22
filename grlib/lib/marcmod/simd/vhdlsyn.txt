@@ -1,5 +1,3 @@
 simdmod.vhd
 simd.vhd
-alu8b.vhd
 lpmul.vhd
-redalu.vhd

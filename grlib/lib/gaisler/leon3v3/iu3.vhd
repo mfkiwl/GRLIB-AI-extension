@@ -245,7 +245,6 @@ architecture rtl of iu3 is
     wicc  : std_ulogic;
     wy    : std_ulogic;
     simd  : std_ulogic;
-    sdctr : std_ulogic;
     ld    : std_ulogic;
     pv    : std_ulogic;
     rett  : std_ulogic;
@@ -460,7 +459,64 @@ architecture rtl of iu3 is
     stwin  : cwptype;                   -- starting window
     cwpmax : cwptype;                   -- max cwp value
     ducnt  : std_ulogic;
+    simdctrl: simd_ctrl_reg_type;       -- simd control register
   end record;
+
+    function swizzling_init return swizzling_reg_type is
+        variable res_val : swizzling_reg_type;
+    begin
+        for i in 0 to (XLEN/VLEN)-1 loop
+            res_val(i) := i;
+        end loop;
+        return res_val;
+    end function swizzling_init;
+
+    function swizzling_set(sz_i : std_logic_vector(VSIZE*LOGSZ-1 downto 0)) return swizzling_reg_type is
+        variable res_val : swizzling_reg_type;
+    begin
+        for i in 0 to (XLEN/VLEN)-1 loop
+            res_val(i) := to_integer(unsigned(sz_i(i*LOGSZ+LOGSZ-1 downto i*LOGSZ)));
+        end loop;
+        return res_val;
+    end function swizzling_set;
+
+    function swizzling_get(sz : swizzling_reg_type) return std_logic_vector is
+        variable data : std_logic_vector(VSIZE*LOGSZ-1 downto 0);
+    begin
+        for i in 0 to VSIZE-1 loop
+            data(LOGSZ*i+LOGSZ-1 downto LOGSZ*i) := std_logic_vector(to_unsigned(sz(i), LOGSZ));
+        end loop;
+        return data;
+    end function swizzling_get;
+
+    constant simd_ctrl_reg_res : simd_ctrl_reg_type := (
+        mk => (others => '1'),
+        ms => '0',
+        sa => swizzling_init,
+        sb => swizzling_init,
+        ol => (others => '0'),
+        od => (others => '0'),
+        hp => '0'
+        --ac => vector_reg_res
+    );
+
+    function to_word(reg : simd_ctrl_reg_type) return word is
+    begin
+        return "0000" & reg.hp & reg.od & reg.ol & swizzling_get(reg.sa) & swizzling_get(reg.sb) & reg.ms & reg.mk;
+    end to_word;
+
+    function to_scr(data : word) return simd_ctrl_reg_type is 
+        variable reg : simd_ctrl_reg_type;
+    begin
+        reg.mk := data(3 downto 0);
+        reg.ms := data(4);
+        reg.sa := swizzling_set(data(12 downto 5));
+        reg.sb := swizzling_set(data(20 downto 13));
+        reg.ol := data(22 downto 21);
+        reg.od := data(26 downto 23);
+        reg.hp := data(27);
+        return reg;
+    end to_scr;
   
   type write_reg_type is record
     s      : special_register_type;
@@ -1110,7 +1166,6 @@ architecture rtl of iu3 is
     wicc  => '0',
     wy    => '0',
     simd  => '0',
-    sdctr => '0',
     ld    => '0',
     pv    => '0',
     rett  => '0',
@@ -1330,6 +1385,7 @@ architecture rtl of iu3 is
     s.stwin  := (others => '0');
     s.cwpmax := CWPMAX;
     s.ducnt  := '1';
+    s.simdctrl := simd_ctrl_reg_res;
     return s;
   end function special_register_res;
   --constant write_reg_res : write_reg_type := (
@@ -1630,7 +1686,7 @@ begin
         if notag = 1 then illegal_inst := '1'; end if;
       when UMAC | SMAC => 
         if not MACEN then illegal_inst := '1'; end if;
-      when SIMD | WRMSK => -- marcmod: add SIMD and WRMSK to legal instruction if SIMD enabled
+      when SIMD | WRSCR | RDSCR => -- marcmod: add SIMD and WR/RDSCR to legal instruction if SIMD enabled
         if not SIMDEN then illegal_inst := '1'; end if;
       when UMUL | SMUL | UMULCC | SMULCC => 
         if not MULEN then illegal_inst := '1'; end if;
@@ -2226,8 +2282,7 @@ end;
 
 
   --SIMD control signals generation
-  procedure simd_gen(inst : word; simden, sdctr : out std_ulogic) is
-  variable write_ctrl : std_ulogic;
+  procedure simd_gen(inst : word; simden : out std_ulogic) is
   variable enable_simd : std_ulogic;
   variable op : std_logic_vector(1 downto 0);
   variable op3 : std_logic_vector(5 downto 0);
@@ -2235,21 +2290,18 @@ end;
     op  := inst(31 downto 30);
     op3 := inst(24 downto 19);
 
-    write_ctrl := '0'; enable_simd := '0';
+    enable_simd := '0';
 
     case op is 
     when FMT3 =>
         case op3 is
         when SIMD =>
             enable_simd := '1';
-        when WRMSK =>
-            enable_simd := '1';
-            write_ctrl := '1';
         when others =>
         end case;
     when others => 
     end case;
-    sdctr := write_ctrl; simden := enable_simd;
+    simden := enable_simd;
   end;
 
 -- register write address generation
@@ -2289,7 +2341,7 @@ end;
               write_reg := '1'; 
             end if;
           else write_reg := '1'; end if;
-        when RETT | WRPSR | WRY | WRWIM | WRTBR | TICC | FLUSH => null;
+        when RETT | WRPSR | WRY | WRWIM | WRTBR | WRSCR | TICC | FLUSH => null; --marcmod: added WRSCR to no dest reg
         when FPOP1 | FPOP2 => null;
         when CPOP1 | CPOP2 => null;
         when SAVE | IADD =>
@@ -2297,7 +2349,6 @@ end;
           if REX /= 0 and inst(13)='0' and inst(12)='1' then
             vrexen := '1';
           end if;
-        when WRMSK => null; --no write register for WRMSK
         when others => write_reg := '1';
         end case;
       when others =>   -- LDST
@@ -2397,6 +2448,17 @@ end;
     return(immediate_data);
   end;
 
+  function to_string ( a: std_logic_vector) return string is
+variable b : string (1 to a'length) := (others => NUL);
+variable stri : integer := 1;
+begin
+    for i in a'range loop
+        b(stri) := std_logic'image(a((i)))(2);
+    stri := stri+1;
+    end loop;
+return b;
+end function;
+
 -- read special registers
   function get_spr (r : registers; xc_wimmask: std_logic_vector) return word is
   variable spr : word;
@@ -2411,6 +2473,7 @@ end;
       when RDTBR => spr(31 downto 4) := r.w.s.tba & r.w.s.tt;
       when RDWIM => spr(NWIN-1 downto 0) := r.w.s.wim;
                     if RFPART then spr(NWIN-1 downto 0) := r.w.s.wim and not xc_wimmask; end if;
+      when RDSCR => spr := to_word(r.w.s.simdctrl); --marcmod
       when others =>
       end case;
     return(spr);
@@ -2511,9 +2574,9 @@ end;
       when IOR | ORCC  => aluop := EXE_OR; alusel := EXE_RES_LOGIC;
       when ORN | ORNCC  => aluop := EXE_ORN; alusel := EXE_RES_LOGIC;
       when IXNOR | XNORCC  => aluop := EXE_XNOR; alusel := EXE_RES_LOGIC;
-      when XORCC | IXOR | WRPSR | WRWIM | WRTBR | WRY  => 
+      when XORCC | IXOR | WRPSR | WRWIM | WRTBR | WRY | WRSCR  =>  --marcmod: added WRSCR
         aluop := EXE_XOR; alusel := EXE_RES_LOGIC;
-      when RDPSR | RDTBR | RDWIM => aluop := EXE_SPR;
+      when RDPSR | RDTBR | RDWIM | RDSCR => aluop := EXE_SPR;      --marcmod: added RDSCR
       when RDY => aluop := EXE_RDY;
       when ISLL => aluop := EXE_SLL; alusel := EXE_RES_SHIFT; shleft := '1'; 
                    shcnt := not iop2(4 downto 0); invop2 := '1';
@@ -3224,6 +3287,8 @@ end;
           s.wim := r.x.result(NWIN-1 downto 0);
         when WRTBR =>
           s.tba := r.x.result(31 downto 12);
+        when WRSCR => -- marcmod
+          s.simdctrl := to_scr(r.x.result);
         when SAVE =>
           if (not AWPEN) or r.w.s.aw='0' then
             if RFPART and (r.w.s.cwp=CWPMIN) then s.cwp := r.w.s.cwpmax;
@@ -4414,6 +4479,7 @@ begin
         v.w.s.cwp := RRES.w.s.cwp;
         v.w.s.icc := RRES.w.s.icc;
       end if;
+      v.w.s.simdctrl := RRES.w.s.simdctrl;
       v.w.s.dbp := RRES.w.s.dbp;
       v.w.s.dbprepl := RRES.w.s.dbprepl;
       v.w.s.rexdis := RRES.w.s.rexdis;
@@ -4647,12 +4713,8 @@ begin
     sdi.rb <= ra_op2;
     sdi.op2 <= r.a.ctrl.inst(12 downto 10);
     sdi.op1 <= r.a.ctrl.inst(9 downto 5);
-    sdi.rc_we <= r.a.ctrl.simd and (not r.a.ctrl.sdctr) and (not r.a.ctrl.annul);
-    sdi.ctrl_reg_we <= r.a.ctrl.sdctr and (not r.a.ctrl.annul);
-    sdi.mask_value <= r.a.ctrl.inst(3 downto 0);
-    sdi.res_byte_en <= r.a.ctrl.inst(7 downto 4);
-    sdi.swiz_veca <= r.a.ctrl.inst(29 downto 25) & r.a.ctrl.inst(18 downto 16);
-    sdi.swiz_vecb <= r.a.ctrl.inst(15 downto 8);
+    sdi.rc_we <= r.a.ctrl.simd and (not r.a.ctrl.annul);
+    sdi.ctrl <= r.w.s.simdctrl;
 
     cin_gen(r, v.m.icc(0), v.e.alucin);
     bp_miss_ra(r, ra_bpmiss, de_bpannul);
@@ -4728,7 +4790,7 @@ begin
     rd_gen(r, de_inst, v.a.ctrl.wreg, v.a.ctrl.ld, de_rd, de_rexen);
     
     --marcmod: call to simd_gen
-    simd_gen(de_inst, v.a.ctrl.simd, v.a.ctrl.sdctr);
+    simd_gen(de_inst, v.a.ctrl.simd);
 
     if r.d.annul='1' then de_rexen:='0'; end if;
     regaddr(de_cwp, de_rd, r.d.stwin, r.d.cwpmax, v.a.ctrl.rd);

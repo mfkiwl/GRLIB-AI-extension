@@ -23,9 +23,6 @@ architecture rtl of simd_module is
     -- REGISTER TYPES DEFINITION --
     --------------------------------------------------------------
 
-    --vector register type
-    subtype vector_component is std_logic_vector(VLEN-1 downto 0);
-    type vector_reg_type is array (0 to VSIZE-1) of vector_component;
 
     type lpmul_in_array is array (0 to VSIZE-1) of lpmul_in_type;
     type lpmul_out_array is array (0 to VSIZE-1) of lpmul_out_type;
@@ -33,25 +30,7 @@ architecture rtl of simd_module is
     type l1_sum_array is array (0 to VSIZE/2) of std_logic_vector(VLEN downto 0);
     type l2_sum_array is array (0 to VSIZE/4) of std_logic_vector(VLEN+1 downto 0);
 
-    subtype word is std_logic_vector(XLEN-1 downto 0);
 
-    -- mask registers (predicate)
-    subtype mask_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
-
-    -- stage 2 byte enable (result in byte x)
-    subtype s2byteen_reg_type is std_logic_vector((XLEN/VLEN)-1 downto 0);
-
-    -- swizzling registers (reordering)
-    subtype log_length is integer range 0 to (XLEN/VLEN)-1;
-    type swizzling_reg_type is array (0 to (XLEN/VLEN)-1) of log_length;
-
-    type ctrl_reg_type is record
-        mk : mask_reg_type;
-        sa : swizzling_reg_type;
-        sb : swizzling_reg_type;
-        be : s2byteen_reg_type;
-        ac : vector_reg_type;
-    end record;
 
     -- Stage1 entry register
     type s1_reg_type is record
@@ -64,7 +43,7 @@ architecture rtl of simd_module is
     
     -- Stage2 entry register
     type s2_reg_type is record
-        ra : vector_reg_type;
+        ra : inter_reg_type;
         op2: std_logic_vector(2 downto 0);
         sat: std_logic;
         en : std_logic;
@@ -81,7 +60,7 @@ architecture rtl of simd_module is
         s1 : s1_reg_type;
         s2 : s2_reg_type;
         s3 : s3_reg_type;
-        ctr: ctrl_reg_type;
+        rdh: vector_reg_type;
     end record;
 
 
@@ -90,6 +69,7 @@ architecture rtl of simd_module is
     -- CONSTANTS FOR PIPELINE REGISTERS RESET --
     --------------------------------------------------------------
     constant vector_reg_res : vector_reg_type := (others => (others => '0'));
+    constant inter_reg_res : inter_reg_type := (others => (others => '0'));
 
     -- set the 1st stage registers reset
     constant s1_reg_res : s1_reg_type := (
@@ -102,7 +82,7 @@ architecture rtl of simd_module is
 
     -- set the 2nd stage registers reset
     constant s2_reg_res : s2_reg_type := (
-        ra => vector_reg_res,
+        ra => inter_reg_res,
         op2 => (others => '0'),
         sat => '0',
         en => '0'
@@ -113,47 +93,13 @@ architecture rtl of simd_module is
         rc => (others => '0')
     );
 
-    function swizzling_init return swizzling_reg_type is
-        variable res_val : swizzling_reg_type;
-    begin
-        for i in 0 to (XLEN/VLEN)-1 loop
-            res_val(i) := i;
-        end loop;
-        return res_val;
-    end function swizzling_init;
-
-    function swizzling_set(sz_i : std_logic_vector(VSIZE*LOGSZ-1 downto 0)) return swizzling_reg_type is
-        variable res_val : swizzling_reg_type;
-    begin
-        for i in 0 to (XLEN/VLEN)-1 loop
-            res_val(i) := to_integer(unsigned(sz_i(i*LOGSZ+LOGSZ-1 downto i*LOGSZ)));
-        end loop;
-        return res_val;
-    end function swizzling_set;
-
-    function swizzling(data : vector_reg_type; sz : swizzling_reg_type) return vector_reg_type is
-        variable result : vector_reg_type;
-    begin
-        for i in result'range loop
-            result(i) := data(sz(i)); 
-        end loop;
-        return result;
-    end function swizzling;
-
-    constant ctrl_reg_res : ctrl_reg_type := (
-        mk => (others => '1'),
-        sa => swizzling_init,
-        sb => swizzling_init,
-        be =>(others => '0'),
-        ac => vector_reg_res
-    );
 
     -- reset all registers
     constant RRES : registers := (
         s1 => s1_reg_res,
         s2 => s2_reg_res,
         s3 => s3_reg_res,
-        ctr=> ctrl_reg_res
+        rdh=> vector_reg_res
     );
 
     ---------------------------------------------------------------
@@ -167,6 +113,18 @@ architecture rtl of simd_module is
         end loop;
         return vec;
     end;
+    function to_vector(data : inter_reg_type; high : boolean) return vector_reg_type is
+        variable vec : vector_reg_type;
+    begin
+        for i in vec'range loop
+            if high then 
+                vec(i) := data(i)(data(i)'left downto vec(i)'length);
+            else 
+                vec(i) := data(i)(vec(i)'range);
+            end if;
+        end loop;
+        return vec;
+    end;
 
     function to_word(vec : vector_reg_type) return word is
         variable data : word;
@@ -177,15 +135,65 @@ architecture rtl of simd_module is
         return data;
     end;
 
+    function to_word(vec : inter_reg_type) return word is
+        variable data : word;
+    begin
+        for i in vec'range loop
+            data(VLEN*i+VLEN-1 downto VLEN*i) := vec(i)(vector_component'range);
+        end loop;
+        return data;
+    end;
 
+    function swizzling(data : vector_reg_type; sz : swizzling_reg_type) return vector_reg_type is
+        variable result : vector_reg_type;
+    begin
+        for i in result'range loop
+            result(i) := data(sz(i)); 
+        end loop;
+        return result;
+    end function swizzling;
+
+    ---------------------------------------------------------------
+    -- SATURATION FUNCTIONS
+    --------------------------------------------------------------
+    function clipping (value, max_val, min_val : integer) return integer is
+    begin
+        if value > max_val then return max_val;
+        elsif value < min_val then return min_val;
+        else return value;
+        end if;
+    end clipping;
+
+    function extend(value : std_logic_vector; sign : std_logic; size : integer) return std_logic_vector is 
+    begin
+        if sign = '1' then 
+            return std_logic_vector(resize(signed(value), size));
+        else 
+            return std_logic_vector(resize(unsigned(value), size));
+        end if;
+    end extend;
+
+    function signed_sat(a, leng : integer; sat : std_logic) return std_logic_vector is
+    begin
+        if sat = '1' then
+            return std_logic_vector(to_signed(clipping(a, 127, -128), leng));
+        else return std_logic_vector(to_signed(a, leng));
+        end if;
+    end signed_sat;
+
+    function unsigned_sat(a, leng : integer; sat : std_logic) return std_logic_vector is
+    begin
+        if sat = '1' then
+            return std_logic_vector(to_unsigned(clipping(a, 255, 0), leng));
+        else return std_logic_vector(to_signed(a, leng));
+        end if;
+    end unsigned_sat;
 
     ---------------------------------------------------------------
     -- SIGNALS DEFINITIONS
     --------------------------------------------------------------
     --signals for the registers r -> current, rin -> next
     signal r, rin: registers;
-    signal n_be : s2byteen_reg_type;
-    signal n_ac : vector_reg_type;
 
     signal lpmuli : lpmul_in_array;
     signal lpmulo : lpmul_out_array;
@@ -212,8 +220,8 @@ architecture rtl of simd_module is
     end s1_mux;
 
     procedure s1_select(sel: in std_logic_vector(3 downto 0); 
-                        ra, rs2, add_res, sub_res, max_res, min_res, logic_res, shift_res,  mul_res : in vector_reg_type;
-                        s1_res : out vector_reg_type) is
+                        ra, rs2, add_res, sub_res, max_res, min_res, logic_res, shift_res,  mul_res : in inter_reg_type;
+                        s1_res : out inter_reg_type) is
     begin
         case sel is
             when "0000" => s1_res := ra;
@@ -228,128 +236,37 @@ architecture rtl of simd_module is
             when others => s1_res := (others => (others => '0'));
         end case;
     end s1_select;
-    
-    procedure s2_select(sel : in std_logic_vector(2 downto 0);
-                        ra, sum_res, max_res, min_res, xor_res : in word;
-                        rc : out word) is 
-    begin
-        case sel is
-            when "000" => rc := ra;
-            when "001" | "101" => rc := sum_res;
-            when "010" | "110" => rc := max_res;
-            when "011" | "111" => rc := min_res;
-            when "100" => rc := xor_res;
-            when others =>rc := ra;
-        end case;
-    end s2_select;
-
-    function sat_mux (asign, bsign, sign, sat, ovf : std_logic) return std_logic_vector is
-        variable sel : std_logic_vector(1 downto 0);
-    begin 
-        sel := "00";     -- result as it is, no saturation
-        if sat = '1' and ovf = '1' then 
-            if sign = '1' then 
-                if asign = '0' then
-                    sel := "01";  -- result is 7f signed max
-                else 
-                    sel := "10";  -- result is 80 signed min
-                end if;
-            else
-                sel := "11";  --  result is ff unsigned max
-            end if;
-        end if;
-        return sel;
-    end sat_mux;
-
-    procedure sat_sel (sel : in std_logic_vector(1 downto 0);
-                       r : in std_logic_vector;
-                       res : out std_logic_vector) is
-    begin
-        case sel is
-            when "00" => res := r;
-            when "01" => res := '0' & (res'left-1 downto 0 => '1');
-            when "10" => res := '1' & (res'left-1 downto 0 => '0');
-            when "11" => res := (others => '1');
-            when others => res := (others => '0');
-        end case;
-    end sat_sel;
-
 
     function add(a, b : vector_component;
-                 sign, sat : std_logic) return vector_component is
-        variable z : std_logic_vector(VLEN downto 0);
-        variable mux : std_logic_vector(1 downto 0);
-        variable res : vector_component;
-        variable ovf : std_logic;
+                 sign, sat : std_logic) return std_logic_vector is
+        variable z : integer;
     begin
-        z := ('0'&a) + ('0'&b);
         if sign = '1' then 
-            ovf := (a(a'left) xnor b(b'left)) and (a(a'left) xor z(a'left));
-        else ovf := z(z'left);
+            z := to_integer(signed(a)) + to_integer(signed(b));
+            return signed_sat(z, high_prec_component'length, sat);
+        else 
+            z := to_integer(unsigned(a)) + to_integer(unsigned(b));
+            return unsigned_sat(z, high_prec_component'length, sat);
         end if;
-        --z := ((sign and a(a'left))&a) + ((sign and b(b'left))&b);
-        --ovf := z(z'left) or (z(a'left) and sign);
-        mux := sat_mux(a(a'left), b(b'left), sign, sat, ovf);
-        sat_sel(mux, z(vector_component'range), res);
-        return res;
     end add;
 
-    function sum(a : vector_reg_type; sign, sat : std_logic) return word is 
-        variable acc, res : std_logic_vector(VLEN+1 downto 0);
-        variable tmp : l1_sum_array;
-        variable mux : std_logic_vector(1 downto 0);
-        variable ovf : std_logic;
-        variable z : word;
-    begin 
-        z:= (others => '0');
-        for i in 0 to VSIZE/2-1 loop 
-            tmp(i) := ('0' & a(i*2)) + ('0' & a(i*2+1));
-        end loop;
-        acc :=  ('0' & tmp(0)) + ('0' & tmp(1));
-        ovf := acc(acc'left) or acc(acc'left-1);
-        if sign = '1' then
-            if acc(acc'left-2) = '1' then
-                ovf := acc(acc'left) nand acc(acc'left-1);
-            end if;
-        end if;
-        mux := sat_mux(tmp(0)(tmp(0)'left), tmp(1)(tmp(1)'left), sign, sat, ovf);
-        sat_sel(mux, acc, res);
-        if(sign = '1') then
-            if (sat = '1') then
-                z := std_logic_vector(resize(signed(res), word'length));
-            else 
-                z := std_logic_vector(resize(signed(res(vector_component'range)), word'length));
-            end if;
-        else 
-            z := std_logic_vector(resize(unsigned(res), word'length));
-        end if;
-        return z;
-    end sum;
 
     function sub(a, b : vector_component;
-                 sign, sat : std_logic) return vector_component is
-        variable z : std_logic_vector(VLEN downto 0);
+                 sign, sat : std_logic) return std_logic_vector is
+        variable z : integer range -512 to 512;
     begin
-        z := ((sign and a(a'left))&a) - ((sign and b(b'left))&b);
-        if sign = '1' and sat = '1' then
-            if a(a'left) /= b(b'left) and a(a'left) /= z(a'left) then 
-                if a(a'left) = '1' then 
-                    z(vector_component'range) := '1'&(VLEN-2 downto 0 => '0');
-                else 
-                    z(vector_component'range) := '0'&(VLEN-2 downto 0 => '1');
-                end if;
-            end if;
-        elsif sign = '0' and sat = '1' then
-            if z(z'left) = '1' then 
-                z(vector_component'range) := (others => '0');
-            end if;
+        if sign = '1' then 
+            z := to_integer(signed(a)) - to_integer(signed(b));
+            return signed_sat(z, high_prec_component'length, sat);
+        else 
+            z := to_integer(signed(a)) - to_integer(signed(b));
+            return unsigned_sat(z, high_prec_component'length, sat);
         end if;
-        return z(vector_component'range);
     end sub;
 
     -- max function
     function max(a, b : vector_component;
-                 sign : std_logic) return vector_component is 
+                 sign : std_logic) return high_prec_component is 
         variable z : vector_component;
     begin
         if sign = '1' then 
@@ -361,27 +278,13 @@ architecture rtl of simd_module is
             else z := b;
             end if;
         end if;
-        return z;
+        return extend(z, sign, high_prec_component'length);
     end max;
-
-    --max recursive function
-    function max_red(a : vector_reg_type; sign : std_logic) return word is
-        variable acc : vector_component;
-        variable z : word;
-    begin
-        acc := a(0);
-        for i in 1 to VSIZE-1 loop
-            acc := max(acc, a(i), sign);
-        end loop;
-        z := (others => (sign and acc(acc'left)));
-        z(acc'range) := acc;
-        return z;
-    end max_red;
         
 
     -- min function
     function min(a, b : vector_component;
-                 sign : std_logic) return vector_component is 
+                 sign : std_logic) return high_prec_component is 
         variable z : vector_component;
     begin
         if sign = '1' then 
@@ -393,22 +296,8 @@ architecture rtl of simd_module is
             else z := a;
             end if;
         end if;
-        return z;
+        return extend(z, sign, high_prec_component'length);
     end min;
-
-    --min recursive function
-    function min_red(a : vector_reg_type; sign : std_logic) return word is
-        variable acc : vector_component;
-        variable z : word;
-    begin
-        acc := a(0);
-        for i in 1 to VSIZE-1 loop
-            acc := min(acc, a(i), sign);
-        end loop;
-        z := (others => (sign and acc(acc'left)));
-        z(acc'range) := acc;
-        return z;
-    end min_red;
 
     --logic operations
     function logic_op(a, b : vector_component;
@@ -427,38 +316,62 @@ architecture rtl of simd_module is
         return z;
     end logic_op;
 
-    function shift(a, b : vector_component; sat : std_logic) return vector_component is
-        variable z : vector_component;
+
+    function shift_lp(a, b : vector_component; sat : std_logic) return high_prec_component is
+        variable z : high_prec_component;
         variable i : integer;
+        variable c : high_prec_component;
     begin
         i := to_integer(signed(b(b'left downto 1)));
+        c := extend(a, b(0), high_prec_component'length);
         if b(b'left) = '1' then -- shift right
             if b(0) = '1' then -- arithmetic
-                z := std_logic_vector(shift_right(signed(a), -i));
+                z := std_logic_vector(shift_right(signed(c), -i));
             else 
-                z := std_logic_vector(shift_right(unsigned(a), -i));
+                z := std_logic_vector(shift_right(unsigned(c), -i));
             end if;
         else 
-            z := std_logic_vector(shift_left(unsigned(a), i));
+            z := std_logic_vector(shift_left(unsigned(c), i));
+        end if;
+        return z;
+    end shift_lp;
+
+    function shift_hp(a, b, rdh : vector_component; sat : std_logic) return high_prec_component is
+        variable z : high_prec_component;
+        variable i : integer;
+        variable c : high_prec_component;
+    begin
+        i := to_integer(signed(b(b'left downto 1)));
+        c := rdh & a;
+        if b(b'left) = '1' then -- shift right
+            if b(0) = '1' then -- arithmetic
+                z := std_logic_vector(shift_right(signed(c), -i));
+            else 
+                z := std_logic_vector(shift_right(unsigned(c), -i));
+            end if;
+        else 
+            z := std_logic_vector(shift_left(unsigned(c), i));
+        end if;
+        return z;
+    end shift_hp;
+
+    function shift(a, b, rdh : vector_component; sat, hp : std_logic) return high_prec_component is
+        variable z : high_prec_component;
+    begin
+        if hp = '1' then 
+            z := shift_hp(a,b,rdh,sat);
+        else 
+            z := shift_lp(a,b,sat);
         end if;
         return z;
     end shift;
 
-    function xor_red(a : vector_reg_type) return word is
-        variable acc : vector_component;
-    begin
-        acc := a(0);
-        for i in 1 to VSIZE-1 loop
-            acc := a(i) xor acc;
-        end loop;
-        return std_logic_vector(resize(unsigned(acc), word'length));
-    end xor_red;
 
 
     --apply mask to vector
-    procedure mask(vector, original : in vector_reg_type;
+    procedure mask(vector, original : in inter_reg_type;
                    msk : in std_logic_vector(VSIZE-1 downto 0);
-                   msk_res : out vector_reg_type) is
+                   msk_res : out inter_reg_type) is
     begin 
         msk_res := original;
         for i in msk'range loop
@@ -469,26 +382,121 @@ architecture rtl of simd_module is
     end mask;
 
     --apply shift and accumulate
-    procedure shift_and_acc(be : in s2byteen_reg_type;
-                           acc : in vector_reg_type;
-                           data: in vector_reg_type;
-                           res : out vector_reg_type;
-                           nxt_be : out s2byteen_reg_type) is
-        variable new_acc : vector_reg_type;
-    begin
-        new_acc := acc;
-        for i in be'range loop
-            if be(i) = '1' then
-                new_acc(i) := data(0);
-            end if;
-        end loop;
-        res := new_acc; nxt_be := be(be'left-1 downto 0) & '0';
-    end shift_and_acc;
+    --procedure shift_and_acc(be : in s2byteen_reg_type;
+    --                       acc : in vector_reg_type;
+    --                       data: in vector_reg_type;
+    --                       res : out vector_reg_type;
+    --                       nxt_be : out s2byteen_reg_type) is
+    --    variable new_acc : vector_reg_type;
+    --begin
+    --    new_acc := acc;
+    --    for i in be'range loop
+    --        if be(i) = '1' then
+    --            new_acc(i) := data(0);
+    --        end if;
+    --    end loop;
+    --    res := new_acc; nxt_be := be(be'left-1 downto 0) & '0';
+    --end shift_and_acc;
 
 
     ---------------------------------------------------------------
     -- REDUCTION OPERATIONS (S2) --
     --------------------------------------------------------------
+    procedure s2_select(sel : in std_logic_vector(2 downto 0);
+                        ra, sum_res, max_res, min_res, xor_res : in word;
+                        rc : out word) is 
+    begin
+        case sel is
+            when "000" => rc := ra;
+            when "001" | "101" => rc := sum_res;
+            when "010" | "110" => rc := max_res;
+            when "011" | "111" => rc := min_res;
+            when "100" => rc := xor_res;
+            when others =>rc := ra;
+        end case;
+    end s2_select;
+
+    function sum(a : inter_reg_type; sign, sat : std_logic) return word is 
+        variable acc : integer := 0;
+    begin 
+        if sign = '1' then 
+            for i in 0 to VSIZE-1 loop
+                acc := acc + to_integer(signed(a(i)));
+            end loop;
+            return signed_sat(acc, word'length, sat);
+        else 
+            for i in 0 to VSIZE-1 loop
+                acc := acc + to_integer(unsigned(a(i)));
+            end loop;
+            return unsigned_sat(acc, word'length, sat);
+        end if;
+    end sum;
+
+    --max recursive function
+    function max_red(a : inter_reg_type; sign : std_logic) return word is
+        variable acc : integer;
+    begin
+        if sign = '1' then 
+            acc := to_integer(signed(a(0)));
+            for i in 1 to VSIZE-1 loop
+                if to_integer(signed(a(i))) > acc then 
+                    acc := to_integer(signed(a(i)));
+                end if;
+            end loop;
+        else 
+            acc := to_integer(unsigned(a(0)));
+            for i in 1 to VSIZE-1 loop
+                if to_integer(unsigned(a(i))) > acc then 
+                    acc := to_integer(unsigned(a(i)));
+                end if;
+            end loop;
+        end if;
+        return unsigned_sat(acc, word'length, '0');
+    end max_red;
+
+    --min recursive function
+    function min_red(a : inter_reg_type; sign : std_logic) return word is
+        variable acc : integer;
+    begin
+        if sign = '1' then 
+            acc := to_integer(signed(a(0)));
+            for i in 1 to VSIZE-1 loop
+                if to_integer(signed(a(i))) < acc then 
+                    acc := to_integer(signed(a(i)));
+                end if;
+            end loop;
+        else 
+            acc := to_integer(unsigned(a(0)));
+            for i in 1 to VSIZE-1 loop
+                if to_integer(unsigned(a(i))) < acc then 
+                    acc := to_integer(unsigned(a(i)));
+                end if;
+            end loop;
+        end if;
+        return unsigned_sat(acc, word'length, '0');
+    end min_red;
+
+    function xor_red(a : inter_reg_type) return word is
+        variable acc : vector_component;
+    begin
+        acc := a(0)(vector_component'range);
+        for i in 1 to VSIZE-1 loop
+            acc := a(i)(vector_component'range) xor acc;
+        end loop;
+        return std_logic_vector(resize(unsigned(acc), word'length));
+    end xor_red;
+
+    function sign_ext(op1 : std_logic_vector(4 downto 0); op2 : std_logic_vector(2 downto 0)) return std_logic is
+        variable sign : std_logic;
+    begin
+        sign := not op1(4);
+        case op1 is 
+            when S1_ADD | S1_NOP | S1_MOVB => 
+                sign := not op2(2) and (op2(1) or op2(0));
+            when others =>
+        end case;
+        return sign;
+    end sign_ext;
 
 begin
     ---------------------------------------------------------------
@@ -503,25 +511,17 @@ begin
     comb: process(r, sdi, lpmulo)
         variable v : registers;
         variable rs1, rs2 : vector_reg_type;
-        variable s1_res : vector_reg_type;
-        variable add_res, sub_res, mul_res, max_res, min_res, logic_res, shift_res: vector_reg_type;
+        variable s1_res : inter_reg_type;
+        variable s1_ra, s1_r2, add_res, sub_res, mul_res, max_res, min_res, logic_res, shift_res: inter_reg_type;
         variable s1_alusel : std_logic_vector(3 downto 0);
         variable s2sum_res, s2max_res, s2min_res, s2xor_res : word;
 
+        variable sign : std_logic;
         variable s2_res : word;
-        variable nxt_acc : vector_reg_type;
-        variable nxt_be : s2byteen_reg_type;
+        --variable nxt_acc : vector_reg_type;
+        --variable nxt_be : s2byteen_reg_type;
     begin
         v := r;
-
-        -- INPUT TO CTRL
-        if sdi.ctrl_reg_we = '1' then
-            v.ctr.mk := sdi.mask_value;
-            v.ctr.be := sdi.res_byte_en;
-            v.ctr.sa := swizzling_set(sdi.swiz_veca); 
-            v.ctr.sb := swizzling_set(sdi.swiz_vecb);
-            v.ctr.ac := vector_reg_res;
-        end if;
 
         -- INPUT TO S1 --
         v.s1.ra := to_vector(sdi.ra); --swizzling(to_vector(sdi.ra),r.ctr.sa);
@@ -530,8 +530,8 @@ begin
 
 
         --Swizzling
-        rs1 := swizzling(r.s1.ra, r.ctr.sa);
-        rs2 := swizzling(r.s1.rb, r.ctr.sb);
+        rs1 := swizzling(r.s1.ra, sdi.ctrl.sa);
+        rs2 := swizzling(r.s1.rb, sdi.ctrl.sb);
 
         for i in vector_reg_type'range loop
             lpmuli(i).opA <= rs1(i);
@@ -540,22 +540,26 @@ begin
             lpmuli(i).sat <= r.s1.op1(3);
         end loop;
 
+        sign := sign_ext(r.s1.op1, r.s1.op2);
         s1_mux(r.s1.op1, s1_alusel);
         -- S1 TO S2 --
         for i in vector_reg_type'range loop
-            add_res(i) := add(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
-            sub_res(i) := sub(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
+            add_res(i) := add(rs1(i), rs2(i), sign, r.s1.op1(3));
+            sub_res(i) := sub(rs1(i), rs2(i), sign, r.s1.op1(3));
             mul_res(i) := lpmulo(i).mul_res;
-            max_res(i) := max(rs1(i), rs2(i), not r.s1.op1(4));
-            min_res(i) := min(rs1(i), rs2(i), not r.s1.op1(4));
-            logic_res(i) := logic_op(rs1(i), rs2(i), r.s1.op1(2 downto 0));
-            shift_res(i) := shift(rs1(i), rs2(i), r.s1.op1(3));
+            max_res(i) := max(rs1(i), rs2(i), sign);
+            min_res(i) := min(rs1(i), rs2(i), sign);
+            shift_res(i) := shift(rs1(i), rs2(i), r.rdh(i), r.s1.op1(3), sdi.ctrl.hp);
+            logic_res(i) := extend(logic_op(rs1(i), rs2(i), r.s1.op1(2 downto 0)), '0', high_prec_component'length);
+            s1_ra(i)     := extend(r.s1.ra(i), sign, high_prec_component'length);
+            s1_r2(i)     := extend(rs2(i), sign, high_prec_component'length);
         end loop;
-        s1_select(s1_alusel, r.s1.ra, rs2, add_res, sub_res, max_res,
+        s1_select(s1_alusel, s1_ra, s1_r2, add_res, sub_res, max_res,
                   min_res, logic_res, shift_res, mul_res, s1_res);
-        mask(s1_res, r.s1.ra, r.ctr.mk, v.s2.ra);
+        mask(s1_res, s1_ra, sdi.ctrl.mk, v.s2.ra);
 
         v.s2.op2 := r.s1.op2; v.s2.sat := r.s1.op1(3); v.s2.en := r.s1.en;
+        v.rdh := to_vector(v.s2.ra, true);
 
         -- S2 TO S3 --
         s2sum_res := sum(r.s2.ra, not r.s2.op2(2), r.s2.sat);
@@ -564,18 +568,19 @@ begin
         s2xor_res := xor_red(r.s2.ra);
 
         s2_select(r.s2.op2, to_word(r.s2.ra), s2sum_res, s2max_res, s2min_res, s2xor_res, s2_res);
-        shift_and_acc(r.ctr.be, r.ctr.ac, to_vector(s2_res), nxt_acc, nxt_be);
+        --shift_and_acc(sdi.ctrl.be, sdi.ctrl.ac, to_vector(s2_res), nxt_acc, nxt_be);
+        v.s3.rc := s2_res;
 
-        if r.s2.op2 /= S2_NOP and r.s2.en = '1' and r.ctr.be /= (s2byteen_reg_type'range => '0') then 
-            v.s3.rc := to_word(nxt_acc);
-            v.ctr.ac := nxt_acc;
-            v.ctr.be := nxt_be;
-        else 
-            v.s3.rc := s2_res;
-            if r.ctr.be = (s2byteen_reg_type'range => '0') then
-                v.ctr.ac := vector_reg_res;
-            end if;
-        end if;
+       -- if r.s2.op2 /= S2_NOP and r.s2.en = '1' and sdi.ctrl.be /= (s2byteen_reg_type'range => '0') then 
+       --     v.s3.rc := to_word(nxt_acc);
+       --     sdi.ctrl.ac := nxt_acc;
+       --     v.ctr.be := nxt_be;
+       -- else 
+       --     v.s3.rc := s2_res;
+       --     if r.ctr.be = (s2byteen_reg_type'range => '0') then
+       --         v.ctr.ac := vector_reg_res;
+       --     end if;
+       -- end if;
 
         -- S3 TO OUTPUT --
         sdo.simd_res <= r.s3.rc;
@@ -601,6 +606,16 @@ begin
                 r <= RRES;
             end if;
         end if;
+    end process;
+
+    ---------------------------------------------------------------
+    -- PRINT SIMD VERSION --
+    --------------------------------------------------------------
+    x : process
+    begin
+        wait for 5 * 1 ns;
+        print("AI SIMD version: " & simd_version);
+        wait;
     end process;
 
 end; 

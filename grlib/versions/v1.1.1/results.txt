@@ -1,0 +1,9 @@
+#cycles TestName MatSize (simd|orig) speedup
+ 67.870.004 filter 256x256 simd 3X
+207.739.142 filter 256x256 orig 1X
+
+  5.994.502 gray   256x256 simd 2.2X
+ 13.155.919 gray   256x256 orig 1X
+
+  4.425.816 grayv2 256x256 simd 3.4X
+ 15.236.721 gray_n 256x256 orig 1X

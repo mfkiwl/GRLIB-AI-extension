@@ -495,13 +495,14 @@ architecture rtl of iu3 is
         sa => swizzling_init,
         sb => swizzling_init,
         ol => (others => '0'),
-        od => (others => '0')
+        od => (others => '0'),
+        hp => '0'
         --ac => vector_reg_res
     );
 
     function to_word(reg : simd_ctrl_reg_type) return word is
     begin
-        return "00000" & reg.od & reg.ol & swizzling_get(reg.sa) & swizzling_get(reg.sb) & reg.ms & reg.mk;
+        return "0000" & reg.hp & reg.od & reg.ol & swizzling_get(reg.sa) & swizzling_get(reg.sb) & reg.ms & reg.mk;
     end to_word;
 
     function to_scr(data : word) return simd_ctrl_reg_type is 
@@ -513,6 +514,7 @@ architecture rtl of iu3 is
         reg.sb := swizzling_set(data(20 downto 13));
         reg.ol := data(22 downto 21);
         reg.od := data(26 downto 23);
+        reg.hp := data(27);
         return reg;
     end to_scr;
   

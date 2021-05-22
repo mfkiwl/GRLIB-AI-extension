@@ -60,6 +60,7 @@ architecture rtl of simd_module is
         s1 : s1_reg_type;
         s2 : s2_reg_type;
         s3 : s3_reg_type;
+        rdh: vector_reg_type;
     end record;
 
 
@@ -97,7 +98,8 @@ architecture rtl of simd_module is
     constant RRES : registers := (
         s1 => s1_reg_res,
         s2 => s2_reg_res,
-        s3 => s3_reg_res
+        s3 => s3_reg_res,
+        rdh=> vector_reg_res
     );
 
     ---------------------------------------------------------------
@@ -108,6 +110,18 @@ architecture rtl of simd_module is
     begin
         for i in vec'range loop
             vec(i) := data(VLEN*i+VLEN-1 downto VLEN*i);
+        end loop;
+        return vec;
+    end;
+    function to_vector(data : inter_reg_type; high : boolean) return vector_reg_type is
+        variable vec : vector_reg_type;
+    begin
+        for i in vec'range loop
+            if high then 
+                vec(i) := data(i)(data(i)'left downto vec(i)'length);
+            else 
+                vec(i) := data(i)(vec(i)'range);
+            end if;
         end loop;
         return vec;
     end;
@@ -264,7 +278,7 @@ architecture rtl of simd_module is
             else z := b;
             end if;
         end if;
-        return (z(z'left) and sign)&z;
+        return extend(z, sign, high_prec_component'length);
     end max;
         
 
@@ -282,7 +296,7 @@ architecture rtl of simd_module is
             else z := a;
             end if;
         end if;
-        return (z(z'left) and sign)&z;
+        return extend(z, sign, high_prec_component'length);
     end min;
 
     --logic operations
@@ -302,19 +316,52 @@ architecture rtl of simd_module is
         return z;
     end logic_op;
 
-    function shift(a, b : vector_component; sat : std_logic) return high_prec_component is
+
+    function shift_lp(a, b : vector_component; sat : std_logic) return high_prec_component is
         variable z : high_prec_component;
         variable i : integer;
+        variable c : high_prec_component;
     begin
         i := to_integer(signed(b(b'left downto 1)));
+        c := extend(a, b(0), high_prec_component'length);
         if b(b'left) = '1' then -- shift right
             if b(0) = '1' then -- arithmetic
-                z := std_logic_vector(shift_right(signed(a(a'left)&a), -i));
+                z := std_logic_vector(shift_right(signed(c), -i));
             else 
-                z := std_logic_vector(shift_right(unsigned('0'&a), -i));
+                z := std_logic_vector(shift_right(unsigned(c), -i));
             end if;
         else 
-            z := std_logic_vector(shift_left(unsigned('0'&a), i));
+            z := std_logic_vector(shift_left(unsigned(c), i));
+        end if;
+        return z;
+    end shift_lp;
+
+    function shift_hp(a, b, rdh : vector_component; sat : std_logic) return high_prec_component is
+        variable z : high_prec_component;
+        variable i : integer;
+        variable c : high_prec_component;
+    begin
+        i := to_integer(signed(b(b'left downto 1)));
+        c := rdh & a;
+        if b(b'left) = '1' then -- shift right
+            if b(0) = '1' then -- arithmetic
+                z := std_logic_vector(shift_right(signed(c), -i));
+            else 
+                z := std_logic_vector(shift_right(unsigned(c), -i));
+            end if;
+        else 
+            z := std_logic_vector(shift_left(unsigned(c), i));
+        end if;
+        return z;
+    end shift_hp;
+
+    function shift(a, b, rdh : vector_component; sat, hp : std_logic) return high_prec_component is
+        variable z : high_prec_component;
+    begin
+        if hp = '1' then 
+            z := shift_hp(a,b,rdh,sat);
+        else 
+            z := shift_lp(a,b,sat);
         end if;
         return z;
     end shift;
@@ -439,6 +486,18 @@ architecture rtl of simd_module is
         return std_logic_vector(resize(unsigned(acc), word'length));
     end xor_red;
 
+    function sign_ext(op1 : std_logic_vector(4 downto 0); op2 : std_logic_vector(2 downto 0)) return std_logic is
+        variable sign : std_logic;
+    begin
+        sign := not op1(4);
+        case op1 is 
+            when S1_ADD | S1_NOP | S1_MOVB => 
+                sign := not op2(2) and (op2(1) or op2(0));
+            when others =>
+        end case;
+        return sign;
+    end sign_ext;
+
 begin
     ---------------------------------------------------------------
     -- MAIN BODY --
@@ -457,6 +516,7 @@ begin
         variable s1_alusel : std_logic_vector(3 downto 0);
         variable s2sum_res, s2max_res, s2min_res, s2xor_res : word;
 
+        variable sign : std_logic;
         variable s2_res : word;
         --variable nxt_acc : vector_reg_type;
         --variable nxt_be : s2byteen_reg_type;
@@ -480,24 +540,26 @@ begin
             lpmuli(i).sat <= r.s1.op1(3);
         end loop;
 
+        sign := sign_ext(r.s1.op1, r.s1.op2);
         s1_mux(r.s1.op1, s1_alusel);
         -- S1 TO S2 --
         for i in vector_reg_type'range loop
-            add_res(i) := add(rs1(i), rs2(i), not r.s1.op2(2) or (r.s1.op1(3) and (not r.s1.op1(4))), r.s1.op1(3));
-            sub_res(i) := sub(rs1(i), rs2(i), not r.s1.op1(4), r.s1.op1(3));
-            mul_res(i) := extend(lpmulo(i).mul_res, not r.s1.op1(4), high_prec_component'length);
-            max_res(i) := max(rs1(i), rs2(i), not r.s1.op1(4));
-            min_res(i) := min(rs1(i), rs2(i), not r.s1.op1(4));
+            add_res(i) := add(rs1(i), rs2(i), sign, r.s1.op1(3));
+            sub_res(i) := sub(rs1(i), rs2(i), sign, r.s1.op1(3));
+            mul_res(i) := lpmulo(i).mul_res;
+            max_res(i) := max(rs1(i), rs2(i), sign);
+            min_res(i) := min(rs1(i), rs2(i), sign);
+            shift_res(i) := shift(rs1(i), rs2(i), r.rdh(i), r.s1.op1(3), sdi.ctrl.hp);
             logic_res(i) := extend(logic_op(rs1(i), rs2(i), r.s1.op1(2 downto 0)), '0', high_prec_component'length);
-            shift_res(i) := shift(rs1(i), rs2(i), r.s1.op1(3));
-            s1_ra(i)     := extend(r.s1.ra(i), not r.s1.op2(2), high_prec_component'length);
-            s1_r2(i)     := extend(rs2(i), not r.s1.op2(2), high_prec_component'length);
+            s1_ra(i)     := extend(r.s1.ra(i), sign, high_prec_component'length);
+            s1_r2(i)     := extend(rs2(i), sign, high_prec_component'length);
         end loop;
         s1_select(s1_alusel, s1_ra, s1_r2, add_res, sub_res, max_res,
                   min_res, logic_res, shift_res, mul_res, s1_res);
         mask(s1_res, s1_ra, sdi.ctrl.mk, v.s2.ra);
 
         v.s2.op2 := r.s1.op2; v.s2.sat := r.s1.op1(3); v.s2.en := r.s1.en;
+        v.rdh := to_vector(v.s2.ra, true);
 
         -- S2 TO S3 --
         s2sum_res := sum(r.s2.ra, not r.s2.op2(2), r.s2.sat);

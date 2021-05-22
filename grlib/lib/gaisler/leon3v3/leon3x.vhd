@@ -149,6 +149,8 @@ constant dummy_ft_consistency_check:
 signal holdn : std_logic;
 signal rfi   : iregfile_in_type;
 signal rfo   : iregfile_out_type;
+--signal rfo1   : iregfile_out_type;
+--signal rfo2   : iregfile_out_type;
 signal crami : cram_in_type;
 signal cramo : cram_out_type;
 signal tbi   : tracebuf_in_type;
@@ -197,6 +199,11 @@ begin
                  tbi, tbo, tbi_2p, tbo_2p, fpi, fpo, cpi, cpo, irqi, irqo, dbgi, dbgo, clk, clk2, clken
                  );
   
+--       rfo.data1 <= rfo1.data1 when rfo1.data1 = rfo2.data1 else
+--                    rfo2.data1;
+--       rfo.data2 <= rfo1.data2 when rfo1.data2 = rfo2.data2 else
+--                    rfo2.data2;
+
      -- IU register file
      rf0 : regfile_3p_l3 generic map (MEMTECH_MOD*(1-IURF_INFER), IRFBITS, 32, IRFWT, IREGNUM,
                                       scantest, RFREADHOLD)
@@ -205,6 +212,14 @@ begin
                  rfi.raddr2(IRFBITS-1 downto 0), rfi.ren2, rfo.data2,
                  ahbi.testin
                  );
+
+--     rf1 : regfile_3p_l3 generic map (MEMTECH_MOD*(1-IURF_INFER), IRFBITS, 32, IRFWT, IREGNUM,
+--                                      scantest, RFREADHOLD)
+--       port map (gclk2, rfi.waddr(IRFBITS-1 downto 0), rfi.wdata, rfi.wren,
+--                 gclk2, rfi.raddr1(IRFBITS-1 downto 0), rfi.ren1, rfo2.data1,
+--                 rfi.raddr2(IRFBITS-1 downto 0), rfi.ren2, rfo2.data2,
+--                 ahbi.testin
+--                 );
 
      -- cache memory
      cmem0 : cachemem

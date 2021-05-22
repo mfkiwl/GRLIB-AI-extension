@@ -10,7 +10,7 @@ grayscale: grayscale.c arrays.h image256.h image32.h
 	sparc-gaisler-elf-objdump -d grayscale.o > grayscale.dump
 
 grayscale_simd: grayscale_simd.c arrays.h image256.h image32.h
-	$(XCC) $(XCFLAGS) -D N=$(par1) -c $<
+	$(XCC) $(XCFLAGS) -D N=$(par1) -ffixed-l0 -c $< 
 	$(XCC) $(XCFLAGS) grayscale_simd.o -o grayscale_simd.exe 
 	sparc-gaisler-elf-objcopy -O srec --gap-fill 0 grayscale_simd.exe grayscale_simd.srec
 	cp grayscale_simd.srec $(CURRENT_DIR)/test.srec

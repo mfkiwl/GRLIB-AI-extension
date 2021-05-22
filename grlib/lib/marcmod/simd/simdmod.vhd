@@ -5,7 +5,7 @@ use grlib.stdlib.all;
 
 package simdmod is
 
-    constant simd_version : string := "v1.1";
+    constant simd_version : string := "v1.2";
     constant XLEN : integer :=  32; --CFG_XLEN;
     constant VLEN : integer :=  8; --CFG_VLEN;
     constant LOGSZ : integer := 2; -- CFG_LOGSZ;
@@ -18,7 +18,7 @@ package simdmod is
     type vector_reg_type is array (0 to VSIZE-1) of vector_component;
 
     --interstage vector register type (high precision);
-    subtype high_prec_component is std_logic_vector(VLEN downto 0);
+    subtype high_prec_component is std_logic_vector(2*VLEN-1 downto 0);
     type inter_reg_type is array (0 to VSIZE-1) of high_prec_component;
 
     ------------------------------------------------------------
@@ -46,13 +46,14 @@ package simdmod is
         sb : swizzling_reg_type; -- swizzling rb
         ol : output_length_type; -- output type (word/half/byte)
         od : output_dup_select;  -- output duplication
+        hp : std_logic;          -- use rhd for shift and high prec. multiplication
         --ac : vector_reg_type;
     end record;
 
 
     type simd_in_type is record
-        ra          : std_logic_vector (XLEN-1 downto 0);         -- operand 1 data
-        rb          : std_logic_vector (XLEN-1 downto 0);         -- operand 2 data
+        ra          : word;                                       -- operand 1 data
+        rb          : word;                                       -- operand 2 data
         op1         : std_logic_vector (4 downto 0);              -- operation code stage1
         op2         : std_logic_vector (2 downto 0);              -- operation code stage2
         rc_we       : std_logic;                                  -- we on destination (work)
@@ -60,20 +61,20 @@ package simdmod is
     end record;
     
     type simd_out_type is record
-        simd_res    : std_logic_vector(XLEN-1 downto 0); -- output data
-        s1bp        : std_logic_vector(XLEN-1 downto 0); -- s1 bypass output data
-        s2bp        : std_logic_vector(XLEN-1 downto 0); -- s2 bp output data
+        simd_res    : word; -- output data
+        s1bp        : word; -- s1 bypass output data
+        s2bp        : word; -- s2 bp output data
     end record;
 
     type lpmul_in_type is record
-        opA  : std_logic_vector(VLEN-1 downto 0);
-        opB  : std_logic_vector(VLEN-1 downto 0);
+        opA  : vector_component;
+        opB  : vector_component;
         sign : std_logic;
         sat  : std_logic;
     end record;
 
     type lpmul_out_type is record
-        mul_res : std_logic_vector(VLEN-1 downto 0);
+        mul_res : high_prec_component;
     end record;
 
     ---------------------------------------------------------------

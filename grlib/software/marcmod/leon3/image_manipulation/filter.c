@@ -53,5 +53,5 @@ int main(){
     unsigned char dest[N][N];
     //init(source);
     filter(source, dest);
-//    print(dest);
+// print(dest);
 }

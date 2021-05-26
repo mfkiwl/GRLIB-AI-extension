@@ -2384,55 +2384,58 @@ end;
       immediate_data := (others => '0'); inst := insn;
       rhzeros := to_integer(unsigned(inst(3 downto 1))); --number of right hand 0s, for pow2
 
-      case inst(9 downto 5) is -- custom immediate depending on operation
-          -- for additions/subtractions value in inst(4 downto 0) is operand
-          when S1_ADD | S1_SADD | S1_USADD | S1_SUB | S1_SSUB | S1_USSUB => -- no need for negative values we can use sub or add
-              immediate_data := "000" & inst(4 downto 0);
+      if inst(13) = '1' then 
+          case inst(9 downto 5) is -- custom immediate depending on operation
+                                   -- for additions/subtractions value in inst(4 downto 0) is operand
+              when S1_ADD | S1_SADD | S1_USADD | S1_SUB | S1_SSUB | S1_USSUB => -- no need for negative values we can use sub or add
+                  immediate_data := "000" & inst(4 downto 0);
           -- for multiplications/division signed first bit is sign, 3 next indicate 2^(1+inst(3 downto 1)) 
           -- and inst(0) adds one (allows for 3, 5, 9, -1, -3, -7...)
-          when S1_MUL | S1_SMUL => 
-              report integer'image(to_integer(unsigned(inst)));
-              if rhzeros < 7 then 
-                  immediate_data(rhzeros + 1) := '1';
-              else 
-                  immediate_data(7) := '1';
-              end if;
-              if inst(4) = '1' then
-                  immediate_data := not(immediate_data) + "00000001";
-              end if;
-              immediate_data(0) := inst(0);
+              when S1_MUL | S1_SMUL => 
+                  if rhzeros < 7 then 
+                      immediate_data(rhzeros + 1) := '1';
+                  else 
+                      immediate_data(7) := '1';
+                  end if;
+                  if inst(4) = '1' then
+                      immediate_data := not(immediate_data) + "00000001";
+                  end if;
+                  immediate_data(0) := inst(0);
           -- same as for signed multiplication/division but no negatives, instead inst(4) is used with inst(0)
           -- adds inst(4)inst(0) (allowing 3, 5, 6, 7, 9, 10, 11...)
-          when S1_UMUL | S1_USMUL  => 
-              immediate_data(rhzeros + 1) := '1';
-              immediate_data(1 downto 0) := inst(4) & inst(0);
+              when S1_UMUL | S1_USMUL  => 
+                  immediate_data(rhzeros + 1) := '1';
+                  immediate_data(1 downto 0) := inst(4) & inst(0);
           -- same as for multiplication but starts at 0
           -- inst(0) is subtracted (added for negative)
-          when S1_MAX | S1_MIN =>
-              if inst(4 downto 0) /= "00000" then 
-                immediate_data(rhzeros + 1) := '1';
-                if inst(4) = '1' then
-                    immediate_data := not(immediate_data) + "00000001";
-                    if inst(0) = '1' then 
-                        immediate_data := immediate_data + "11111111";
-                    end if;
-                else 
-                    immediate_data(0) := inst(0);
-                end if;
-            end if;
+              when S1_MAX | S1_MIN =>
+                  if inst(4 downto 0) /= "00000" then 
+                      immediate_data(rhzeros + 1) := '1';
+                      if inst(4) = '1' then
+                          immediate_data := not(immediate_data) + "00000001";
+                          if inst(0) = '1' then 
+                              immediate_data := immediate_data + "11111111";
+                          end if;
+                      else 
+                          immediate_data(0) := inst(0);
+                      end if;
+                  end if;
           -- same as for max/min but with all positive
           -- inst(0) is subtracted
-          when S1_UMAX | S1_UMIN =>
-              if inst(4 downto 0) /= "00000" then 
-                  immediate_data(rhzeros + 1) := '1';
-                  immediate_data(0) := inst(0);
-              end if;
-          when S1_SHFT | S1_SSHFT => 
-              immediate_data := (7 downto 5 => inst(4)) & inst(4 downto 0);
-          when others =>
-              immediate_data := "000" & inst(4 downto 0);
-      end case;
-      return immediate_data & immediate_data & immediate_data & immediate_data;
+              when S1_UMAX | S1_UMIN =>
+                  if inst(4 downto 0) /= "00000" then 
+                      immediate_data(rhzeros + 1) := '1';
+                      immediate_data(0) := inst(0);
+                  end if;
+              when S1_SHFT | S1_SSHFT => 
+                  immediate_data := (7 downto 5 => inst(4)) & inst(4 downto 0);
+              when others =>
+                  immediate_data := "000" & inst(4 downto 0);
+          end case;
+          return immediate_data & immediate_data & immediate_data & immediate_data;
+      else 
+          return (others => '0');
+      end if;
   end;
 
 

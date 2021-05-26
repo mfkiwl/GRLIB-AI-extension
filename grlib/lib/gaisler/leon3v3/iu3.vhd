@@ -173,6 +173,7 @@ architecture rtl of iu3 is
   constant S1_SMUL : std_logic_vector (4 downto 0) :="01111";
   constant S1_MOVB : std_logic_vector (4 downto 0) :="10000";
   constant S1_SHFT : std_logic_vector (4 downto 0) :="10001";
+
   constant S1_UMUL : std_logic_vector (4 downto 0) :="10011";
   constant S1_UDIV : std_logic_vector (4 downto 0) :="10100";
   constant S1_UMAX : std_logic_vector (4 downto 0) :="10101";
@@ -491,7 +492,7 @@ architecture rtl of iu3 is
 
     constant simd_ctrl_reg_res : simd_ctrl_reg_type := (
         mk => (others => '1'),
-        ms => '0',
+        ms => '1',
         sa => swizzling_init,
         sb => swizzling_init,
         ol => (others => '0'),
@@ -2389,8 +2390,13 @@ end;
               immediate_data := "000" & inst(4 downto 0);
           -- for multiplications/division signed first bit is sign, 3 next indicate 2^(1+inst(3 downto 1)) 
           -- and inst(0) adds one (allows for 3, 5, 9, -1, -3, -7...)
-          when S1_MUL | S1_SMUL | S1_DIV  => 
-              immediate_data(rhzeros + 1) := '1';
+          when S1_MUL | S1_SMUL => 
+              report integer'image(to_integer(unsigned(inst)));
+              if rhzeros < 7 then 
+                  immediate_data(rhzeros + 1) := '1';
+              else 
+                  immediate_data(7) := '1';
+              end if;
               if inst(4) = '1' then
                   immediate_data := not(immediate_data) + "00000001";
               end if;

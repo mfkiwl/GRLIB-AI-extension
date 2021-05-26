@@ -371,9 +371,14 @@ architecture rtl of simd_module is
     --apply mask to vector
     procedure mask(vector, original : in inter_reg_type;
                    msk : in std_logic_vector(VSIZE-1 downto 0);
+                   pas_ra : in std_logic;
                    msk_res : out inter_reg_type) is
     begin 
-        msk_res := original;
+        if pas_ra = '1' then 
+            msk_res := original;
+        else 
+            msk_res := (others => (others => '0'));
+        end if;
         for i in msk'range loop
             if msk(i) = '1' then
                 msk_res(i) := vector(i);
@@ -556,7 +561,7 @@ begin
         end loop;
         s1_select(s1_alusel, s1_ra, s1_r2, add_res, sub_res, max_res,
                   min_res, logic_res, shift_res, mul_res, s1_res);
-        mask(s1_res, s1_ra, sdi.ctrl.mk, v.s2.ra);
+        mask(s1_res, s1_ra, sdi.ctrl.mk, sdi.ctrl.ms, v.s2.ra);
 
         v.s2.op2 := r.s1.op2; v.s2.sat := r.s1.op1(3); v.s2.en := r.s1.en;
         v.rdh := to_vector(v.s2.ra, true);

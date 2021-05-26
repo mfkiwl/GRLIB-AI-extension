@@ -85,7 +85,7 @@ package simdmod is
     constant S1_ADD  : std_logic_vector (4 downto 0) := "00001";
     constant S1_SUB  : std_logic_vector (4 downto 0) := "00010";
     constant S1_MUL  : std_logic_vector (4 downto 0) := "00011";
-    constant S1_DIV  : std_logic_vector (4 downto 0) := "00100";
+    --constant S1_DIV  : std_logic_vector (4 downto 0) := "00100";
     constant S1_MAX  : std_logic_vector (4 downto 0) := "00101";
     constant S1_MIN  : std_logic_vector (4 downto 0) := "00110";
     constant S1_AND  : std_logic_vector (4 downto 0) := "00111";

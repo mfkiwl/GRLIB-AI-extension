@@ -968,6 +968,14 @@ ldtxa (0xEB), /* #ASI_TWINX_SL  */
 { "tst",	F3(2, 0x12, 1), F3(~2, ~0x12, ~1)|RD_G0|SIMM13(~0),	"1", 0, 0, 0, v6 }, /* orcc rs1, 0, %g0 */
 
 
+//marcmod
+{ "wr",	F3(2, 0x19, 0)|RD(0),		F3(~2, ~0x19, ~0)|ASI(~0),		"1,2,<", 0, 0, 0, v8ai }, /* wr r,r,%scr */
+{ "wr",	F3(2, 0x19, 1)|RD(0),		F3(~2, ~0x19, ~1),			"1,i,<", 0, 0, 0, v8ai }, /* wr r,i,%scr */
+{ "wr",	F3(2, 0x19, 0)|RD(0),		F3(~2, ~0x19, ~0)|RS1_G0|ASI(~0),		"2,<", F_PREF_ALIAS, 0, 0, v8ai }, /* wr r,%scr */
+{ "wr",	F3(2, 0x19, 1)|RD(0),		F3(~2, ~0x19, ~1)|RS1_G0,			"i,<", F_PREF_ALIAS, 0, 0, v8ai }, /* wr i,%scr */
+{ "wr",	F3(2, 0x19, 0)|RD(0),		F3(~2, ~0x19, ~0)|RS2_G0|ASI(~0),		"1,<", F_PREF_ALIAS, 0, 0, v8ai }, /* wr r,%scr */
+{ "wr",	F3(2, 0x19, 1)|RD(0),		F3(~2, ~0x19, ~1)|SIMM13(~0),			"1,<", F_PREF_ALIAS, 0, 0, v8ai }, /* wr r,%scr */
+
 { "wr",	F3(2, 0x30, 0),		F3(~2, ~0x30, ~0)|ASI(~0),		"1,2,m", 0, 0, 0, v8 }, /* wr r,r,%asrX */
 { "wr",	F3(2, 0x30, 1),		F3(~2, ~0x30, ~1),			"1,i,m", 0, 0, 0, v8 }, /* wr r,i,%asrX */
 { "wr",	F3(2, 0x30, 0),		F3(~2, ~0x30, ~0)|RS1_G0|ASI(~0),	"2,m", F_PREF_ALIAS, 0, 0, v8 }, /* wr %g0,rs2,%asrX */
@@ -1045,6 +1053,8 @@ wrasr (28, 0, HWCAP2_MWAIT, v9m), /* wr ...,%mwait  */
 { "rd",	F3(2, 0x28, 0)|RS1(4),		F3(~2, ~0x28, ~0)|RS1(~4)|SIMM13(~0),	"W,d", 0, 0, 0, v9 }, /* rd %tick,r */
 { "rd",	F3(2, 0x28, 0)|RS1(5),		F3(~2, ~0x28, ~0)|RS1(~5)|SIMM13(~0),	"P,d", 0, 0, 0, v9 }, /* rd %pc,r */
 { "rd",	F3(2, 0x28, 0)|RS1(6),		F3(~2, ~0x28, ~0)|RS1(~6)|SIMM13(~0),	"s,d", 0, 0, 0, v9 }, /* rd %fprs,r */
+//marcmod
+{ "rd", F3(2, 0x2C, 0)|RS1(0),      F3(~2, ~0x2C, ~0)|RS1(~0)|SIMM13(~0),   "<,d", 0, 0, 0, v8ai }, /* rd %scr,r */
 { "rd", F3(2, 0x28, 0)|RS1(13),         F3(~2, ~0x28, ~0)|RS1(~13)|SIMM13(~0),  "&,d", 0, 0, HWCAP2_SPARC6, m8 }, /* rd %entropy,r */
 { "rd", F3(2, 0x28, 0)|RS1(14),         F3(~2, ~0x28, ~0)|RS1(~14)|SIMM13(~0),  "{,d", 0, 0, HWCAP2_SPARC5, v9m }, /* rd %mcdper,r */
 

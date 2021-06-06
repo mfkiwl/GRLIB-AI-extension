@@ -80,7 +80,7 @@ static  char *reg_names[] =
   "f48", "f49", "f50", "f51", "f52", "f53", "f54", "f55",
   "f56", "f57", "f58", "f59", "f60", "f61", "f62", "f63",
 /* psr, wim, tbr, fpsr, cpsr are v8 only.  */
-  "y", "psr", "wim", "tbr", "pc", "npc", "fpsr", "cpsr"
+  "y", "psr", "wim", "tbr", "scr", "pc", "npc", "fpsr", "cpsr"
 };
 
 #define	freg_names	(&reg_names[4 * 8])
@@ -841,6 +841,10 @@ print_insn_sparc (bfd_vma memaddr, disassemble_info *info)
 
 		  case 'W':
 		    (*info->fprintf_func) (stream, "%%tick");
+		    break;
+
+          case '<':
+		    (*info->fprintf_func) (stream, "%%scr");
 		    break;
 
 		  case 'P':

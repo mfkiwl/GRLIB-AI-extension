@@ -415,7 +415,7 @@ atof_generic (/* return pointer to just AFTER number we read.  */
 		   * We have a GROSS internal error.
 		   * This should never happen.
 		   */
-		  as_fatal (_("failed sanity check"));
+		  as_fatal (_("gdb/gas/atof-generic.c failed sanity check"));
 		}
 	    }
 	  else

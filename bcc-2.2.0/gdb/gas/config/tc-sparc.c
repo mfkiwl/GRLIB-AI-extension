@@ -2995,6 +2995,14 @@ sparc_ip (char *str, const struct sparc_opcode **pinsn)
 		}
 	      break;
 
+	    case 'ç':
+	      if (strncmp(s, "%scr", 4) == 0)
+        {
+          s += 4;
+          continue;
+        }
+          break;
+
 	    case 'q':		/* Floating point queue.  */
 	      if (strncmp (s, "%fq", 3) == 0)
 		{
@@ -3140,7 +3148,7 @@ sparc_ip (char *str, const struct sparc_opcode **pinsn)
 	      }
 
 	    default:
-	      as_fatal (_("failed sanity check."));
+	      as_fatal (_("gdb/gas/config/tc-sparc.c failed sanity check."));
 	    }			/* switch on arg code.  */
 
 	  /* Break out of for() loop.  */

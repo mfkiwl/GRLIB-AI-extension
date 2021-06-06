@@ -172,7 +172,7 @@ typedef struct
 #define HWCAP_PAUSE	0x08000000 /* Pause insn */
 #define HWCAP_CBCOND	0x10000000 /* Compare and Branch insns */
 #define HWCAP_CRC32C	0x20000000 /* CRC32C insn */
-#define HWCAP_AISIMD    0x40000000 /* Marcmod AI SIMD module insns */
+#define HWCAP_AISIMD    0x00000000 /* Marcmod AI SIMD module insns */
 
 #define HWCAP2_FJATHPLUS 0x00000001 /* Fujitsu Athena+ */
 #define HWCAP2_VIS3B     0x00000002 /* Subset of VIS3 present on sparc64 X+.  */
@@ -209,8 +209,7 @@ typedef struct
    Kinds of operands:
 	#	Number used by optimizer.	It is ignored.
 	1	rs1 register.
-	2	rs2 register.
-	d	rd register.
+	2	rs2 register.  d	rd register.
 	e	frs1 floating point register.
 	v	frs1 floating point register (double/even).
 	V	frs1 floating point register (quad/multiple of 4).
@@ -275,6 +274,7 @@ typedef struct
 	7	%fcc1. (v9)
 	8	%fcc2. (v9)
 	9	%fcc3. (v9)
+    <   %scr (v8ai)
 	!	Privileged Register in rd (v9)
 	?	Privileged Register in rs1 (v9)
 	%	Hyperprivileged Register in rd (v9b)

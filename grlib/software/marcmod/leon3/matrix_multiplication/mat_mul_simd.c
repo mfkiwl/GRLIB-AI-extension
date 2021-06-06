@@ -6,32 +6,13 @@
 #ifndef N
 #define N 8
 #endif
-int computeCell(int a, int b);
-int computeSum(int a, int b);
-
-
-asm("computeCell:");
-asm("retl");
-asm("usdot %o0, %o1, %o0");
-
-asm("computeSum:");
-asm("retl");
-asm("usadd_usum %o0, %o1, %o0");
 
 void print(char c, unsigned char src[N][N]) {
     printf("%c:\n", c);
     for (int i = 0; i<N; i++){
         for (int j = 0; j<N; j++){
-            printf("%d ", src[i][j]);
-        }
-        printf("\n");
-    }
-}
-void printB(unsigned char src[N][N]) {
-    printf("B:\n");
-    for (int j = 0; j<N; j++){
-        for (int i = 0; i<N; i++){
-            printf("%d ", src[i][j]);
+            if (c=='B') printf("%d ", src[j][i]);
+            else printf("%d ", src[i][j]);
         }
         printf("\n");
     }
@@ -40,14 +21,17 @@ void printB(unsigned char src[N][N]) {
 void product(unsigned char A[N][N], unsigned char B[N][N], unsigned char C[N][N]){
     int sum = 0;
     int aux;
+    int matA, matB;
     asm("nop");
     asm("srl %i0, %o1, %g2");
     asm("nop");
     for(int i=0; i<N; i++)
         for(int j=0; j<N; j++){
             for(int k=0; k<N/4; k++){
-                aux = computeCell(*((int *) &A[i][k*4]),*((int *) &B[j][k*4]));
-                sum = computeSum(aux, sum);
+                matA = *((int *) &A[i][k*4]);
+                matB = *((int *) &B[j][k*4]);
+                asm("usdot %1, %2, %0":"=r"(matA):"r"(matA), "r"(matB));
+                asm("usadd_ %1, %2, %0" :"=r"(sum):"r"(sum), "r"(matA));
             }
             C[i][j] = sum;
             sum = 0;
@@ -73,7 +57,11 @@ int main()
 	puts("TEST BEGIN");
 	product(A,B,C);
 	puts("TEST END");
-	//print('A',A);
-	//printB(B);
-	//print('C',C);
+    #ifdef P_INPUT
+	print('A',A);
+	print('B',B);
+    #endif
+    #ifdef P_OUTPUT
+	print('C',C);
+    #endif
 }

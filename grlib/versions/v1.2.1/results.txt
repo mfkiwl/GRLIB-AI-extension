@@ -1,1 +1,11 @@
+#cycles TestName MatSize (simd|orig) speedup
+2.003.992 cifar10       32x32 simd X
 
+   19.897 binomial      512   simd 4X
+   78.906 binomial      512   orig 1X
+ 
+   79.417 binomial      2048  simd 4.41X
+  350.265 binomial      2048  orig 1X
+
+   79.417 binomial      2048  simd 15.01X
+1.192.342 binomial_sat  2048  orig 1X

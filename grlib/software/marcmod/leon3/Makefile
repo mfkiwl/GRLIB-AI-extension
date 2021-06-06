@@ -10,7 +10,7 @@ systest hello:
 simd_%:
 	$(MAKE) -C module_tests $@
 
-mat_mu%:
+mat_mu% binomi%:
 	$(MAKE) -C matrix_multiplication $@
 
 gray% filt%:

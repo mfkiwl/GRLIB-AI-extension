@@ -1677,6 +1677,8 @@ get_hwcap_name (bfd_uint64_t mask)
         return "cbcond";
     if (mask & HWCAP_CRC32C)
         return "crc32c";
+    if (mask & HWCAP_AISIMD)
+        return "simd";
 
     mask = mask >> 32;
     if (mask & HWCAP2_FJATHPLUS)
@@ -2996,6 +2998,14 @@ immediate:
                         continue;
                     }
                     break;
+                //marcmod
+                case '<':
+                    if (strncmp (s, "%scr", 4) == 0)
+                    {
+                        s += 4;
+                        continue;
+                    }
+                    break;
 
                 case 'q':		/* Floating point queue.  */
                     if (strncmp (s, "%fq", 3) == 0)
@@ -3142,7 +3152,7 @@ immediate:
                     }
 
                 default:
-                    as_fatal (_("failed sanity check."));
+                    as_fatal (_("binutils/gas/config/tc-sparc.c failed sanity check. %d, %c"), *args, *args);
             }			/* switch on arg code.  */
 
             /* Break out of for() loop.  */
@@ -3163,7 +3173,7 @@ error:
             }
             else
             {
-                as_bad (_("Illegal operands%s"), error_message);
+                as_bad (_("tc-sparc: Illegal operands%s"), insn[1].name); //error_message);
                 return special_case;
             }
         }

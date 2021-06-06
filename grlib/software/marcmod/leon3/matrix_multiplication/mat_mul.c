@@ -11,40 +11,12 @@
 #define N 4
 #endif
 
-int computeCell(int a, int b){
-
-    int r;
-    asm("smul %1, %0, %0" 
-            : "=r"(r) 
-            : "r"(a), "0"(b));
-
-    //printf("a: %d\nb: %d\nr: %d\n",a,b,r);
-    return min(r, 255);
-}
-
-int computeSum(int a, int b) {
-    int r;
-    //sum sum a b
-    asm("add %1, %0, %0" 
-            : "=r"(r) 
-            : "r"(a), "0"(b));
-    return min(r, 255);
-}
-
 void print(char c, unsigned char src[N][N]) {
     printf("%c:\n", c);
     for (int i = 0; i<N; i++){
         for (int j = 0; j<N; j++){
-            printf("%d ", src[i][j]);
-        }
-        printf("\n");
-    }
-}
-void printB(unsigned char src[N][N]) {
-    printf("B:\n");
-    for (int j = 0; j<N; j++){
-        for (int i = 0; i<N; i++){
-            printf("%d ", src[i][j]);
+            if (c=='B') printf("%d ", src[j][i]);
+            else printf("%d ", src[i][j]);
         }
         printf("\n");
     }
@@ -59,8 +31,7 @@ void product(unsigned char A[N][N], unsigned char B[N][N], unsigned char C[N][N]
     for(int i=0; i<N; i++)
         for(int j=0; j<N; j++){
             for(int k=0; k<N; k++){
-                aux = computeCell(A[i][k],B[j][k]);
-                sum = computeSum(sum, aux);
+                sum += A[i][k] * B[j][k];
             }
             C[i][j] = sum;
             sum = 0;
@@ -86,7 +57,11 @@ int main()
 	puts("TEST BEGIN");
 	product(A,B,C);
 	puts("TEST END");
-	//print('A',A);
-	//printB(B);
-	//print('C',C);
+    #ifdef P_INPUT
+	print('A',A);
+	print('B',B);
+    #endif
+    #ifdef P_OUTPUT
+	print('C',C);
+    #endif
 }

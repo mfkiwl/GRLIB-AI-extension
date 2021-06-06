@@ -1,1 +1,25 @@
+#cycles     TestName         Size     version  speedup
+  229.230   cifar10          32x32    simd     7.3X
+1.682.684   cifar10          32x32    orig     1X
+ 
+      427   binomial         64       simd     3.8X
+    1.623   binomial_opt     64       orig     1X
+
+      427   binomial         64       simd     8.67X
+    3.703   binomial_opt_sat 64       orig     1X
+
+    3.345   binomial         512      simd     3.26X
+   10.893   binomial         512      orig     1X
+
+#  13.041   binomial         2048     simd     4.73X
+#  61.681   binomial         2048     orig     1X
+
+   13.041   binomial         2048     simd     3.94X
+   51.442   binomial_opt     2048     orig     1X
+
+#  13.041   binomial         2048     simd     9.75X
+# 127.172   binomial_sat     2048     orig     1X
+
+   13.041   binomial         2048     simd     8.32X
+  108.520   binomial_opt_sat 2048     orig     1X
 

@@ -1,0 +1,21 @@
+  #cycles    TestName Size     version  speedup
+ 7.563.162   mat-mul  120x120  simd     8.15X
+61.660.952   mat-mul  120x120  orig     1X
+ 
+ 4.989.377   filter   256x256  simd     3.2X
+15.941.804   filter   256x256  orig     1X
+
+   760.122   grayscl  256x256  simd     1.8X
+ 1.375.140   grayscl  256x256  orig     1X
+
+     3.242   binomi   512      orig     3.3X
+    10.795   binomi   512      orig     1X
+
+    12.506   binomi   2048     simd     4.07X
+    50.908   binomi   2048     orig     1X
+
+    12.506   binomi   2048     simd     8.66X
+   108.250   bin_sat  2048     orig     1X
+
+   279.098   cifar10  32x32    simd     6X
+ 1.673.221   cifar10  32x32    orig     1X

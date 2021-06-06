@@ -7,11 +7,6 @@
 #endif
 
   
-unsigned char shift_and_add(unsigned char r, unsigned char g, unsigned char b){
-    unsigned char ret;
-    ret = (r>>2) + (g>>2) + (b>>2);
-    return ret;
-}
 
 void grayscale(unsigned char src[N][4][N], unsigned char dst[N][N]){
     unsigned char color;
@@ -43,5 +38,7 @@ int main(){
     unsigned char dest[N][N];
     //init(source);
     grayscale(source, dest);
-//    print(dest);
+    #ifdef P_OUTPUT
+    print(dest);
+    #endif
 }
